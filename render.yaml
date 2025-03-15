@@ -17,14 +17,22 @@ services:
   plan: free
   region: frankfurt
   buildCommand: npm ci && npx nx run backend:build --configuration=production
-  startCommand: node apps/backend/dist/main.js
+  startCommand: node dist/main.js
   healthCheckPath: /
+  rootDir: apps/backend
+  previews:
+    generation: automatic
 - type: web
   name: goit-fullstack-final-project-frontend
   runtime: static
   repo: https://github.com/kazamov/goit-fullstack-final-project
   buildCommand: npm ci && npx nx run frontend:build
   staticPublishPath: apps/frontend/dist
+  rootDir: apps/frontend
   previews:
     generation: automatic
+  routes:
+    - type: rewrite
+      source: /*
+      destination: /index.html
 version: "1"
