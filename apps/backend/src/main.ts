@@ -5,8 +5,10 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
+app.use(express.json());
+
+app.get('/', (_req, res) => {
+  res.status(200).send('Health check');
 });
 
 app.listen(port, host, () => {
