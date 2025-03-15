@@ -1,47 +1,47 @@
 # Exported from Render on 2025-03-15T18:19:11Z
 databases:
-- name: goit-fullstack-final-project-db
-  databaseName: goit_fullstack_final_project_db
-  user: goit_fullstack_final_project_db_user
-  plan: free
-  region: frankfurt
-  ipAllowList:
-  - source: 0.0.0.0/0
-    description: everywhere
-  postgresMajorVersion: "16"
+  - name: goit-fullstack-final-project-db
+    databaseName: goit_fullstack_final_project_db
+    user: goit_fullstack_final_project_db_user
+    plan: free
+    region: frankfurt
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+    postgresMajorVersion: '16'
 services:
-- type: web
-  name: goit-fullstack-final-project-backend
-  runtime: node
-  repo: https://github.com/kazamov/goit-fullstack-final-project
-  plan: free
-  region: frankfurt
-  buildCommand: npm ci && npx nx run backend:build --configuration=production
-  startCommand: node dist/main.js
-  healthCheckPath: /
-  rootDir: apps/backend
-  previews:
-    generation: automatic
-- type: web
-  name: goit-fullstack-final-project-frontend
-  runtime: static
-  repo: https://github.com/kazamov/goit-fullstack-final-project
-  buildCommand: npm ci && npx nx run frontend:build
-  staticPublishPath: apps/frontend/dist
-  rootDir: apps/frontend
-  previews:
-    generation: automatic
-  routes:
-    - type: rewrite
-      source: /api/*
-      destination: ${BACKEND_URL}/api/*
-    - type: rewrite
-      source: /*
-      destination: /index.html
-  envVars:
-    - key: BACKEND_URL
-      fromService:
-        name: goit-fullstack-final-project-backend
-        type: web
-        property: url
-version: "1"
+  - type: web
+    name: goit-fullstack-final-project-backend
+    runtime: node
+    repo: https://github.com/kazamov/goit-fullstack-final-project
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci && npx nx run backend:build --configuration=production
+    startCommand: node dist/main.js
+    healthCheckPath: /
+    rootDir: apps/backend
+    previews:
+      generation: automatic
+  - type: web
+    name: goit-fullstack-final-project-frontend
+    runtime: static
+    repo: https://github.com/kazamov/goit-fullstack-final-project
+    buildCommand: npm ci && npx nx run frontend:build
+    staticPublishPath: apps/frontend/dist
+    rootDir: apps/frontend
+    previews:
+      generation: automatic
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: ${BACKEND_URL}/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: goit-fullstack-final-project-backend
+          type: web
+          property: url
+version: '1'
