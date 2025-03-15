@@ -1,0 +1,8 @@
+{
+  "name": "@goit-fullstack-final-project/frontend",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "frontend"
+  }
+}
