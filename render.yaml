@@ -17,7 +17,7 @@ services:
   plan: free
   region: frankfurt
   buildCommand: npm ci && npx nx run backend:build --configuration=production
-  startCommand: npx nx run backend:serve --configuration=production
+  startCommand: node apps/backend/dist/main.js
   healthCheckPath: /
 - type: web
   name: goit-fullstack-final-project-frontend
