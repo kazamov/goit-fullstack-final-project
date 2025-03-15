@@ -7,16 +7,25 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL ?? '*',
+  })
+);
 
 app.get('/', (_req, res) => {
   res.status(200).send('Health check');
 });
 
-app.get('/api', (_req, res) => {
+app.get('/api/data', (_req, res) => {
   res.status(200).json({ message: 'Hello from the backend!' });
+});
+
+app.post('/api/data', (req, res) => {
+  res.status(200).json(req.body);
 });
 
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
+  console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
 });

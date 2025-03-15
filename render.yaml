@@ -16,32 +16,41 @@ services:
     repo: https://github.com/kazamov/goit-fullstack-final-project
     plan: free
     region: frankfurt
-    buildCommand: npm ci && npx nx run backend:build --configuration=production
-    startCommand: node dist/main.js
+    buildCommand: npm ci --ignore-scripts && npx nx run backend:build --configuration=production
+    startCommand: node apps/backend/dist/main.js
     healthCheckPath: /
-    rootDir: apps/backend
     previews:
       generation: automatic
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        fromService:
+          name: goit-fullstack-final-project-frontend
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: SKIP_INSTALL_DEPS
+        value: 'true'
   - type: web
     name: goit-fullstack-final-project-frontend
     runtime: static
     repo: https://github.com/kazamov/goit-fullstack-final-project
-    buildCommand: npm ci && npx nx run frontend:build
+    buildCommand: npm ci --ignore-scripts && npx nx run frontend:build
     staticPublishPath: apps/frontend/dist
-    rootDir: apps/frontend
     previews:
       generation: automatic
     routes:
       - type: rewrite
-        source: /api/*
-        destination: ${BACKEND_URL}/api/*
-      - type: rewrite
         source: /*
         destination: /index.html
     envVars:
-      - key: BACKEND_URL
+      - key: VITE_BACKEND_URL
         fromService:
           name: goit-fullstack-final-project-backend
           type: web
-          property: url
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: SKIP_INSTALL_DEPS
+        value: 'true'
 version: '1'
