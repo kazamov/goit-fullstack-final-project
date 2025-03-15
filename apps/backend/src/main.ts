@@ -13,6 +13,10 @@ app.get('/', (_req, res) => {
   res.status(200).send('Health check');
 });
 
+app.get('/api', (_req, res) => {
+  res.status(200).json({ message: 'Hello from the backend!' });
+});
+
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
