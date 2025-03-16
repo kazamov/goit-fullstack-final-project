@@ -3,13 +3,15 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve:frontend": "nx run frontend:serve",
-    "serve:backend": "nx run backend:serve",
+    "serve:frontend": "nx run frontend:serve --configuration=development",
+    "serve:backend": "nx run backend:serve --configuration=development",
     "lint:affected": "nx affected:lint --fix",
     "build:affected": "nx affected:build",
     "test:affected": "nx affected:test",
     "format": "nx format:write",
     "format:check": "nx format:check",
+    "services:start": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local up -d",
+    "services:stop": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local down",
     "prepare": "is-ci || husky"
   },
   "private": true,
