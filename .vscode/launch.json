@@ -1,14 +1,14 @@
 {
   "configurations": [
     {
-      "command": "npm run serve:frontend",
+      "command": "pnpm run serve:frontend",
       "name": "Start Frontend",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceFolder}"
     },
     {
-      "command": "npm run serve:backend",
+      "command": "pnpm run serve:backend",
       "name": "Start Backend",
       "request": "launch",
       "type": "node-terminal",

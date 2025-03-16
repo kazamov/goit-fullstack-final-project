@@ -1,9 +1,9 @@
-import express from 'express';
 import cors from 'cors';
+import express from 'express';
 
-import { getConfig } from './config';
 import { testDatabaseConnection } from './db/sequelize';
 import { syncDatabase } from './db/sync';
+import { getConfig } from './config';
 
 const config = getConfig();
 const { frontendUrl, host, port } = config;
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: frontendUrl ?? '*',
-  })
+  }),
 );
 
 app.get('/', (_req, res) => {

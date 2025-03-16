@@ -1,9 +1,5 @@
-import {
-  DataTypes,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from 'sequelize';
+import type { InferAttributes, InferCreationAttributes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 import { sequelize } from '../sequelize';
 
@@ -40,7 +36,7 @@ Contact.init(
       allowNull: false,
     },
   },
-  { sequelize }
+  { sequelize },
 );
 
 // Contact.sync({ force: true });

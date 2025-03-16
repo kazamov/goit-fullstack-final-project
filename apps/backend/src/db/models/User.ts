@@ -1,9 +1,5 @@
-import {
-  DataTypes,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from 'sequelize';
+import type { InferAttributes, InferCreationAttributes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 import { sequelize } from '../sequelize';
 
@@ -45,7 +41,7 @@ User.init(
       defaultValue: null,
     },
   },
-  { sequelize }
+  { sequelize },
 );
 
 // User.sync({ force: true });
