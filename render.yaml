@@ -31,6 +31,10 @@ services:
           name: goit-fullstack-final-project-frontend
           type: web
           envVarKey: RENDER_EXTERNAL_URL
+      - key: DB_URL
+        fromDatabase: # Set DB_URL to the connection string for the db 'mydb'
+          name: goit-fullstack-final-project-db
+          property: connectionString
       - key: SKIP_INSTALL_DEPS
         value: 'true'
   - type: web
