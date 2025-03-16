@@ -47,3 +47,4 @@ test-output
 
 .env.*.local
 .env.*.*.local
+pnpm-lock.yaml
