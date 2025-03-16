@@ -27,5 +27,4 @@ app.post('/api/data', (req, res) => {
 
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
-  console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
 });
