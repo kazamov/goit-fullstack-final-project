@@ -1,4 +1,3 @@
-import cors from 'cors';
 import express from 'express';
 
 import { testDatabaseConnection } from './db/sequelize';
@@ -6,16 +5,11 @@ import { syncDatabase } from './db/sync';
 import { getConfig } from './config';
 
 const config = getConfig();
-const { frontendUrl, host, port } = config;
+const { host, port } = config;
 
 const app = express();
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: frontendUrl ?? '*',
-  }),
-);
 
 app.get('/', (_req, res) => {
   res.status(200).send('Health check');
