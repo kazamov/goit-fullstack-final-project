@@ -8,10 +8,6 @@ import { syncDatabase } from './db/sync';
 const config = getConfig();
 const { frontendUrl, host, port } = config;
 
-// if (!config.isTest) {
-testDatabaseConnection().then(syncDatabase);
-//}
-
 const app = express();
 
 app.use(express.json());
@@ -33,6 +29,13 @@ app.post('/api/data', (req, res) => {
   res.status(200).json(req.body);
 });
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
-});
+async function startServer() {
+  await testDatabaseConnection();
+  await syncDatabase();
+
+  app.listen(port, host, () => {
+    console.log(`[ ready ] http://${host}:${port}`);
+  });
+}
+
+startServer();

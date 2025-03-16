@@ -12,7 +12,6 @@ interface Config {
   frontendUrl: string;
   port: number;
   db: {
-    url: string;
     name: string;
     username: string;
     password: string;
@@ -44,7 +43,6 @@ function loadConfig(): Config {
     port: parseInt(process.env.PORT || '3000'),
 
     db: {
-      url: process.env.DB_URL || '',
       name: process.env.DB_NAME as string,
       username: process.env.DB_USERNAME as string,
       password: process.env.DB_PASSWORD as string,

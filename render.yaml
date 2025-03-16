@@ -31,23 +31,35 @@ services:
           name: goit-fullstack-final-project-frontend
           type: web
           envVarKey: RENDER_EXTERNAL_URL
-      - key: DB_URL
+      - key: DB_PORT
         fromDatabase:
           name: goit-fullstack-final-project-db
-          property: connectionString
-      - key: DB_PORT
-        fromDatabase: # Set DB_URL to the connection string for the db 'mydb'
-          name: goit-fullstack-final-project-db
           property: port
+      - key: DB_USERNAME
+        fromDatabase:
+          name: goit-fullstack-final-project-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: goit-fullstack-final-project-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: goit-fullstack-final-project-db
+          property: database
+      - key: DB_HOST
+        fromDatabase:
+          name: goit-fullstack-final-project-db
+          property: host
       - key: DB_ENABLE_SSL
-        value: 'true'
+        value: 'false'
       - key: SKIP_INSTALL_DEPS
         value: 'true'
   - type: web
     name: goit-fullstack-final-project-frontend
     runtime: static
     repo: https://github.com/kazamov/goit-fullstack-final-project
-    buildCommand: npm ci --ignore-scripts && npx nx run frontend:build
+    buildCommand: npm ci --ignore-scripts && npx nx run frontend:build --skip-nx-cache
     staticPublishPath: apps/frontend/dist
     previews:
       generation: automatic

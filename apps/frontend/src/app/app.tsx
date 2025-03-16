@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
-const serviceUrl = import.meta.env.VITE_BACKEND_URL;
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-console.log('SERVICE URL', serviceUrl);
+console.log('VITE_BACKEND_URL', apiUrl);
 console.log('OTHER ENV', import.meta.env);
 
 export function App() {
@@ -29,7 +29,7 @@ export function App() {
   }, []); */
 
   const makePost = useCallback(() => {
-    fetch(`${serviceUrl}/api/data`, {
+    fetch(`${apiUrl}/api/data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
