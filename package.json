@@ -3,22 +3,28 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve:frontend": "nx run frontend:serve",
-    "serve:backend": "nx run backend:serve",
+    "serve:frontend": "nx run frontend:serve --configuration=development",
+    "serve:backend": "nx run backend:serve --configuration=development",
     "lint:affected": "nx affected:lint --fix",
     "build:affected": "nx affected:build",
     "test:affected": "nx affected:test",
     "format": "nx format:write",
     "format:check": "nx format:check",
+    "services:start": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local up -d",
+    "services:stop": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local down",
     "prepare": "is-ci || husky"
   },
   "private": true,
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "pg": "^8.14.0",
+    "pg-hstore": "^2.3.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-router-dom": "6.29.0"
+    "react-router-dom": "6.29.0",
+    "sequelize": "^6.37.6",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

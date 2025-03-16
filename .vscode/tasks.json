@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Docker Containers",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "services:start"],
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+  ]
+}

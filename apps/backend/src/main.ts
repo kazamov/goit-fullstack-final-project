@@ -1,15 +1,23 @@
 import express from 'express';
 import cors from 'cors';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+import { getConfig } from './config';
+import { testDatabaseConnection } from './db/sequelize';
+import { syncDatabase } from './db/sync';
+
+const config = getConfig();
+const { frontendUrl, host, port } = config;
+
+// if (!config.isTest) {
+testDatabaseConnection().then(syncDatabase);
+//}
 
 const app = express();
 
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? '*',
+    origin: frontendUrl ?? '*',
   })
 );
 
@@ -27,5 +35,4 @@ app.post('/api/data', (req, res) => {
 
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
-  console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
 });
