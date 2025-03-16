@@ -1,10 +1,5 @@
 import { useCallback, useState } from 'react';
 
-const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
-console.log('VITE_BACKEND_URL', apiUrl);
-console.log('OTHER ENV', import.meta.env);
-
 export function App() {
   const [succeeded, setSucceeded] = useState(false);
 
@@ -29,7 +24,7 @@ export function App() {
   }, []); */
 
   const makePost = useCallback(() => {
-    fetch(`${apiUrl}/api/data`, {
+    fetch(`/api/data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +44,7 @@ export function App() {
       .catch((error) => {
         console.error(
           'There has been a problem with your fetch operation:',
-          error
+          error,
         );
       });
   }, []);

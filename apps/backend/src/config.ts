@@ -9,7 +9,6 @@ interface Config {
     isDevelopment: boolean;
     isStaging: boolean; */
   host: string;
-  frontendUrl: string;
   port: number;
   db: {
     name: string;
@@ -39,7 +38,6 @@ function loadConfig(): Config {
         isStaging: localNodeEnv === 'staging', */
 
     host: process.env.HOST || 'localhost',
-    frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     port: parseInt(process.env.PORT || '3000'),
 
     db: {
