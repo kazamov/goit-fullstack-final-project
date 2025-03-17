@@ -3,12 +3,12 @@ import { DataTypes, Model } from 'sequelize';
 
 import { sequelize } from '../sequelize';
 
-export class Contact extends Model<
-  InferAttributes<Contact>,
-  InferCreationAttributes<Contact>
+export class Recipe extends Model<
+  InferAttributes<Recipe>,
+  InferCreationAttributes<Recipe>
 > {}
 
-Contact.init(
+Recipe.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -19,18 +19,6 @@ Contact.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    favorite: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
     owner: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -39,4 +27,4 @@ Contact.init(
   { sequelize },
 );
 
-// Contact.sync({ force: true });
+// Recipe.sync({ force: true });

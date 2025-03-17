@@ -4,6 +4,13 @@
   "private": true,
   "type": "module",
   "nx": {
-    "name": "frontend"
+    "name": "frontend",
+    "targets": {
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      }
+    }
   }
 }
