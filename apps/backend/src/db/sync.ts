@@ -1,10 +1,10 @@
-import { Contact } from './models/Recipe';
+import { Recipe } from './models/Recipe';
 import { User } from './models/User';
 
 export async function syncDatabase() {
   try {
     // Sync all models
-    await Promise.all([User.sync(), Contact.sync()]);
+    await Promise.all([User.sync(), Recipe.sync()]);
 
     console.log('Database synced successfully');
   } catch (error) {

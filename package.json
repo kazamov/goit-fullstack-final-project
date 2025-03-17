@@ -5,6 +5,7 @@
   "scripts": {
     "serve:frontend": "nx run frontend:serve --configuration=development",
     "serve:backend": "nx run backend:serve --configuration=development",
+    "serve:backend:production": "nx run backend:serve --configuration=production",
     "lint:affected": "nx affected:lint --fix",
     "build:affected": "nx affected:build",
     "test:affected": "nx affected:test",
