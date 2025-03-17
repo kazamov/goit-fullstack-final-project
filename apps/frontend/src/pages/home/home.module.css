@@ -1,0 +1,9 @@
+.success-message {
+  color: red;
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid green;
+  padding: 8px;
+  display: inline-block;
+  margin-left: 20px;
+}

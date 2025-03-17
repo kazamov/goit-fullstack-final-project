@@ -1,4 +1,4 @@
-import { Contact } from './models/Contact';
+import { Contact } from './models/Recipe';
 import { User } from './models/User';
 
 export async function syncDatabase() {
