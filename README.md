@@ -1,81 +1,158 @@
-# GoitFullstackFinalProject
+# Recipe Management App
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack application for viewing and managing recipes. This project is built as a monorepo using Nx and pnpm.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Project Overview
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This application allows users to browse, create, edit, and manage recipes. It features a React frontend for the user interface and a Node.js backend with Express for the API, using PostgreSQL for data storage.
 
-## Finish your CI setup
+## Prerequisites
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/XCjBa1NhNb)
+Before getting started, ensure you have the following installed:
 
-## Run tasks
+- [Node.js](https://nodejs.org/) (v18 or later)
+- Git
 
-To run the dev server for your app, use:
+### Installing pnpm
 
-```sh
-npx nx serve frontend
-```
-
-To create a production bundle:
+This project uses pnpm as package manager. Install it by running:
 
 ```sh
-npx nx build frontend
+npm install -g pnpm@10
 ```
 
-To see all available targets to run for a project, run:
-
+You can verify the installation with:
 ```sh
-npx nx show project frontend
+pnpm --version
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+Other prerequisites:
+- [Docker](https://www.docker.com/) and Docker Compose (for PostgreSQL database)
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Setup Instructions
 
-## Add new projects
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/goit-fullstack-final-project.git
+   cd goit-fullstack-final-project
+   ```
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+2. Install dependencies:
+   ```sh
+   pnpm install
+   ```
 
-Use the plugin's generator to create new projects.
+3. Create a `.env.serve.development.local` file in the `apps/backend` directory with required environment variables:
+   ```sh
+   # Example .env.serve.development.local
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=postgres
+   DB_PASSWORD=postgres
+   DB_NAME=recipes_db
+   DB_SCHEMA=public
+   PORT=3000
+   ```
 
-To generate a new application, use:
+4. Start the database service:
+   ```sh
+   pnpm services:start
+   ```
 
+## Development Workflow
+
+### Starting Development Servers
+
+Run the backend server:
 ```sh
-npx nx g @nx/react:app demo
+pnpm serve:backend
 ```
 
-To generate a new library, use:
-
+Run the frontend development server:
 ```sh
-npx nx g @nx/react:lib mylib
+pnpm serve:frontend
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+You can access:
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:3000/api
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Building for Production
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Build all applications:
+```sh
+pnpm build:all
+```
 
-## Install Nx Console
+Run the backend in production mode:
+```sh
+pnpm serve:backend:production
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## Testing
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Run tests for affected projects:
+```sh
+pnpm test:affected
+```
 
-## Useful links
+Run all tests:
+```sh
+pnpm test:all
+```
 
-Learn more:
+## Project Structure
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This project uses an Nx monorepo structure:
 
-And join the Nx community:
+- `apps/frontend`: React frontend application
+- `apps/backend`: Express API backend
+- `libs/`: Shared libraries and components
+- `tools/`: Utility scripts and configurations
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Available Scripts
+
+- `pnpm serve:frontend`: Start the frontend development server
+- `pnpm serve:backend`: Start the backend development server
+- `pnpm services:start`: Start required Docker services (PostgreSQL)
+- `pnpm services:stop`: Stop Docker services
+- `pnpm lint:all`: Run linting on all projects
+- `pnpm build:all`: Build all projects
+- `pnpm test:all`: Run all tests
+- `pnpm format`: Format code
+
+## Technologies Used
+
+- **Frontend**: React, React Router, TypeScript, Vite
+- **Backend**: Node.js, Express, TypeScript
+- **Database**: PostgreSQL, Sequelize ORM
+- **Testing**: Vitest, Playwright
+- **Tools**: Nx, ESLint, Prettier, Docker
+
+## Deployment
+
+This application is hosted on [Render.com](https://render.com) with the following services:
+- Frontend: Static Site with automated builds
+- Backend: Web Service
+- Database: PostgreSQL
+
+### Continuous Deployment
+
+The project is configured for continuous deployment:
+- Production deployment is triggered automatically when:
+  - A Pull Request is merged into the master branch
+  - Changes are pushed directly to the master branch
+- Render.com automatically builds and deploys the updated code to production
+- No manual steps required for deployment
+
+## Contributing
+
+1. Create a new branch for your feature: `git checkout -b feature-name`
+2. Make your changes and commit them: `git commit -m 'Add some feature'`
+3. Push to the branch: `git push origin feature-name`
+4. Submit a pull request
+
+## Learn More About Nx
+
+- [Nx Documentation](https://nx.dev)
+- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial)
