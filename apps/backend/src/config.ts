@@ -1,13 +1,6 @@
-// Store the cached config
 let cachedConfig: Config | null = null;
 
-// Define the Config type for better type safety
 export interface Config {
-  /* env: string;
-    isProduction: boolean;
-    isTest: boolean;
-    isDevelopment: boolean;
-    isStaging: boolean; */
   host: string;
   port: number;
   db: {
@@ -21,22 +14,12 @@ export interface Config {
   };
 }
 
-// Function to load config on demand
 function loadConfig(): Config {
-  // Return cached config if already loaded
   if (cachedConfig) {
     return cachedConfig;
   }
 
-  // Create and cache the config object
   cachedConfig = {
-    /*
-        env: localNodeEnv,
-        isProduction: localNodeEnv === 'production',
-        isTest: localNodeEnv === 'test',
-        isDevelopment: localNodeEnv === 'development',
-        isStaging: localNodeEnv === 'staging', */
-
     host: process.env.HOST || 'localhost',
     port: parseInt(process.env.PORT || '3000'),
 
@@ -55,9 +38,3 @@ function loadConfig(): Config {
 }
 
 export const getConfig = (): Config => loadConfig();
-/*
-
-export const isProduction = (): boolean => getConfig().isProduction;
-export const isTest = (): boolean => getConfig().isTest;
-export const isDevelopment = (): boolean => getConfig().isDevelopment;
-export const isStaging = (): boolean => getConfig().isStaging; */
