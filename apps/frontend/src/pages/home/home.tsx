@@ -1,10 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import type {
+  CreateRecipeResponse,
+  GetRecipeListResponse,
+} from '@goit-fullstack-final-project/schemas';
+import {
+  CreateRecipePayloadSchema,
+  GetRecipeListResponseSchema,
+} from '@goit-fullstack-final-project/schemas';
+
 import styles from './home.module.css';
 
 const Home = () => {
-  const [recipes, setRecipes] = useState<any[]>([]);
-  const [newRecipe, setNewRecipe] = useState<any | null>(null);
+  const [recipes, setRecipes] = useState<GetRecipeListResponse>([]);
+  const [newRecipe, setNewRecipe] = useState<CreateRecipeResponse | null>(null);
 
   useEffect(() => {
     fetch('/api/recipes')
@@ -15,7 +24,7 @@ const Home = () => {
         throw new Error('Network response was not ok.');
       })
       .then((data) => {
-        setRecipes(data);
+        setRecipes(GetRecipeListResponseSchema.parse(data));
       })
       .catch((error) => {
         console.error(
@@ -31,16 +40,18 @@ const Home = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        title: 'New Recipe',
-        category: 'Dessert',
-        owner: 'John Doe',
-        area: 'USA',
-        instructions: 'Mix ingredients and bake.',
-        description: 'A delicious dessert recipe.',
-        thumb: 'https://example.com/image.jpg',
-        time: '30 minutes',
-      }),
+      body: JSON.stringify(
+        CreateRecipePayloadSchema.parse({
+          title: 'New Recipe',
+          category: 'Dessert',
+          owner: 'John Doe',
+          area: 'USA',
+          instructions: 'Mix ingredients and bake.',
+          description: 'A delicious dessert recipe.',
+          thumb: 'https://example.com/image.jpg',
+          time: '30 minutes',
+        }),
+      ),
     })
       .then((res) => {
         if (res.ok) {

@@ -25,6 +25,10 @@ export const GetRecipeResponseSchema = RecipeSchema.omit({
 
 export type GetRecipeResponse = z.infer<typeof GetRecipeResponseSchema>;
 
+export const GetRecipeListResponseSchema = z.array(GetRecipeResponseSchema);
+
+export type GetRecipeListResponse = z.infer<typeof GetRecipeListResponseSchema>;
+
 // Create schemas
 export const CreateRecipePayloadSchema = RecipeSchema.omit({
   id: true,

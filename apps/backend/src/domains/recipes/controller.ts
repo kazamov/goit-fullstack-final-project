@@ -1,10 +1,11 @@
 import type { Request, Response } from 'express';
 
-import HttpError from '../../helpers/HttpError';
 import type {
   CreateRecipePayload,
   UpdateRecipePayload,
-} from '../../schemas/Recipe';
+} from '@goit-fullstack-final-project/schemas';
+
+import HttpError from '../../helpers/HttpError';
 
 import * as service from './service';
 

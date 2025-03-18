@@ -12,5 +12,11 @@
         }
       }
     }
+  },
+  "dependencies": {
+    "@goit-fullstack-final-project/schemas": "workspace:*",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-router-dom": "7.3.0"
   }
 }

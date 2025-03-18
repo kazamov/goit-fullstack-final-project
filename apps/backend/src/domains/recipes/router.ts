@@ -1,11 +1,12 @@
 import { Router } from 'express';
 
-import { catchErrors } from '../../decorators/catchErrors';
-import { validateBody } from '../../decorators/validateBody';
 import {
   CreateRecipePayloadSchema,
   UpdateRecipePayloadSchema,
-} from '../../schemas/Recipe';
+} from '@goit-fullstack-final-project/schemas';
+
+import { catchErrors } from '../../decorators/catchErrors';
+import { validateBody } from '../../decorators/validateBody';
 
 import * as controller from './controller';
 
