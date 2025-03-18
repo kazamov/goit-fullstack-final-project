@@ -61,7 +61,10 @@
           }
         }
       }
-    }
+    },
+    "tags": [
+      "scope:backend"
+    ]
   },
   "dependencies": {
     "@goit-fullstack-final-project/schemas": "workspace:*",

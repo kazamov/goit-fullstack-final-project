@@ -11,7 +11,10 @@
           "passWithNoTests": true
         }
       }
-    }
+    },
+    "tags": [
+      "scope:frontend"
+    ]
   },
   "dependencies": {
     "@goit-fullstack-final-project/schemas": "workspace:*",

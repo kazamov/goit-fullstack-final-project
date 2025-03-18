@@ -15,7 +15,10 @@
     }
   },
   "nx": {
-    "name": "schemas"
+    "name": "schemas",
+    "tags": [
+      "scope:shared"
+    ]
   },
   "dependencies": {
     "tslib": "^2.8.1",
