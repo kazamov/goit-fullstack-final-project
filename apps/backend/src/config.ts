@@ -2,7 +2,7 @@
 let cachedConfig: Config | null = null;
 
 // Define the Config type for better type safety
-interface Config {
+export interface Config {
   /* env: string;
     isProduction: boolean;
     isTest: boolean;
@@ -30,7 +30,7 @@ function loadConfig(): Config {
 
   // Create and cache the config object
   cachedConfig = {
-    /* 
+    /*
         env: localNodeEnv,
         isProduction: localNodeEnv === 'production',
         isTest: localNodeEnv === 'test',
@@ -55,7 +55,7 @@ function loadConfig(): Config {
 }
 
 export const getConfig = (): Config => loadConfig();
-/* 
+/*
 
 export const isProduction = (): boolean => getConfig().isProduction;
 export const isTest = (): boolean => getConfig().isTest;
