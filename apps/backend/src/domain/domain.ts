@@ -1,21 +1,38 @@
 import { z } from 'zod';
 
-export const recipeSchema = z.object({
-  id: z.string().uuid(),
+export const IngredientSchema = z.object({
+  id: z.string(),
   name: z.string(),
-  owner: z.string().uuid(),
+  measure: z.string(),
+});
+
+export type Ingredient = z.infer<typeof IngredientSchema>;
+
+export const RecipeSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  category: z.string(),
+  owner: z.string(),
+  area: z.string(),
+  instructions: z.string(),
+  description: z.string(),
+  thumb: z.string(),
+  time: z.string(),
+  ingredients: z.array(IngredientSchema),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
 
-export const recipePublicSchema = recipeSchema.omit({
+export type Recipe = z.infer<typeof RecipeSchema>;
+
+export const RecipePublicSchema = RecipeSchema.omit({
   createdAt: true,
   updatedAt: true,
 });
 
 // TODO discuss zod schemas usage
 
-export class Recipe {
+/* export class Recipe {
   id: string;
   title: string;
   category: string;
@@ -59,4 +76,4 @@ export class Ingredient {
     this.name = name || '';
     this.measure = measure || '';
   }
-}
+} */

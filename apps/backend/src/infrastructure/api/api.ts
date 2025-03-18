@@ -55,11 +55,12 @@ class API {
     _next: NextFunction,
   ) => {
     try {
-      const recipes = this.recipesService.getAllRecipes();
+      const recipes = await this.recipesService.getAllRecipes();
+
       res.status(200).json({
         recipes: recipes,
       });
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };

@@ -1,7 +1,8 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 import type { RecipesRepository } from '../../app/interfaces';
-import { Recipe } from '../../domain/domain';
+import type { Recipe } from '../../domain/domain';
+import { RecipeSchema } from '../../domain/domain';
 
 @Table({ tableName: 'recipes', timestamps: true })
 export class RecipePgDTO extends Model {
@@ -22,11 +23,12 @@ export class PgSequelizeRecipeRepository implements RecipesRepository {
 }
 
 function convertRecipeDTOtoRecipe(recipeDTO: RecipePgDTO): Recipe {
-  return new Recipe({
+  return RecipeSchema.parse(recipeDTO.toJSON()); /* 
+  return new RecipeSchema({
     id: recipeDTO.id,
     title: recipeDTO.name,
     description: recipeDTO.description,
     createdAt: recipeDTO.createdAt,
     updatedAt: recipeDTO.updatedAt,
-  });
+  }); */
 }

@@ -1,3 +1,4 @@
+import type { Model, ModelCtor } from 'sequelize-typescript';
 import { Sequelize } from 'sequelize-typescript';
 
 class Database extends Sequelize {
@@ -53,7 +54,7 @@ class Database extends Sequelize {
     return Database._instance;
   }
 
-  public static registerModels(models: any[]): void {
+  public static registerModels(models: ModelCtor<Model<any, any>>[]): void {
     const dbInstance = Database.getInstance();
     dbInstance.addModels(models);
   }
@@ -68,7 +69,9 @@ class Database extends Sequelize {
     }
   }
 
-  public static async syncAndRegister(models: any[]): Promise<void> {
+  public static async syncAndRegister(
+    models: ModelCtor<Model<any, any>>[],
+  ): Promise<void> {
     Database.registerModels(models);
     await Database.syncModels();
   }

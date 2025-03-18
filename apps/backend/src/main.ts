@@ -1,15 +1,15 @@
 import Service from './service';
 
-const s = new Service();
+const service = new Service();
 
 process.on('SIGTERM', () => {
   console.log('SIGTERM signal received: shutting down');
-  s.shutdown();
+  service.shutdown();
 });
 
 process.on('SIGINT', () => {
   console.log('SIGINT signal received: shutting down');
-  s.shutdown();
+  service.shutdown();
 });
 
-s.run();
+service.run();
