@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 
-import { getConfig } from '../src/config';
+import { getConfig } from '../config';
 import {
   initDbConnection,
   RecipeDTO,
   registerDbModels,
   shutdownDb,
   syncDb,
-} from '../src/infrastructure/db';
+} from '../infrastructure/db';
 
 const dataFolderPath = path.resolve(__dirname, 'data');
 

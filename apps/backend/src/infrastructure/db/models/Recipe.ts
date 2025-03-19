@@ -9,17 +9,17 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { Area } from './_Area';
-import { Category } from './_Category';
-import { Ingredient } from './_Ingredient';
-import { RecipeIngredient } from './RecipeIngredient';
-import { User } from './User';
+import { AreaDTO } from './Area';
+import { CategoryDTO } from './Category';
+import { IngredientDTO } from './Ingredient';
+import { RecipeIngredientDTO } from './RecipeIngredient';
+import { UserDTO } from './User';
 
 @Table({
   tableName: 'recipes',
   timestamps: true,
 })
-export class Recipe extends Model {
+export class RecipeDTO extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -85,41 +85,41 @@ export class Recipe extends Model {
   })
   declare isFavorite?: boolean;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => UserDTO)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
   declare userId: string;
 
-  @BelongsTo(() => User)
-  declare user: User;
+  @BelongsTo(() => UserDTO)
+  declare user: UserDTO;
 
-  @ForeignKey(() => Category)
+  @ForeignKey(() => CategoryDTO)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
   declare categoryId: string;
 
-  @BelongsTo(() => Category)
-  declare category: Category;
+  @BelongsTo(() => CategoryDTO)
+  declare category: CategoryDTO;
 
-  @ForeignKey(() => Area)
+  @ForeignKey(() => AreaDTO)
   @Column({
     type: DataType.UUID,
   })
   declare areaId?: string;
 
-  @BelongsTo(() => Area)
-  declare area?: Area;
+  @BelongsTo(() => AreaDTO)
+  declare area?: AreaDTO;
 
-  @BelongsToMany(() => Ingredient, () => RecipeIngredient)
-  declare ingredients?: Ingredient[];
+  @BelongsToMany(() => IngredientDTO, () => RecipeIngredientDTO)
+  declare ingredients?: IngredientDTO[];
 
-  @HasMany(() => RecipeIngredient)
-  declare recipeIngredients?: RecipeIngredient[];
+  @HasMany(() => RecipeIngredientDTO)
+  declare recipeIngredients?: RecipeIngredientDTO[];
 
-  @BelongsToMany(() => User, 'user_favorite_recipes', 'recipeId', 'userId')
-  declare favoritedBy?: User[];
+  @BelongsToMany(() => UserDTO, 'user_favorite_recipes', 'recipeId', 'userId')
+  declare favoritedBy?: UserDTO[];
 }

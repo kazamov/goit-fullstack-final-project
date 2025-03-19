@@ -64,14 +64,14 @@
       "seed": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/seed/seed-dev.ts"
+          "command": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/src/seed/seed-dev.ts"
         },
         "configurations": {
           "development": {
-            "command": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/seed/seed-dev.ts"
+            "command": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/src/seed/seed-dev.ts"
           },
           "production": {
-            "command": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/seed/seed-prod.ts"
+            "command": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/src/seed/seed-prod.ts"
           }
         }
       }

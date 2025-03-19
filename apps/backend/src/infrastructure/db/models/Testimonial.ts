@@ -7,13 +7,13 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { User } from './User';
+import { UserDTO } from './User';
 
 @Table({
   tableName: 'testimonials',
   timestamps: true,
 })
-export class Testimonial extends Model {
+export class TestimonialDTO extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -37,13 +37,13 @@ export class Testimonial extends Model {
   })
   declare rating: number;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => UserDTO)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
   declare userId: string;
 
-  @BelongsTo(() => User)
-  declare user: User;
+  @BelongsTo(() => UserDTO)
+  declare user: UserDTO;
 }

@@ -7,14 +7,14 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { Testimonial } from './_Testimonial';
-import { Recipe } from './Recipe';
+import { RecipeDTO } from './Recipe';
+import { TestimonialDTO } from './Testimonial';
 
 @Table({
   tableName: 'users',
   timestamps: true,
 })
-export class User extends Model {
+export class UserDTO extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -65,12 +65,12 @@ export class User extends Model {
   })
   declare refreshToken?: string;
 
-  @HasMany(() => Recipe)
-  declare recipes?: Recipe[];
+  @HasMany(() => RecipeDTO)
+  declare recipes?: RecipeDTO[];
 
-  @HasMany(() => Testimonial)
-  declare testimonials?: Testimonial[];
+  @HasMany(() => TestimonialDTO)
+  declare testimonials?: TestimonialDTO[];
 
-  @BelongsToMany(() => Recipe, 'user_favorite_recipes', 'userId', 'recipeId')
-  declare favoriteRecipes?: Recipe[];
+  @BelongsToMany(() => RecipeDTO, 'user_favorite_recipes', 'userId', 'recipeId')
+  declare favoriteRecipes?: RecipeDTO[];
 }

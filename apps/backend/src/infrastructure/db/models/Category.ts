@@ -1,12 +1,12 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
-import { Recipe } from './Recipe';
+import { RecipeDTO } from './Recipe';
 
 @Table({
   tableName: 'categories',
   timestamps: true,
 })
-export class Category extends Model {
+export class CategoryDTO extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -21,6 +21,6 @@ export class Category extends Model {
   })
   declare name: string;
 
-  @HasMany(() => Recipe)
-  declare recipes?: Recipe[];
+  @HasMany(() => RecipeDTO)
+  declare recipes?: RecipeDTO[];
 }

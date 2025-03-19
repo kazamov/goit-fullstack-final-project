@@ -7,22 +7,22 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { Ingredient } from './_Ingredient';
-import { Recipe } from './Recipe';
+import { IngredientDTO } from './Ingredient';
+import { RecipeDTO } from './Recipe';
 
 @Table({
   tableName: 'recipe_ingredients',
   timestamps: true,
 })
-export class RecipeIngredient extends Model {
-  @ForeignKey(() => Recipe)
+export class RecipeIngredientDTO extends Model {
+  @ForeignKey(() => RecipeDTO)
   @Column({
     type: DataType.UUID,
     allowNull: false,
   })
   declare recipeId: string;
 
-  @ForeignKey(() => Ingredient)
+  @ForeignKey(() => IngredientDTO)
   @Column({
     type: DataType.UUID,
     allowNull: false,
@@ -35,9 +35,9 @@ export class RecipeIngredient extends Model {
   })
   declare measure: string;
 
-  @BelongsTo(() => Recipe)
-  declare recipe: Recipe;
+  @BelongsTo(() => RecipeDTO)
+  declare recipe: RecipeDTO;
 
-  @BelongsTo(() => Ingredient)
-  declare ingredient: Ingredient;
+  @BelongsTo(() => IngredientDTO)
+  declare ingredient: IngredientDTO;
 }

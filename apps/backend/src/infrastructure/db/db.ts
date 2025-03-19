@@ -1,8 +1,15 @@
 import type { SequelizeOptions } from 'sequelize-typescript';
 import { Sequelize } from 'sequelize-typescript';
 
-import { RecipeDTO } from './models/Recipe';
-import { UserDTO } from './models/User';
+import {
+  AreaDTO,
+  CategoryDTO,
+  IngredientDTO,
+  RecipeDTO,
+  RecipeIngredientDTO,
+  TestimonialDTO,
+  UserDTO,
+} from './models';
 
 let sequelize: Sequelize | null = null;
 
@@ -24,7 +31,15 @@ export function registerDbModels() {
     throw new Error('Sequelize instance is not initialized.');
   }
 
-  sequelize.addModels([RecipeDTO, UserDTO]);
+  sequelize.addModels([
+    RecipeDTO,
+    AreaDTO,
+    CategoryDTO,
+    IngredientDTO,
+    RecipeIngredientDTO,
+    TestimonialDTO,
+    UserDTO,
+  ]);
 }
 
 export async function syncDb() {

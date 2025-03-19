@@ -6,14 +6,14 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { Recipe } from './Recipe';
-import { RecipeIngredient } from './RecipeIngredient';
+import { RecipeDTO } from './Recipe';
+import { RecipeIngredientDTO } from './RecipeIngredient';
 
 @Table({
   tableName: 'ingredients',
   timestamps: true,
 })
-export class Ingredient extends Model {
+export class IngredientDTO extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -38,6 +38,6 @@ export class Ingredient extends Model {
   })
   declare imageUrl?: string;
 
-  @BelongsToMany(() => Recipe, () => RecipeIngredient)
-  declare recipes?: Recipe[];
+  @BelongsToMany(() => RecipeDTO, () => RecipeIngredientDTO)
+  declare recipes?: RecipeDTO[];
 }
