@@ -18,6 +18,7 @@
     "format:check": "nx format:check",
     "services:start": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local up -d",
     "services:stop": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local down",
+    "seed:db": "nx run backend:seed --configuration=development",
     "uninstall": "rm -rf node_modules apps/*/node_modules libs/*/node_modules || true",
     "reinstall": "pnpm run uninstall && pnpm install",
     "prepare": "is-ci || husky"
@@ -71,7 +72,9 @@
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.2.2",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.8",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.19.3"
   },
   "packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6"
 }
