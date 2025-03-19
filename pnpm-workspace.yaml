@@ -3,6 +3,5 @@ packages:
   - libs/*
 onlyBuiltDependencies:
   - '@swc/core'
-  - bcrypt
   - esbuild
   - nx

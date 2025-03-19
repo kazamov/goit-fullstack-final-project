@@ -83,7 +83,7 @@
   },
   "dependencies": {
     "@goit-fullstack-final-project/schemas": "workspace:*",
-    "bcrypt": "^5.1.1",
+    "bcrypt-ts": "^6.0.0",
     "cloudinary": "^2.6.0",
     "express": "^4.21.2",
     "gravatar": "^1.8.2",
@@ -96,7 +96,6 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/gravatar": "^1.8.6"
   }
 }

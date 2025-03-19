@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import { genSalt, hash } from 'bcrypt-ts';
 import gravatar from 'gravatar';
 
 import type {
@@ -19,6 +19,12 @@ type UserQuery =
   | Pick<UserSchemaAttributes, 'id'>
   | Pick<UserSchemaAttributes, 'email' | 'id'>;
 
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await genSalt(10);
+  const hashedPassword = await hash(password, salt);
+  return hashedPassword;
+}
+
 export async function findUser(
   query: UserQuery,
 ): Promise<UserSchemaAttributes | null> {
@@ -37,7 +43,7 @@ export async function createUser(
     throw new HttpError(`User with email '${email}' already exists`, 409);
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await hashPassword(password);
 
   const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'retro' });
 
