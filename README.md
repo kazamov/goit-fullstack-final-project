@@ -58,11 +58,8 @@ Other prerequisites:
    ```sh
    pnpm services:start
    ```
-   
-5. Unpack files from [archive](https://drive.google.com/file/d/1qaJTbOMQq-7w4omz1sjDxa5qrVhyOyvU/view?usp=sharing)
-   to `./apps/backend/data/` directory.
 
-6. Seed database:
+5. Seed database:
    ```sh
    pnpm seed:db
    ```
