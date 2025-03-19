@@ -9,11 +9,11 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { AreaDTO } from './Area';
-import { CategoryDTO } from './Category';
-import { IngredientDTO } from './Ingredient';
-import { RecipeIngredientDTO } from './RecipeIngredient';
-import { UserDTO } from './User';
+import { AreaDTO } from './Area.js';
+import { CategoryDTO } from './Category.js';
+import { IngredientDTO } from './Ingredient.js';
+import { RecipeIngredientDTO } from './RecipeIngredient.js';
+import { UserDTO } from './User.js';
 
 @Table({
   tableName: 'recipes',

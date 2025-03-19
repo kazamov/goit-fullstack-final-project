@@ -1,6 +1,6 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
-import { RecipeDTO } from './Recipe';
+import { RecipeDTO } from './Recipe.js';
 
 @Table({
   tableName: 'categories',

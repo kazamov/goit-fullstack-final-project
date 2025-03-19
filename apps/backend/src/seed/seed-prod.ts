@@ -1,10 +1,12 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import dotenv from 'dotenv';
 
-import { runSeedScript } from './seed-database';
+import { runSeedScript } from './seed-database.js';
 
-const envPath = path.resolve(__dirname, '../.env.serve.production.local');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.resolve(__dirname, '../../.env.serve.production.local');
 
 dotenv.config({ path: envPath });
 

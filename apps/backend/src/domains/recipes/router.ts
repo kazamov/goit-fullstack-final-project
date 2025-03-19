@@ -5,10 +5,10 @@ import {
   UpdateRecipePayloadSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { catchErrors } from '../../decorators/catchErrors';
-import { validateBody } from '../../decorators/validateBody';
+import { catchErrors } from '../../decorators/catchErrors.js';
+import { validateBody } from '../../decorators/validateBody.js';
 
-import * as controller from './controller';
+import * as controller from './controller.js';
 
 const router: Router = Router();
 

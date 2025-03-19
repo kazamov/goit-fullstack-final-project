@@ -9,7 +9,7 @@ import {
   RecipeIngredientDTO,
   TestimonialDTO,
   UserDTO,
-} from './models';
+} from './models/index.js';
 
 let sequelize: Sequelize | null = null;
 

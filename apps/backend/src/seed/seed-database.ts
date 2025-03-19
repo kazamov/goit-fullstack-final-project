@@ -1,15 +1,17 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-import { getConfig } from '../config';
+import { getConfig } from '../config.js';
 import {
   initDbConnection,
   RecipeDTO,
   registerDbModels,
   shutdownDb,
   syncDb,
-} from '../infrastructure/db';
+} from '../infrastructure/db/index.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataFolderPath = path.resolve(__dirname, 'data');
 
 async function seedDatabase(): Promise<void> {

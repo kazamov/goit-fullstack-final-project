@@ -11,7 +11,7 @@ import {
   UpdateRecipeResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { RecipeDTO } from '../../infrastructure/db';
+import { RecipeDTO } from '../../infrastructure/db/index.js';
 
 export async function getRecipes(): Promise<GetRecipeResponse[]> {
   const recipes = await RecipeDTO.findAll();

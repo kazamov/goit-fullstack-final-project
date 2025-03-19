@@ -6,7 +6,7 @@ import {
   ValidationError,
 } from 'sequelize';
 
-import HttpError from '../helpers/HttpError';
+import HttpError from '../helpers/HttpError.js';
 
 export function catchErrors(
   fn: (req: Request, res: Response, next: NextFunction) => Promise<void>,

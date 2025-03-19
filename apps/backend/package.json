@@ -2,6 +2,7 @@
   "name": "@goit-fullstack-final-project/backend",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "nx": {
     "name": "backend",
     "targets": {
@@ -15,7 +16,7 @@
           "platform": "node",
           "outputPath": "apps/backend/dist",
           "format": [
-            "cjs"
+            "esm"
           ],
           "bundle": false,
           "main": "apps/backend/src/main.ts",

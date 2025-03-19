@@ -6,8 +6,8 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { RecipeDTO } from './Recipe';
-import { RecipeIngredientDTO } from './RecipeIngredient';
+import { RecipeDTO } from './Recipe.js';
+import { RecipeIngredientDTO } from './RecipeIngredient.js';
 
 @Table({
   tableName: 'ingredients',

@@ -7,7 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { UserDTO } from './User';
+import { UserDTO } from './User.js';
 
 @Table({
   tableName: 'testimonials',

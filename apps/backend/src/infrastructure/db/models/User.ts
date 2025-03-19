@@ -7,8 +7,8 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { RecipeDTO } from './Recipe';
-import { TestimonialDTO } from './Testimonial';
+import { RecipeDTO } from './Recipe.js';
+import { TestimonialDTO } from './Testimonial.js';
 
 @Table({
   tableName: 'users',
