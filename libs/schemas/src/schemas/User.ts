@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
 export const UserSchema = z.object({
-  id: z.number().int(),
+  id: z.string(),
   name: z.string(),
   email: z.string().email(),
   password: z.string().nonempty(),
-  avatar: z.string().nullable(),
+  avatarUrl: z.string(),
   token: z.string().nullable(),
-  favorite_recipes: z.array(z.number().int()),
-  following: z.array(z.number().int()),
+  // favorite_recipes: z.array(z.number().int()),
+  // following: z.array(z.number().int()),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

@@ -48,24 +48,15 @@ export class UserDTO extends Model {
 
   @Column({
     type: DataType.STRING,
+    allowNull: false,
   })
-  declare avatarUrl?: string;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  declare isVerified: boolean;
+  declare avatarUrl: string;
 
   @Column({
     type: DataType.STRING,
+    defaultValue: null,
   })
-  declare verificationToken?: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  declare refreshToken?: string;
+  declare token?: string;
 
   @HasMany(() => RecipeDTO)
   declare recipes?: RecipeDTO[];
