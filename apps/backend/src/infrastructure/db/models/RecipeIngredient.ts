@@ -17,14 +17,14 @@ import { RecipeDTO } from './Recipe.js';
 export class RecipeIngredientDTO extends Model {
   @ForeignKey(() => RecipeDTO)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING(24),
     allowNull: false,
   })
   declare recipeId: string;
 
   @ForeignKey(() => IngredientDTO)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING(24),
     allowNull: false,
   })
   declare ingredientId: string;

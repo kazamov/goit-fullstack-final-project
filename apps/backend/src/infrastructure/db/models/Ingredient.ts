@@ -15,8 +15,9 @@ import { RecipeIngredientDTO } from './RecipeIngredient.js';
 })
 export class IngredientDTO extends Model {
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.STRING(24),
+    allowNull: false,
+    defaultValue: "encode(gen_random_bytes(12), 'hex')",
     primaryKey: true,
   })
   declare id: string;

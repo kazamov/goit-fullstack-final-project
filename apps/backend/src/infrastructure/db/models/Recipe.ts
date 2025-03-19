@@ -21,8 +21,9 @@ import { UserDTO } from './User.js';
 })
 export class RecipeDTO extends Model {
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.STRING(24),
+    allowNull: false,
+    defaultValue: "encode(gen_random_bytes(12), 'hex')",
     primaryKey: true,
   })
   declare id: string;
@@ -87,7 +88,7 @@ export class RecipeDTO extends Model {
 
   @ForeignKey(() => UserDTO)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING(24),
     allowNull: false,
   })
   declare userId: string;
@@ -97,7 +98,7 @@ export class RecipeDTO extends Model {
 
   @ForeignKey(() => CategoryDTO)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING(24),
     allowNull: false,
   })
   declare categoryId: string;
@@ -107,7 +108,7 @@ export class RecipeDTO extends Model {
 
   @ForeignKey(() => AreaDTO)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING(24),
   })
   declare areaId?: string;
 

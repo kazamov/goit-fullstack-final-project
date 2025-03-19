@@ -8,8 +8,9 @@ import { RecipeDTO } from './Recipe.js';
 })
 export class CategoryDTO extends Model {
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.STRING(24),
+    allowNull: false,
+    defaultValue: "encode(gen_random_bytes(12), 'hex')",
     primaryKey: true,
   })
   declare id: string;

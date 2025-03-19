@@ -15,8 +15,9 @@ import { UserDTO } from './User.js';
 })
 export class TestimonialDTO extends Model {
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.STRING(24),
+    allowNull: false,
+    defaultValue: "encode(gen_random_bytes(12), 'hex')",
     primaryKey: true,
   })
   declare id: string;
@@ -39,7 +40,7 @@ export class TestimonialDTO extends Model {
 
   @ForeignKey(() => UserDTO)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING(24),
     allowNull: false,
   })
   declare userId: string;
