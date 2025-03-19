@@ -4,6 +4,7 @@ import {
   DataType,
   HasMany,
   Model,
+  Sequelize,
   Table,
 } from 'sequelize-typescript';
 
@@ -18,7 +19,7 @@ export class UserDTO extends Model {
   @Column({
     type: DataType.STRING(24),
     allowNull: false,
-    defaultValue: "encode(gen_random_bytes(12), 'hex')",
+    defaultValue: Sequelize.literal("encode(gen_random_bytes(12), 'hex')"),
     primaryKey: true,
   })
   declare id: string;
