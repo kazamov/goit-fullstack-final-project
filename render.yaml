@@ -16,7 +16,6 @@ services:
     plan: free
     region: frankfurt
     buildCommand: pnpm install --frozen-lockfile --ignore-scripts && npx nx run backend:build --configuration=production
-    preDeployCommand: pnpm run seed:db
     startCommand: node apps/backend/dist/main.js
     healthCheckPath: /
     previews:

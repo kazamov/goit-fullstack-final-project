@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-import dotenv from 'dotenv';
-
 import { getConfig } from '../src/config';
 import {
   initDbConnection,
@@ -12,10 +10,7 @@ import {
   syncDb,
 } from '../src/infrastructure/db';
 
-const envPath = path.resolve(__dirname, '../.env.serve.development.local');
 const dataFolderPath = path.resolve(__dirname, 'data');
-
-dotenv.config({ path: envPath });
 
 async function seedDatabase(): Promise<void> {
   try {
@@ -63,8 +58,6 @@ async function seedDatabase(): Promise<void> {
   }
 }
 
-seedDatabase().catch(console.error);
-
 async function loadRecipesFromFile(filePath: string): Promise<RecipeDTO[]> {
   try {
     const data: string = fs.readFileSync(path.resolve(filePath), 'utf-8');
@@ -85,5 +78,13 @@ async function loadRecipesFromFile(filePath: string): Promise<RecipeDTO[]> {
   } catch (error) {
     console.error('Error loading recipes from file:', error);
     return [];
+  }
+}
+
+export async function runSeedScript() {
+  try {
+    await seedDatabase();
+  } catch (error) {
+    console.error('Error running seed script:', error);
   }
 }
