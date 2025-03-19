@@ -7,7 +7,6 @@ import {
   initDbConnection,
   registerDbModels,
   shutdownDb,
-  syncDb,
 } from './infrastructure/db';
 import { getConfig } from './config';
 import { recipesRouter, usersRouter } from './domains';
@@ -53,7 +52,6 @@ async function run() {
     logging: false,
   });
   registerDbModels();
-  await syncDb();
 
   // Start server
   const server = app.listen(port, host, () => {

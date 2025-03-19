@@ -18,8 +18,8 @@
     "format:check": "nx format:check",
     "services:start": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local up -d",
     "services:stop": "docker compose -f docker-compose.dev.yml --env-file apps/backend/.env.serve.development.local down",
-    "prepare": "is-ci || husky",
-    "seed:db": "tsx --tsconfig apps/backend/tsconfig.app.json apps/backend/seed-database.ts"
+    "seed:db": "nx run backend:seed",
+    "prepare": "is-ci || husky"
   },
   "private": true,
   "devDependencies": {

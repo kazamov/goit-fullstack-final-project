@@ -3,16 +3,19 @@ import path from 'path';
 
 import dotenv from 'dotenv';
 
-import { getConfig } from './src/config';
+import { getConfig } from '../src/config';
 import {
   initDbConnection,
   RecipeDTO,
   registerDbModels,
   shutdownDb,
   syncDb,
-} from './src/infrastructure/db';
+} from '../src/infrastructure/db';
 
-dotenv.config({ path: 'apps/backend/.env.serve.development.local' });
+const envPath = path.resolve(__dirname, '../.env.serve.development.local');
+const dataFolderPath = path.resolve(__dirname, 'data');
+
+dotenv.config({ path: envPath });
 
 async function seedDatabase(): Promise<void> {
   try {
@@ -42,7 +45,7 @@ async function seedDatabase(): Promise<void> {
     await syncDb();
 
     const recipesSeedData = await loadRecipesFromFile(
-      'apps/backend/data/recipes.json',
+      path.resolve(dataFolderPath, 'recipes.json'),
     );
 
     if (recipesSeedData.length > 0) {
