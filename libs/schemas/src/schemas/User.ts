@@ -45,4 +45,21 @@ export const CreateUserResponseSchema = UserSchema.pick({
 
 export type CreateUserResponse = z.infer<typeof CreateUserResponseSchema>;
 
+export const LoginUserPayloadSchema = UserSchema.pick({
+  email: true,
+  password: true,
+});
+
+export type LoginUserPayload = z.infer<typeof LoginUserPayloadSchema>;
+
+export const LoginUserResponseSchema = UserSchema.pick({
+  id: true,
+  name: true,
+  email: true,
+  token: true,
+  avatarUrl: true,
+});
+
+export type LoginUserResponse = z.infer<typeof LoginUserResponseSchema>;
+
 // Update schemas

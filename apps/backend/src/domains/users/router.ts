@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
-import { CreateUserPayloadSchema } from '@goit-fullstack-final-project/schemas';
+import {
+  CreateUserPayloadSchema,
+  LoginUserPayloadSchema,
+} from '@goit-fullstack-final-project/schemas';
 
 import { catchErrors } from '../../decorators/catchErrors.js';
 import { validateBody } from '../../decorators/validateBody.js';
@@ -17,6 +20,12 @@ router.post(
   '/register',
   validateBody(CreateUserPayloadSchema),
   catchErrors(controller.createUser),
+);
+
+router.post(
+  '/login',
+  validateBody(LoginUserPayloadSchema),
+  catchErrors(controller.loginUser),
 );
 
 export default router;
