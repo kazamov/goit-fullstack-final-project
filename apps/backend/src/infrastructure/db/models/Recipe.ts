@@ -16,7 +16,7 @@ export class RecipeDTO extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   declare area: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.TEXT, allowNull: false })
   declare instructions: string;
 
   @Column({ type: DataType.TEXT, allowNull: false })
