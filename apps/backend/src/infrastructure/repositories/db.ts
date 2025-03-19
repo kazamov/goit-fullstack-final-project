@@ -20,6 +20,9 @@ class Database extends Sequelize {
       host: host,
       port: port,
       logging: false,
+      dialectOptions: {
+        ssl: false,
+      },
     });
   }
 

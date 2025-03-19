@@ -6,29 +6,35 @@ import { RecipeSchema } from '../../domain/domain';
 
 @Table({ tableName: 'recipes', timestamps: true })
 export class RecipePgDTO extends Model {
-  declare id: number;
+  declare id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  name!: string;
+  declare name: string;
 
   @Column({ type: DataType.TEXT })
-  description!: string;
+  declare description: string;
 }
 
 export class PgSequelizeRecipeRepository implements RecipesRepository {
   async getAll(): Promise<Recipe[]> {
+    if (!RecipePgDTO.sequelize) {
+      throw new Error(
+        'RecipePgDTO is not registered in Sequelize. Ensure models are registered.',
+      );
+    }
+
     const recipes = await RecipePgDTO.findAll();
+
+    if (!recipes.length) {
+      console.warn('getAll(): No recipes found in the database.');
+    }
+
     return recipes.map(convertRecipeDTOtoRecipe);
   }
 }
 
 function convertRecipeDTOtoRecipe(recipeDTO: RecipePgDTO): Recipe {
-  return RecipeSchema.parse(recipeDTO.toJSON()); /* 
-  return new RecipeSchema({
-    id: recipeDTO.id,
-    title: recipeDTO.name,
-    description: recipeDTO.description,
-    createdAt: recipeDTO.createdAt,
-    updatedAt: recipeDTO.updatedAt,
-  }); */
+  const jsonData = recipeDTO.get({ plain: true });
+
+  return RecipeSchema.parse(jsonData);
 }
