@@ -34,8 +34,24 @@ app.use((err: HttpError, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 async function run() {
+  // Start server
+  const server = app.listen(port, host, () => {
+    console.log(`[ ready ] http://${host}:${port}`);
+  });
+
+  // Handle shutdown
+  const shutdown = async () => {
+    console.log('Shutting down server...');
+    await shutdownDb();
+
+    server.close(async () => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  };
+
   // Initialize database
-  await initDbConnection({
+  initDbConnection({
     dialect: 'postgres',
     host: db.host,
     port: db.port,
@@ -50,23 +66,9 @@ async function run() {
       schema: db.schema,
     },
     logging: false,
-  });
-  registerDbModels();
-
-  // Start server
-  const server = app.listen(port, host, () => {
-    console.log(`[ ready ] http://${host}:${port}`);
-  });
-
-  // Handle shutdown
-  const shutdown = async () => {
-    await shutdownDb();
-
-    server.close(async () => {
-      console.log('Server closed');
-      process.exit(0);
-    });
-  };
+  })
+    .then(registerDbModels)
+    .catch(shutdown);
 
   process.on('SIGINT', shutdown);
   process.on('SIGTERM', shutdown);
