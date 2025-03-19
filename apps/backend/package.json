@@ -51,7 +51,7 @@
         ],
         "options": {
           "buildTarget": "backend:build",
-          "runBuildTargetDependencies": false
+          "runBuildTargetDependencies": true
         },
         "configurations": {
           "development": {
