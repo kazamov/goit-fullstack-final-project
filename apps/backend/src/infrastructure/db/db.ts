@@ -49,7 +49,7 @@ export async function syncDb() {
   }
 
   try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log('Database synchronized successfully.');
   } catch (error) {
     console.error('Database synchronization failed:', error);
