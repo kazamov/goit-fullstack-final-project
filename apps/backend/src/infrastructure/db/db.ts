@@ -1,8 +1,8 @@
 import type { SequelizeOptions } from 'sequelize-typescript';
 import { Sequelize } from 'sequelize-typescript';
 
-import { RecipeDTO } from './models/Recipe';
-import { UserDTO } from './models/User';
+import { RecipeDTO } from './models/Recipe.js';
+import { UserDTO } from './models/User.js';
 
 let sequelize: Sequelize | null = null;
 

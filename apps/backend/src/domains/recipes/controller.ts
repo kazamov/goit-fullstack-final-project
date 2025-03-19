@@ -5,9 +5,9 @@ import type {
   UpdateRecipePayload,
 } from '@goit-fullstack-final-project/schemas';
 
-import HttpError from '../../helpers/HttpError';
+import HttpError from '../../helpers/HttpError.js';
 
-import * as service from './service';
+import * as service from './service.js';
 
 export async function getRecipes(_req: Request, res: Response) {
   const recipes = await service.getRecipes();

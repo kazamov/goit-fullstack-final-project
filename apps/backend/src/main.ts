@@ -2,14 +2,14 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import morgan from 'morgan';
 
-import type HttpError from './helpers/HttpError';
+import { recipesRouter, usersRouter } from './domains/index.js';
+import type HttpError from './helpers/HttpError.js';
 import {
   initDbConnection,
   registerDbModels,
   shutdownDb,
-} from './infrastructure/db';
-import { getConfig } from './config';
-import { recipesRouter, usersRouter } from './domains';
+} from './infrastructure/db/index.js';
+import { getConfig } from './config.js';
 
 const { port, host, db } = getConfig();
 
