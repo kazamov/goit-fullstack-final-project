@@ -1,6 +1,14 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-import type { FileStorage } from '../../app/interfaces';
+export interface FileStorage {
+  /**
+   * Upload a file to the storage
+   * @param name - File name in storage
+   * @param content - File content as Buffer or string
+   * @returns A promise resolving to the file URL
+   */
+  uploadFile(name: string, content: Buffer | string): Promise<string>;
+}
 
 export class CloudinaryClient implements FileStorage {
   constructor(cloudName: string, apiKey: string, apiSecret: string) {
