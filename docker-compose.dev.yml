@@ -10,6 +10,11 @@ services:
       - '${DB_PORT}:5432'
     volumes:
       - postgres-test-data:/var/lib/postgresql/data
+    command: >
+      sh -c "docker-entrypoint.sh postgres &
+             sleep 5 &&
+             psql -U ${DB_USERNAME} -d ${DB_NAME} -c 'CREATE EXTENSION IF NOT EXISTS pgcrypto;' &&
+             wait"
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}']
       interval: 5s

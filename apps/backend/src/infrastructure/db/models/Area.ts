@@ -1,4 +1,11 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  HasMany,
+  Model,
+  Sequelize,
+  Table,
+} from 'sequelize-typescript';
 
 import { RecipeDTO } from './Recipe.js';
 
@@ -10,7 +17,7 @@ export class AreaDTO extends Model {
   @Column({
     type: DataType.STRING(24),
     allowNull: false,
-    defaultValue: "encode(gen_random_bytes(12), 'hex')",
+    defaultValue: Sequelize.literal("encode(gen_random_bytes(12), 'hex')"),
     primaryKey: true,
   })
   declare id: string;

@@ -23,6 +23,7 @@ export async function initDbConnection(options: SequelizeOptions) {
     console.log('Connection has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
+    throw error;
   }
 }
 
@@ -52,6 +53,7 @@ export async function syncDb() {
     console.log('Database synchronized successfully.');
   } catch (error) {
     console.error('Database synchronization failed:', error);
+    throw error;
   }
 }
 
