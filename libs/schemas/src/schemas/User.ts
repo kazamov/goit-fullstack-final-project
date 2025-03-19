@@ -17,6 +17,10 @@ export type User = z.infer<typeof UserSchema>;
 
 export type UserSchemaAttributes = z.infer<typeof UserSchema>;
 
+export const JwtUserSchema = UserSchema.pick({ email: true, id: true });
+
+export type JwtUserPayload = z.infer<typeof JwtUserSchema>;
+
 // Get schemas
 export const GetUserResponseSchema = UserSchema.omit({
   password: true,
@@ -57,11 +61,5 @@ export const LoginUserResponseSchema = UserSchema.pick({
 });
 
 export type LoginUserResponse = z.infer<typeof LoginUserResponseSchema>;
-
-// Jwt schemas
-
-export const JwtUserSchema = UserSchema.pick({ id: true, email: true });
-
-export type JwtUserPayload = z.infer<typeof JwtUserSchema>;
 
 // Update schemas
