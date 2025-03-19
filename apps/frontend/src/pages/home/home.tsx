@@ -39,6 +39,7 @@ const Home = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer 123qwerty`,
       },
       body: JSON.stringify(
         CreateRecipePayloadSchema.parse({
