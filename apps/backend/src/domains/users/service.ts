@@ -45,13 +45,13 @@ export async function createUser(
 
   const hashedPassword = await hashPassword(password);
 
-  const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'retro' });
+  const avatarUrl = gravatar.url(email, { s: '200', r: 'pg', d: 'retro' });
 
   const createdUser = await UserDTO.create({
     name,
     email,
     password: hashedPassword,
-    avatar,
+    avatarUrl,
   });
 
   return CreateUserResponseSchema.parse(createdUser.toJSON());

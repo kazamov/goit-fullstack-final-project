@@ -14,7 +14,7 @@ router.get('/', (_req, res) => {
 });
 
 router.post(
-  '/',
+  '/register',
   validateBody(CreateUserPayloadSchema),
   catchErrors(controller.createUser),
 );
