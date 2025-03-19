@@ -7,6 +7,7 @@ import {
 
 import { catchErrors } from '../../decorators/catchErrors.js';
 import { validateBody } from '../../decorators/validateBody.js';
+import { authenticate } from '../../middlewares/authenticate.js';
 
 import * as controller from './controller.js';
 
@@ -18,16 +19,18 @@ router.get('/:id', catchErrors(controller.getRecipe));
 
 router.post(
   '/',
+  authenticate,
   validateBody(CreateRecipePayloadSchema),
   catchErrors(controller.createRecipe),
 );
 
 router.put(
   '/:id',
+  authenticate,
   validateBody(UpdateRecipePayloadSchema),
   catchErrors(controller.updateRecipe),
 );
 
-router.delete('/:id', catchErrors(controller.deleteRecipe));
+router.delete('/:id', authenticate, catchErrors(controller.deleteRecipe));
 
 export default router;
