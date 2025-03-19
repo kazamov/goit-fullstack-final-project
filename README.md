@@ -59,6 +59,11 @@ Other prerequisites:
    pnpm services:start
    ```
 
+5. Seed database:
+   ```sh
+   pnpm seed:db
+   ```
+
 ## Development Workflow
 
 ### Starting Development Servers
