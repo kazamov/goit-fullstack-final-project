@@ -1,9 +1,10 @@
 import type { Request, Response } from 'express';
 
-import type {
-  CreateUserPayload,
-  LoginUserPayload,
-  UserSchemaAttributes,
+import {
+  type CreateUserPayload,
+  GetCurrentUserResponseSchema,
+  type LoginUserPayload,
+  type UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
 
 import * as service from './service.js';
@@ -39,4 +40,8 @@ export async function getUserDetails(req: Request, res: Response) {
   const user = await service.getUserDetails(userId, currentUserId);
 
   res.status(200).json(user);
+}
+
+export async function getCurrentUser(req: Request, res: Response) {
+  res.status(200).json(GetCurrentUserResponseSchema.parse(req.user));
 }

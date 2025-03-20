@@ -33,4 +33,6 @@ router.get(
   catchErrors(controller.getUserDetails),
 );
 
+router.get('/current', authenticate, catchErrors(controller.getCurrentUser));
+
 export default router;
