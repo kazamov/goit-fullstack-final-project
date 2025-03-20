@@ -10,6 +10,7 @@ import {
 
 import { RecipeDTO } from './Recipe.js';
 import { TestimonialDTO } from './Testimonial.js';
+import { UserFollowersDTO } from './UserFollowers.js';
 
 @Table({
   tableName: 'users',
@@ -66,4 +67,20 @@ export class UserDTO extends Model {
 
   @BelongsToMany(() => RecipeDTO, 'user_favorite_recipes', 'userId', 'recipeId')
   declare favoriteRecipes?: RecipeDTO[];
+
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFollowersDTO,
+    'followingId',
+    'followerId',
+  )
+  declare followers: UserDTO[];
+
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFollowersDTO,
+    'followerId',
+    'followingId',
+  )
+  declare following: UserDTO[];
 }

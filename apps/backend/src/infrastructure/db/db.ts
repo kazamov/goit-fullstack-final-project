@@ -10,6 +10,7 @@ import {
   TestimonialDTO,
   UserDTO,
 } from './models/index.js';
+import { UserFollowersDTO } from './models/UserFollowers.js';
 
 let sequelize: Sequelize | null = null;
 
@@ -40,6 +41,7 @@ export function registerDbModels() {
     RecipeIngredientDTO,
     TestimonialDTO,
     UserDTO,
+    UserFollowersDTO,
   ]);
 }
 
