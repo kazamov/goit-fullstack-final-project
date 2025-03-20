@@ -2,11 +2,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--white);
+  /* background-color: var(--white); */
+}
+
+.headerContainer {
+  padding: 40px 80px;
+  z-index: var(--z-index-header);
+  position: relative;
 }
 
 .inversedHeader {
-  background-color: var(--black);
+  /* background-color: var(--black); */
 
   /* TO DO: check how it is better to do for hero section */
   /* border-top-left-radius: var(--border-radius);
