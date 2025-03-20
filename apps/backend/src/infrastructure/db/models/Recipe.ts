@@ -15,6 +15,7 @@ import { CategoryDTO } from './Category.js';
 import { IngredientDTO } from './Ingredient.js';
 import { RecipeIngredientDTO } from './RecipeIngredient.js';
 import { UserDTO } from './User.js';
+import { UserFavoriteRecipesDTO } from './UserFavoriteRecipes.js';
 
 @Table({
   tableName: 'recipes',
@@ -81,12 +82,6 @@ export class RecipeDTO extends Model {
   })
   declare ratingCount: number;
 
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  declare isFavorite?: boolean;
-
   @ForeignKey(() => UserDTO)
   @Column({
     type: DataType.STRING(24),
@@ -122,6 +117,11 @@ export class RecipeDTO extends Model {
   @HasMany(() => RecipeIngredientDTO)
   declare recipeIngredients?: RecipeIngredientDTO[];
 
-  @BelongsToMany(() => UserDTO, 'user_favorite_recipes', 'recipeId', 'userId')
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFavoriteRecipesDTO,
+    'recipeId',
+    'userId',
+  )
   declare favoritedBy?: UserDTO[];
 }

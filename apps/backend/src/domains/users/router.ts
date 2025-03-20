@@ -13,10 +13,6 @@ import * as controller from './controller.js';
 
 const router: Router = Router();
 
-router.get('/', (_req, res) => {
-  res.status(200).send('Get user');
-});
-
 router.post(
   '/register',
   validateBody(CreateUserPayloadSchema),
@@ -30,5 +26,11 @@ router.post(
 );
 
 router.post('/logout', authenticate, catchErrors(controller.logoutUser));
+
+router.get(
+  '/details/:userId',
+  authenticate,
+  catchErrors(controller.getUserDetails),
+);
 
 export default router;
