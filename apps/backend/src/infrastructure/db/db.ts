@@ -10,6 +10,7 @@ import {
   RecipeRatingDTO,
   TestimonialDTO,
   UserDTO,
+  UserFavoriteRecipesDTO,
   UserFollowersDTO,
 } from './models/index.js';
 
@@ -44,6 +45,7 @@ export function registerDbModels() {
     TestimonialDTO,
     UserDTO,
     UserFollowersDTO,
+    UserFavoriteRecipesDTO,
   ]);
 }
 

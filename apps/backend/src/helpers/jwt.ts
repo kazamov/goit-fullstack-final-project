@@ -2,11 +2,15 @@ import jwt, { type SignOptions } from 'jsonwebtoken';
 
 import type { JwtUserPayload } from '@goit-fullstack-final-project/schemas';
 
-const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+import { getConfig } from '../config.js';
+
+const {
+  jwt: { secret, expiresIn },
+} = getConfig();
 
 export function createToken(payload: JwtUserPayload): string {
-  return jwt.sign(payload, JWT_SECRET as string, {
-    expiresIn: JWT_EXPIRES_IN as SignOptions['expiresIn'],
+  return jwt.sign(payload, secret, {
+    expiresIn: expiresIn as SignOptions['expiresIn'],
   });
 }
 
@@ -16,7 +20,7 @@ type VerifyTokenResult =
 
 export function verifyToken(token: string): VerifyTokenResult {
   try {
-    const data = jwt.verify(token, JWT_SECRET as string) as JwtUserPayload;
+    const data = jwt.verify(token, secret as string) as JwtUserPayload;
     return { data, error: null };
   } catch (error) {
     return { data: null, error: error as Error };

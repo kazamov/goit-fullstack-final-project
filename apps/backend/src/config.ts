@@ -12,6 +12,10 @@ export interface Config {
     schema: string;
     ssl: boolean;
   };
+  jwt: {
+    secret: string;
+    expiresIn: string;
+  };
 }
 
 function loadConfig(): Config {
@@ -31,6 +35,11 @@ function loadConfig(): Config {
       port: parseInt(process.env.DB_PORT || '5432'),
       schema: process.env.DB_SCHEMA || 'public',
       ssl: process.env.DB_ENABLE_SSL === 'true',
+    },
+
+    jwt: {
+      secret: process.env.JWT_SECRET as string,
+      expiresIn: process.env.JWT_EXPIRES_IN || '1h',
     },
   };
 

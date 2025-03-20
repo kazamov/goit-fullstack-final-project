@@ -16,6 +16,7 @@ import { IngredientDTO } from './Ingredient.js';
 import { RecipeIngredientDTO } from './RecipeIngredient.js';
 import { RecipeRatingDTO } from './RecipeRating.js';
 import { UserDTO } from './User.js';
+import { UserFavoriteRecipesDTO } from './UserFavoriteRecipes.js';
 
 @Table({
   tableName: 'recipes',
@@ -105,7 +106,12 @@ export class RecipeDTO extends Model {
   @HasMany(() => RecipeIngredientDTO)
   declare recipeIngredients?: RecipeIngredientDTO[];
 
-  @BelongsToMany(() => UserDTO, 'user_favorite_recipes', 'recipeId', 'userId')
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFavoriteRecipesDTO,
+    'recipeId',
+    'userId',
+  )
   declare favoritedBy?: UserDTO[];
 
   @HasMany(() => RecipeRatingDTO)

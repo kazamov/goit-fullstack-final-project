@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import gravatar from 'gravatar';
+
 import { getConfig } from '../config.js';
+import { hashPassword } from '../helpers/password.js';
 import {
   AreaDTO,
   CategoryDTO,
@@ -155,13 +158,16 @@ async function seedUsers(): Promise<void> {
     );
 
     if (usersSeedData.length > 0) {
+      const password = await hashPassword('Qwerty123');
       await UserDTO.bulkCreate(
         usersSeedData.map((user) => ({
           id: user._id.$oid,
           name: user.name,
           email: user.email,
-          avatarUrl: user.avatar || 'avatar_url_placeholder', // TODO add some real URLs
-          password: 'hashed_password_placeholder', // Replace with actual hash logic if you want to use accounts
+          avatarUrl:
+            user.avatar ||
+            gravatar.url(user.email, { s: '200', r: 'pg', d: 'retro' }),
+          password,
         })),
       );
 
