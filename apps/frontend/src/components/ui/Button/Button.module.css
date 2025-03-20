@@ -25,6 +25,12 @@
   color: var(--black);
 }
 
+.plain {
+  background: var(--gray);
+  border: 1px solid var(--gray);
+  color: var(--white);
+}
+
 .button:disabled {
   background: var(--gray);
   border: 1px solid var(--gray);

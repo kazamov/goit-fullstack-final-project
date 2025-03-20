@@ -30,7 +30,7 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { errors, isValid },
     watch,
-  } = useForm<FormData>({ resolver: yupResolver(schema), mode: 'onChange' });
+  } = useForm<FormData>({ resolver: yupResolver(schema), mode: 'onSubmit' });
 
   const onSubmit = (data: FormData) => {
     console.log('Form submitted:', data);
@@ -83,7 +83,6 @@ const SignUpForm = () => {
         >
           <input
             className="input"
-            type="email"
             placeholder="Email*"
             {...register('email')}
           />
@@ -125,7 +124,7 @@ const SignUpForm = () => {
           )}
         </div>
       </div>
-      <Button kind="secondary" type="submit" disabled={!isValid}>
+      <Button kind="plain" type="submit">
         Create
       </Button>
     </form>

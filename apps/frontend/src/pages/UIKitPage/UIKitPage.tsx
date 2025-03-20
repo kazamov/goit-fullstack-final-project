@@ -20,7 +20,7 @@ const UIKitPage = () => {
           <Button kind="secondary" type="submit">
             Add recipe
           </Button>
-          <Button kind="secondary" type="submit" disabled={true}>
+          <Button kind="plain" type="submit">
             Add recipe
           </Button>
         </div>
@@ -31,13 +31,13 @@ const UIKitPage = () => {
           <Button kind="secondary" size="small" type="submit">
             Add recipe
           </Button>
-          <Button kind="secondary" size="small" type="submit" disabled={true}>
+          <Button kind="plain" size="small" type="submit">
             Add recipe
           </Button>
         </div>
         <div className={styles.kitCard}>
           <Button kind="text" type="button">
-            I already have an account? Sign in
+            Sign in
           </Button>
         </div>
       </div>
