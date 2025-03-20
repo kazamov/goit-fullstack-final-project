@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { ShortRecipeDetailsSchema } from './Recipe.js';
+
 export const UserSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -87,3 +89,17 @@ export const OtherUserDetailsSchema = CurrentUserDetailsSchema.omit({
 });
 
 export type OtherUserDetails = z.infer<typeof OtherUserDetailsSchema>;
+
+// Follower schemas
+
+export const UserFollowerSchema = UserSchema.pick({
+  id: true,
+  name: true,
+  email: true,
+  avatarUrl: true,
+}).extend({
+  recipesCount: z.number().int().nonnegative(),
+  recipes: z.array(ShortRecipeDetailsSchema),
+});
+
+export type UserFollower = z.infer<typeof UserFollowerSchema>;
