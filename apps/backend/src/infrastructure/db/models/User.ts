@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 
 import { RecipeDTO } from './Recipe.js';
+import { RecipeRatingDTO } from './RecipeRating.js';
 import { TestimonialDTO } from './Testimonial.js';
 import { UserFavoriteRecipesDTO } from './UserFavoriteRecipes.js';
 import { UserFollowersDTO } from './UserFollowers.js';
@@ -89,4 +90,7 @@ export class UserDTO extends Model {
     'followingId',
   )
   declare following: UserDTO[];
+
+  @HasMany(() => RecipeRatingDTO) // TODO figure out if this is necessary (based on get structured data)
+  declare ratings?: RecipeRatingDTO[];
 }

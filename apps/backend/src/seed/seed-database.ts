@@ -256,8 +256,6 @@ async function seedRecipes(): Promise<void> {
           time: parseInt(recipe.time, 10) || 0,
           servings: recipe.servings || 1,
           difficulty: recipe.difficulty || 'medium',
-          rating: 0, // TODO probably we need separate table for rating
-          ratingCount: 0,
           userId: recipe.owner.$oid,
           categoryId: category.id,
           areaId: areaId,

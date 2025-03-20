@@ -3,5 +3,8 @@ export * from './Category.js';
 export * from './Ingredient.js';
 export * from './Recipe.js';
 export * from './RecipeIngredient.js';
+export * from './RecipeRating.js';
 export * from './Testimonial.js';
 export * from './User.js';
+export * from './UserFavoriteRecipes.js';
+export * from './UserFollowers.js';
