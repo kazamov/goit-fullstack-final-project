@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 
 import {
+  areasRouter,
   categoriesRouter,
   ingredientsRouter,
   recipesRouter,
@@ -26,7 +27,9 @@ app.use(express.json());
 app.get('/', (_req, res) => {
   res.status(200).send('Health check');
 });
+
 app.use('/api/users', usersRouter);
+app.use('/api/areas', areasRouter);
 app.use('/api/recipes', recipesRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/ingredients', ingredientsRouter);
