@@ -4,11 +4,14 @@ import {
   DataType,
   HasMany,
   Model,
+  Sequelize,
   Table,
 } from 'sequelize-typescript';
 
 import { RecipeDTO } from './Recipe.js';
 import { TestimonialDTO } from './Testimonial.js';
+import { UserFavoriteRecipesDTO } from './UserFavoriteRecipes.js';
+import { UserFollowersDTO } from './UserFollowers.js';
 
 @Table({
   tableName: 'users',
@@ -18,7 +21,7 @@ export class UserDTO extends Model {
   @Column({
     type: DataType.STRING(24),
     allowNull: false,
-    defaultValue: "encode(gen_random_bytes(12), 'hex')",
+    defaultValue: Sequelize.literal("encode(gen_random_bytes(12), 'hex')"),
     primaryKey: true,
   })
   declare id: string;
@@ -47,24 +50,15 @@ export class UserDTO extends Model {
 
   @Column({
     type: DataType.STRING,
+    allowNull: false,
   })
-  declare avatarUrl?: string;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  declare isVerified: boolean;
+  declare avatarUrl: string;
 
   @Column({
     type: DataType.STRING,
+    defaultValue: null,
   })
-  declare verificationToken?: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  declare refreshToken?: string;
+  declare token?: string;
 
   @HasMany(() => RecipeDTO)
   declare recipes?: RecipeDTO[];
@@ -72,6 +66,27 @@ export class UserDTO extends Model {
   @HasMany(() => TestimonialDTO)
   declare testimonials?: TestimonialDTO[];
 
-  @BelongsToMany(() => RecipeDTO, 'user_favorite_recipes', 'userId', 'recipeId')
+  @BelongsToMany(
+    () => RecipeDTO,
+    () => UserFavoriteRecipesDTO,
+    'userId',
+    'recipeId',
+  )
   declare favoriteRecipes?: RecipeDTO[];
+
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFollowersDTO,
+    'followingId',
+    'followerId',
+  )
+  declare followers: UserDTO[];
+
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFollowersDTO,
+    'followerId',
+    'followingId',
+  )
+  declare following: UserDTO[];
 }

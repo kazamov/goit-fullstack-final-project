@@ -10,6 +10,8 @@ import {
   TestimonialDTO,
   UserDTO,
 } from './models/index.js';
+import { UserFavoriteRecipesDTO } from './models/UserFavoriteRecipes.js';
+import { UserFollowersDTO } from './models/UserFollowers.js';
 
 let sequelize: Sequelize | null = null;
 
@@ -23,6 +25,7 @@ export async function initDbConnection(options: SequelizeOptions) {
     console.log('Connection has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
+    throw error;
   }
 }
 
@@ -39,6 +42,8 @@ export function registerDbModels() {
     RecipeIngredientDTO,
     TestimonialDTO,
     UserDTO,
+    UserFollowersDTO,
+    UserFavoriteRecipesDTO,
   ]);
 }
 
@@ -52,6 +57,7 @@ export async function syncDb() {
     console.log('Database synchronized successfully.');
   } catch (error) {
     console.error('Database synchronization failed:', error);
+    throw error;
   }
 }
 

@@ -2,7 +2,12 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import morgan from 'morgan';
 
-import { recipesRouter, usersRouter } from './domains/index.js';
+import {
+  categoriesRouter,
+  ingredientsRouter,
+  recipesRouter,
+  usersRouter,
+} from './domains/index.js';
 import type HttpError from './helpers/HttpError.js';
 import {
   initDbConnection,
@@ -23,6 +28,8 @@ app.get('/', (_req, res) => {
 });
 app.use('/api/users', usersRouter);
 app.use('/api/recipes', recipesRouter);
+app.use('/api/categories', categoriesRouter);
+app.use('/api/ingredients', ingredientsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });

@@ -51,7 +51,7 @@
         ],
         "options": {
           "buildTarget": "backend:build",
-          "runBuildTargetDependencies": false
+          "runBuildTargetDependencies": true
         },
         "configurations": {
           "development": {
@@ -87,6 +87,7 @@
     "cloudinary": "^2.6.0",
     "express": "^4.21.2",
     "gravatar": "^1.8.2",
+    "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.14.0",
     "pg-hstore": "^2.3.4",
@@ -96,6 +97,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/gravatar": "^1.8.6"
+    "@types/gravatar": "^1.8.6",
+    "@types/jsonwebtoken": "^9.0.9"
   }
 }

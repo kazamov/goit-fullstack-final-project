@@ -1,5 +1,4 @@
 import {
-  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -10,11 +9,8 @@ import {
 
 import { UserDTO } from './User.js';
 
-@Table({
-  tableName: 'testimonials',
-  timestamps: true,
-})
-export class TestimonialDTO extends Model {
+@Table({ tableName: 'user_followers', timestamps: false })
+export class UserFollowersDTO extends Model {
   @Column({
     type: DataType.STRING(24),
     allowNull: false,
@@ -23,29 +19,17 @@ export class TestimonialDTO extends Model {
   })
   declare id: string;
 
+  @ForeignKey(() => UserDTO)
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING(24),
     allowNull: false,
   })
-  declare text: string;
-
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 1,
-      max: 5,
-    },
-  })
-  declare rating: number;
+  declare followerId: string;
 
   @ForeignKey(() => UserDTO)
   @Column({
     type: DataType.STRING(24),
     allowNull: false,
   })
-  declare userId: string;
-
-  @BelongsTo(() => UserDTO)
-  declare user: UserDTO;
+  declare followingId: string;
 }

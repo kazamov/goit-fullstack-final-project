@@ -150,6 +150,26 @@ The project is configured for continuous deployment:
 - Render.com automatically builds and deploys the updated code to production
 - No manual steps required for deployment
 
+## Troubleshooting
+
+If you encounter any issues while working with this project, try these steps:
+
+1. **Pull the latest changes from master**:
+   ```sh
+   git checkout master
+   git pull origin master
+   ```
+
+2. **Reinstall dependencies**:
+   ```sh
+   pnpm install
+   ```
+
+3. **Reload VS Code Extensions**:
+   - Press `Cmd + Shift + P` (macOS) or `Ctrl + Shift + P` (Windows/Linux)
+   - Type "Restart Extension Hosts" 
+   - Select the option from the dropdown menu
+
 ## Contributing
 
 1. Create a new branch for your feature: `git checkout -b feature-name`

@@ -6,6 +6,7 @@ import {
   ForeignKey,
   HasMany,
   Model,
+  Sequelize,
   Table,
 } from 'sequelize-typescript';
 
@@ -14,6 +15,7 @@ import { CategoryDTO } from './Category.js';
 import { IngredientDTO } from './Ingredient.js';
 import { RecipeIngredientDTO } from './RecipeIngredient.js';
 import { UserDTO } from './User.js';
+import { UserFavoriteRecipesDTO } from './UserFavoriteRecipes.js';
 
 @Table({
   tableName: 'recipes',
@@ -23,7 +25,7 @@ export class RecipeDTO extends Model {
   @Column({
     type: DataType.STRING(24),
     allowNull: false,
-    defaultValue: "encode(gen_random_bytes(12), 'hex')",
+    defaultValue: Sequelize.literal("encode(gen_random_bytes(12), 'hex')"),
     primaryKey: true,
   })
   declare id: string;
@@ -80,12 +82,6 @@ export class RecipeDTO extends Model {
   })
   declare ratingCount: number;
 
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  declare isFavorite?: boolean;
-
   @ForeignKey(() => UserDTO)
   @Column({
     type: DataType.STRING(24),
@@ -121,6 +117,11 @@ export class RecipeDTO extends Model {
   @HasMany(() => RecipeIngredientDTO)
   declare recipeIngredients?: RecipeIngredientDTO[];
 
-  @BelongsToMany(() => UserDTO, 'user_favorite_recipes', 'recipeId', 'userId')
+  @BelongsToMany(
+    () => UserDTO,
+    () => UserFavoriteRecipesDTO,
+    'recipeId',
+    'userId',
+  )
   declare favoritedBy?: UserDTO[];
 }
