@@ -9,9 +9,9 @@ import {
   GetRecipeListResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import styles from './home.module.css';
+import styles from './HomePage.module.css';
 
-const Home = () => {
+const HomePage = () => {
   const [recipes, setRecipes] = useState<GetRecipeListResponse>([]);
   const [newRecipe, setNewRecipe] = useState<CreateRecipeResponse | null>(null);
 
@@ -104,4 +104,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

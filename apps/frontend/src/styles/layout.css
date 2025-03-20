@@ -1,0 +1,74 @@
+:root {
+  --bp-mobile: 375px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1440px;
+  --borderRadius: 30px;
+}
+
+.container {
+  max-width: 1440px;
+  padding: 0 64px;
+  margin: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.justifyCenter {
+  justify-content: center;
+}
+
+.spaceBetween {
+  justify-content: space-between;
+}
+
+.selfCenter {
+  align-self: center;
+}
+
+.itemsCenter {
+  align-items: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.fullImage {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.overflowHidden {
+  overflow: hidden;
+}
+
+.gap12 {
+  gap: 12px;
+}
+
+.gap16 {
+  gap: 16px;
+}
+
+.gap8 {
+  gap: 8px;
+}
+
+.gap4 {
+  gap: 8px;
+}
+
+.gap24 {
+  gap: 24px;
+}
+
+.gap32 {
+  gap: 32px;
+}

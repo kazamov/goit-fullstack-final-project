@@ -1,0 +1,24 @@
+.kitContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kitCard {
+  padding: 40px;
+  border-radius: 8px;
+  background: var(--white);
+  border: 2px dashed #a855f7;
+  width: fit-content;
+  display: flex;
+  gap: 16px;
+}
+
+.kitCardDark {
+  background-color: var(--black);
+}
+
+.kitTitle {
+  font-weight: 500;
+  margin-bottom: 20px;
+}
