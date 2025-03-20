@@ -12,9 +12,24 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import { RecipeDTO } from '../../infrastructure/db/index.js';
+interface QueryParams {
+  [key: string]: any;
+}
 
-export async function getRecipes(): Promise<GetRecipeResponse[]> {
-  const recipes = await RecipeDTO.findAll();
+interface PaginationParams {
+  limit: number | undefined;
+  page: number | undefined;
+}
+export async function getRecipes(
+  query: QueryParams,
+  pagination: PaginationParams,
+): Promise<GetRecipeResponse[]> {
+  const { limit, page } = pagination;
+  let offset = 0;
+  if (page && limit && typeof page === 'number' && typeof limit === 'number') {
+    offset = (page - 1) * (limit ?? 0);
+  }
+  const recipes = await RecipeDTO.findAll({ where: query, offset, limit });
   return recipes.map((recipe) =>
     GetRecipeResponseSchema.parse(recipe.toJSON()),
   );

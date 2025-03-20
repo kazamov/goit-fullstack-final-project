@@ -9,8 +9,16 @@ import HttpError from '../../helpers/HttpError.js';
 
 import * as service from './service.js';
 
-export async function getRecipes(_req: Request, res: Response) {
-  const recipes = await service.getRecipes();
+export async function getRecipes(req: Request, res: Response) {
+  const {
+    query: { limit, page, ...restQuery },
+  } = req;
+  const pagination = {
+    limit: limit ? Number(limit) : undefined,
+    page: page ? Number(page) : undefined,
+  };
+  const query = restQuery;
+  const recipes = await service.getRecipes({ query }, pagination);
 
   res.json(recipes);
 }
