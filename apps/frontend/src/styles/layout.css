@@ -2,7 +2,7 @@
   --bp-mobile: 375px;
   --bp-tablet: 768px;
   --bp-desktop: 1440px;
-  --borderRadius: 30px;
+  --border-radius: 30px;
 }
 
 .container {

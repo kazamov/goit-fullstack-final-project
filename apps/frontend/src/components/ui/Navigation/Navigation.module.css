@@ -4,7 +4,7 @@
 }
 
 .navLink {
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
   padding: 14px;
   text-transform: uppercase;
   color: var(--black);

@@ -1,5 +1,6 @@
 :root {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--base-font);
+  font-size: var(--base-font-size);
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -9,8 +10,8 @@
 }
 
 #root {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-family: var(--base-font);
+  font-size: var(--base-font-size);
 }
 
 /* Box sizing rules */
@@ -28,7 +29,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   line-height: 1.5;
   margin: 0;
 }
@@ -67,5 +68,5 @@ img {
 
 input,
 button {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--base-font);
 }
