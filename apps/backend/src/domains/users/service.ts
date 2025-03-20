@@ -1,3 +1,5 @@
+import fs from 'fs/promises';
+
 import gravatar from 'gravatar';
 
 import type {
@@ -21,6 +23,7 @@ import {
 import HttpError from '../../helpers/HttpError.js';
 import { createToken } from '../../helpers/jwt.js';
 import { hashPassword, verifyPassword } from '../../helpers/password.js';
+import { cloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
 import { RecipeDTO, UserDTO } from '../../infrastructure/db/index.js';
 import { UserFavoriteRecipesDTO } from '../../infrastructure/db/models/UserFavoriteRecipes.js';
 import { UserFollowersDTO } from '../../infrastructure/db/models/UserFollowers.js';
@@ -139,4 +142,22 @@ export async function getUserDetails(
         favoriteRecipesCount,
         followersCount,
       });
+}
+
+export async function updateAvatar(userId: string, file: Express.Multer.File) {
+  if (!file) {
+    throw new HttpError('File is required', 400);
+  }
+
+  const fileBuffer = await fs.readFile(file.path);
+
+  const avatarUrl = await cloudinaryClient.uploadFile({
+    name: `${userId}-${file.originalname}`,
+    folder: 'avatars',
+    content: fileBuffer,
+  });
+
+  await UserDTO.update({ avatarUrl }, { where: { id: userId } });
+
+  return avatarUrl;
 }

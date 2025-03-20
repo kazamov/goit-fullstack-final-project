@@ -1,3 +1,5 @@
+import fs from 'fs/promises';
+
 import type { Request, Response } from 'express';
 
 import {
@@ -6,6 +8,8 @@ import {
   type LoginUserPayload,
   type UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
+
+import HttpError from '../../helpers/HttpError.js';
 
 import * as service from './service.js';
 
@@ -44,4 +48,21 @@ export async function getUserDetails(req: Request, res: Response) {
 
 export async function getCurrentUser(req: Request, res: Response) {
   res.status(200).json(GetCurrentUserResponseSchema.parse(req.user));
+}
+
+export async function updateAvatar(req: Request, res: Response) {
+  const { id: userId } = req.user as UserSchemaAttributes;
+  const { file } = req;
+
+  try {
+    const avatarUrl = await service.updateAvatar(
+      userId,
+      file as Express.Multer.File,
+    );
+    res.status(200).json({ avatarURL: avatarUrl });
+  } catch (error) {
+    throw new HttpError((error as Error).message, 400);
+  } finally {
+    await fs.unlink(file?.path as string);
+  }
 }

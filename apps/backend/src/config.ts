@@ -16,6 +16,11 @@ export interface Config {
     secret: string;
     expiresIn: string;
   };
+  cloudinary: {
+    cloudName: string;
+    apiKey: string;
+    apiSecret: string;
+  };
 }
 
 function loadConfig(): Config {
@@ -40,6 +45,12 @@ function loadConfig(): Config {
     jwt: {
       secret: process.env.JWT_SECRET as string,
       expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+    },
+
+    cloudinary: {
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME as string,
+      apiKey: process.env.CLOUDINARY_API_KEY as string,
+      apiSecret: process.env.CLOUDINARY_API_SECRET as string,
     },
   };
 
