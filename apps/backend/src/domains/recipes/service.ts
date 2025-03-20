@@ -41,7 +41,6 @@ export async function getRecipes(
     const category = await CategoryDTO.findOne({
       where: { name: query.category },
     });
-    console.log(category);
     if (category) {
       query.categoryId = category.id;
     } else {
