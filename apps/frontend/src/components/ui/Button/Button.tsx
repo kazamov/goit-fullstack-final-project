@@ -6,7 +6,7 @@ import styles from './Button.module.css';
 interface ButtonProps {
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  kind: 'primary' | 'secondary' | 'ghost';
+  kind: 'primary' | 'secondary' | 'ghost' | 'text';
   size?: 'small' | 'medium';
   clickHandler?: () => void;
   disabled?: boolean;
@@ -24,7 +24,11 @@ const Button: FC<ButtonProps> = ({
     <button
       disabled={disabled}
       type={type}
-      className={clsx([styles[kind], styles.button, styles[size]])}
+      className={clsx([
+        styles[kind],
+        kind === 'text' ? styles.text : styles.button,
+        styles[size],
+      ])}
       onClick={clickHandler}
     >
       {children}

@@ -35,6 +35,11 @@ const UIKitPage = () => {
             Add recipe
           </Button>
         </div>
+        <div className={styles.kitCard}>
+          <Button kind="text" type="button">
+            I already have an account? Sign in
+          </Button>
+        </div>
       </div>
       <div>
         <h2 className={styles.kitTitle}>Logo</h2>
@@ -62,6 +67,31 @@ const UIKitPage = () => {
         <h2 className={styles.kitTitle}>AuthBar</h2>
         <div className={clsx(styles.kitCard, styles.kitCardDark)}>
           <AuthBar />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Input</h2>
+        <div className={clsx(styles.kitCard)}>
+          <div className="inputWrapper inputWrapperFilled">
+            <input
+              className="input"
+              value="Julia"
+              type="text"
+              placeholder="Name*"
+            />
+          </div>
+          <div className="inputWrapper">
+            <input className="input" type="text" placeholder="Name*" />
+          </div>
+          <div className="inputWrapper inputWrapperInvalid">
+            <input className="input" type="text" placeholder="Name*" />
+          </div>
+          <div className="inputWrapper inputWrapperInvalid">
+            <input className="input" type="text" placeholder="Name*" />
+            <span className="inputIcon">
+              ⓘ<span className="inputIconTooltip">Name is required</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@
 .secondary {
   background: transparent;
   color: var(--black);
-  border: 2px solid var(--black);
+  border: 1px solid var(--black);
 }
 
 .ghost {
@@ -27,7 +27,7 @@
 
 .button:disabled {
   background: var(--gray);
-  border: 2px solid var(--gray);
+  border: 1px solid var(--gray);
   color: var(--white);
   cursor: not-allowed;
 }
@@ -42,6 +42,15 @@
   font-size: 16px;
   line-height: 24px;
   padding: 16px 40px;
+}
+
+.text {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 @media (max-width: 375px) {
