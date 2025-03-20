@@ -7,6 +7,7 @@ import {
 
 import { catchErrors } from '../../decorators/catchErrors.js';
 import { validateBody } from '../../decorators/validateBody.js';
+import { authenticate } from '../../middlewares/authenticate.js';
 
 import * as controller from './controller.js';
 
@@ -27,5 +28,7 @@ router.post(
   validateBody(LoginUserPayloadSchema),
   catchErrors(controller.loginUser),
 );
+
+router.post('/logout', authenticate, catchErrors(controller.logoutUser));
 
 export default router;

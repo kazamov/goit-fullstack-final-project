@@ -92,3 +92,7 @@ export async function loginUser(
 
   return LoginUserResponseSchema.parse(user.toJSON());
 }
+
+export async function logoutUser(id: string): Promise<void> {
+  await UserDTO.update({ token: null }, { where: { id } });
+}
