@@ -5,7 +5,5 @@ import { AreaDTO } from '../../infrastructure/db/index.js';
 
 export async function getAreas(): Promise<GetAreaResponse> {
   const areas = await AreaDTO.findAll();
-  return GetAreaResponseSchema.parse(
-    areas.map((category) => category.toJSON()),
-  );
+  return GetAreaResponseSchema.parse(areas.map((area) => area.toJSON()));
 }
