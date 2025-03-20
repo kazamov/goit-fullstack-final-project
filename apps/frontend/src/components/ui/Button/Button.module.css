@@ -2,12 +2,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: var(--border-radius);
   cursor: pointer;
-  /* transition: all 0.2s ease-in-out; */
   border: none;
   text-transform: uppercase;
 }
@@ -23,9 +20,38 @@
   border: 2px solid var(--black);
 }
 
+.ghost {
+  background: transparent;
+  color: var(--black);
+}
+
 .button:disabled {
   background: var(--gray);
   border: 2px solid var(--gray);
   color: var(--white);
   cursor: not-allowed;
+}
+
+.button.small {
+  font-size: 12px;
+  line-height: 18px;
+  padding: 14px 28px;
+}
+
+.button.medium {
+  font-size: 16px;
+  line-height: 24px;
+  padding: 16px 40px;
+}
+
+@media (max-width: 375px) {
+  .button.small {
+    padding: 10px 16px;
+  }
+
+  .button.medium {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 14px 32px;
+  }
 }

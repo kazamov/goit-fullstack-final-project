@@ -9,15 +9,18 @@ import Navigation from '../../ui/Navigation/Navigation';
 import styles from './Header.module.css';
 
 const Header = () => {
+  // TO DO: set authorized while integration
   const location = useLocation();
   const isInversed = location.pathname === '/';
-  const isUserAuthorized = false;
+  const isUserAuthorized = location.pathname !== '/';
 
   return (
-    <div className={clsx(styles.header, isInversed && styles.inversedHeader)}>
-      <Logo isInversed={isInversed} />
-      <Navigation isInversed={isInversed} />
-      {isUserAuthorized ? <UserBar /> : <AuthBar />}
+    <div className={styles.headerContainer}>
+      <div className={clsx(styles.header, isInversed && styles.inversedHeader)}>
+        <Logo isInversed={isInversed} />
+        {isUserAuthorized && <Navigation isInversed={isInversed} />}
+        {isUserAuthorized ? <UserBar /> : <AuthBar />}
+      </div>
     </div>
   );
 };
