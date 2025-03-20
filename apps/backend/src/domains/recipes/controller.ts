@@ -18,7 +18,7 @@ export async function getRecipes(req: Request, res: Response) {
     page: page ? Number(page) : undefined,
   };
   const query = restQuery;
-  const recipes = await service.getRecipes({ query }, pagination);
+  const recipes = await service.getRecipes(query, pagination);
 
   res.json(recipes);
 }
