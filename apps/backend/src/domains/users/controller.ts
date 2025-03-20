@@ -22,3 +22,12 @@ export async function loginUser(req: Request, res: Response) {
 
   res.status(200).json(user);
 }
+
+export async function getUserDetails(req: Request, res: Response) {
+  const currentUserId = req.user?.id as string;
+  const { userId } = req.params;
+
+  const user = await service.getUserDetails(userId, currentUserId);
+
+  res.status(200).json(user);
+}

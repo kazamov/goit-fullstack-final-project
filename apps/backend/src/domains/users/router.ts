@@ -7,14 +7,11 @@ import {
 
 import { catchErrors } from '../../decorators/catchErrors.js';
 import { validateBody } from '../../decorators/validateBody.js';
+import { authenticate } from '../../middlewares/authenticate.js';
 
 import * as controller from './controller.js';
 
 const router: Router = Router();
-
-router.get('/', (_req, res) => {
-  res.status(200).send('Get user');
-});
 
 router.post(
   '/register',
@@ -26,6 +23,12 @@ router.post(
   '/login',
   validateBody(LoginUserPayloadSchema),
   catchErrors(controller.loginUser),
+);
+
+router.get(
+  '/details/:userId',
+  authenticate,
+  catchErrors(controller.getUserDetails),
 );
 
 export default router;

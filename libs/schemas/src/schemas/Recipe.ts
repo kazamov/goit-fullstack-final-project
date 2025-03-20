@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const RecipeSchema = z.object({
-  id: z.number().int(),
+  id: z.string(),
   title: z.string(),
   category: z.string(),
   owner: z.string(),
@@ -9,7 +9,7 @@ export const RecipeSchema = z.object({
   instructions: z.string(),
   description: z.string(),
   thumb: z.string(),
-  time: z.string(),
+  time: z.number(),
   // ingredients: z.array(IngredientSchema),
   createdAt: z.date(),
   updatedAt: z.date(),

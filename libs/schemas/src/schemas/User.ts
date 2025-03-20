@@ -63,3 +63,24 @@ export const LoginUserResponseSchema = UserSchema.pick({
 export type LoginUserResponse = z.infer<typeof LoginUserResponseSchema>;
 
 // Update schemas
+
+// Details schemas
+export const CurrentUserDetailsSchema = UserSchema.pick({
+  id: true,
+  name: true,
+  email: true,
+  avatarUrl: true,
+}).extend({
+  recipesCount: z.number().int().nonnegative(),
+  favoriteRecipesCount: z.number().int().nonnegative(),
+  followersCount: z.number().int().nonnegative(),
+  followingCount: z.number().int().nonnegative(),
+});
+
+export type CurrentUserDetails = z.infer<typeof CurrentUserDetailsSchema>;
+
+export const OtherUserDetailsSchema = CurrentUserDetailsSchema.omit({
+  followingCount: true,
+});
+
+export type OtherUserDetails = z.infer<typeof OtherUserDetailsSchema>;
