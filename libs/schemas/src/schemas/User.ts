@@ -22,11 +22,16 @@ export const JwtUserSchema = UserSchema.pick({ email: true, id: true });
 export type JwtUserPayload = z.infer<typeof JwtUserSchema>;
 
 // Get schemas
-export const GetUserResponseSchema = UserSchema.omit({
+export const GetCurrentUserResponseSchema = UserSchema.omit({
   password: true,
+  token: true,
   createdAt: true,
   updatedAt: true,
 });
+
+export type GetCurrentUserResponse = z.infer<
+  typeof GetCurrentUserResponseSchema
+>;
 
 // Create schemas
 export const CreateUserPayloadSchema = UserSchema.pick({
