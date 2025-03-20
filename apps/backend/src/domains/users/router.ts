@@ -25,6 +25,8 @@ router.post(
   catchErrors(controller.loginUser),
 );
 
+router.post('/logout', authenticate, catchErrors(controller.logoutUser));
+
 router.get(
   '/details/:userId',
   authenticate,
