@@ -59,6 +59,11 @@ export async function createUser(
     avatarUrl,
   });
 
+  const jwtPayload = JwtUserSchema.parse(createdUser.toJSON());
+  const token = createToken(jwtPayload);
+
+  createdUser.update({ token }, { returning: true });
+
   return CreateUserResponseSchema.parse(createdUser.toJSON());
 }
 

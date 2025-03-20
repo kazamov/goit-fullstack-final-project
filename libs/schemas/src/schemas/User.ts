@@ -42,6 +42,8 @@ export const CreateUserResponseSchema = UserSchema.pick({
   id: true,
   name: true,
   email: true,
+  token: true,
+  avatarUrl: true,
 });
 
 export type CreateUserResponse = z.infer<typeof CreateUserResponseSchema>;
