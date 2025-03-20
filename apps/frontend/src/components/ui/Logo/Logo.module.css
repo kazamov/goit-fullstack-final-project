@@ -1,0 +1,19 @@
+.logo {
+  font-family: Mulish;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 28px;
+  text-transform: lowercase;
+  color: var(--black);
+}
+
+.inversedLogo {
+  color: var(--white);
+}
+
+@media (max-width: 375px) {
+  .logo {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

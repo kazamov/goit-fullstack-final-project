@@ -1,0 +1,31 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  /* transition: all 0.2s ease-in-out; */
+  border: none;
+  text-transform: uppercase;
+}
+
+.primary {
+  background: var(--black);
+  color: var(--white);
+}
+
+.secondary {
+  background: transparent;
+  color: var(--black);
+  border: 2px solid var(--black);
+}
+
+.button:disabled {
+  background: var(--gray);
+  border: 2px solid var(--gray);
+  color: var(--white);
+  cursor: not-allowed;
+}

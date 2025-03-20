@@ -1,0 +1,35 @@
+.navLinks {
+  display: flex;
+  gap: 40px;
+}
+
+.navLink {
+  border-radius: var(--border-radius);
+  padding: 14px;
+  text-transform: uppercase;
+  color: var(--black);
+  border: 1px solid transparent;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.navLink:hover {
+  border: 1px solid var(--gray);
+}
+
+.active {
+  border: 1px solid var(--gray);
+}
+
+.inversedNavLink {
+  color: var(--white);
+}
+
+.inversedNavLink.active {
+  border: 1px solid var(--white);
+}
+
+.inversedNavLink:hover {
+  border: 1px solid var(--white);
+}

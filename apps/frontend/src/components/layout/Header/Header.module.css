@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white);
+}
+
+.inversedHeader {
+  background-color: var(--black);
+
+  /* TO DO: check how it is better to do for hero section */
+  /* border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius); */
+}
