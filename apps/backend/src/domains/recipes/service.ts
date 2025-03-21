@@ -86,9 +86,7 @@ export async function getRecipes(
         avatarUrl: recipeJson.user?.avatarUrl || '',
       },
     };
-    // Remove private fields
-    delete transformedRecipe.userId;
-    delete transformedRecipe.user;
+
     return GetRecipeResponseSchema.parse(transformedRecipe);
   });
 
@@ -151,9 +149,7 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
         avatarUrl: recipeJson.user?.avatarUrl || '',
       },
     };
-    // Remove private fields from GetRecipeResponseSchema
-    delete transformedRecipe.user;
-    delete transformedRecipe.userId;
+
     return GetRecipeResponseSchema.parse(transformedRecipe);
   });
 
