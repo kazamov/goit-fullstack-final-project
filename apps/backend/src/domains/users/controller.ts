@@ -7,6 +7,8 @@ import {
   type UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
 
+import HttpError from '../../helpers/HttpError.js';
+
 import * as service from './service.js';
 
 export async function createUser(req: Request, res: Response) {
@@ -33,6 +35,10 @@ export async function logoutUser(req: Request, res: Response) {
   res.status(204).send();
 }
 
+export async function getCurrentUser(req: Request, res: Response) {
+  res.status(200).json(GetCurrentUserResponseSchema.parse(req.user));
+}
+
 export async function getUserDetails(req: Request, res: Response) {
   const currentUserId = req.user?.id as string;
   const { userId } = req.params;
@@ -42,6 +48,14 @@ export async function getUserDetails(req: Request, res: Response) {
   res.status(200).json(user);
 }
 
-export async function getCurrentUser(req: Request, res: Response) {
-  res.status(200).json(GetCurrentUserResponseSchema.parse(req.user));
+export async function getUserFollowers(req: Request, res: Response) {
+  const { userId } = req.params;
+
+  const followers = await service.getUserFollowers(userId);
+
+  if (!followers) {
+    throw new HttpError(`User with id '${userId}' not found`, 404);
+  }
+
+  res.status(200).json(followers);
 }

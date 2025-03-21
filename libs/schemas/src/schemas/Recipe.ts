@@ -60,3 +60,12 @@ export const UpdateRecipeResponseSchema = RecipeSchema.omit({
 });
 
 export type UpdateRecipeResponse = z.infer<typeof UpdateRecipeResponseSchema>;
+
+// Short details schemas
+export const ShortRecipeDetailsSchema = RecipeSchema.pick({
+  id: true,
+  title: true,
+  thumb: true,
+});
+
+export type ShortRecipeDetails = z.infer<typeof ShortRecipeDetailsSchema>;
