@@ -1,3 +1,5 @@
+import fs from 'fs/promises';
+
 import type { Request, Response } from 'express';
 
 import {
@@ -58,4 +60,21 @@ export async function getUserFollowers(req: Request, res: Response) {
   }
 
   res.status(200).json(followers);
+}
+
+export async function updateAvatar(req: Request, res: Response) {
+  const { id: userId } = req.user as UserSchemaAttributes;
+  const { file } = req;
+
+  try {
+    const avatarUrl = await service.updateAvatar(
+      userId,
+      file as Express.Multer.File,
+    );
+    res.status(200).json({ avatarURL: avatarUrl });
+  } catch (error) {
+    throw new HttpError((error as Error).message, 400);
+  } finally {
+    await fs.unlink(file?.path as string);
+  }
 }
