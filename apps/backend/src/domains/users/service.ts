@@ -317,3 +317,24 @@ export async function followUser(
     followingId: userId,
   });
 }
+
+export async function unfollowUser(
+  currentUserId: string,
+  userId: string,
+): Promise<void> {
+  const user = await UserDTO.findByPk(userId);
+
+  if (!user) {
+    throw new HttpError(`User with id '${userId}' not found`, 404);
+  }
+
+  const existingFollower = await UserFollowersDTO.findOne({
+    where: { followerId: currentUserId, followingId: userId },
+  });
+
+  if (!existingFollower) {
+    throw new HttpError(`Not following user with id '${userId}'`, 409);
+  }
+
+  await existingFollower.destroy();
+}

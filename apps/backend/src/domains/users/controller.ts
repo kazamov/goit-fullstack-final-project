@@ -103,3 +103,12 @@ export async function followUser(req: Request, res: Response) {
 
   res.status(200).json({ message: 'User followed' });
 }
+
+export async function unfollowUser(req: Request, res: Response) {
+  const { id: currentUserId } = req.user as UserSchemaAttributes;
+  const { userId } = req.params;
+
+  await service.unfollowUser(currentUserId, userId);
+
+  res.status(200).json({ message: 'User unfollowed' });
+}
