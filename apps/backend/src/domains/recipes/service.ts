@@ -15,6 +15,8 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import {
+  AreaDTO,
+  CategoryDTO,
   IngredientDTO,
   RecipeDTO,
   UserDTO,
@@ -47,19 +49,31 @@ export async function getRecipes(
   const offset = (page - 1) * limit;
 
   // Create include
-  const include: any[] = [];
-
-  include.push({
-    model: UserDTO,
-    as: 'user', // should match alias in RecipeDTO
-    attributes: ['avatarUrl', 'name'],
-    required: false,
-  });
+  const include: any[] = [
+    {
+      model: UserDTO,
+      as: 'user',
+      attributes: ['avatarUrl', 'name'],
+      required: false,
+    },
+    {
+      model: CategoryDTO,
+      as: 'category',
+      attributes: ['id', 'name'],
+      required: false,
+    },
+    {
+      model: AreaDTO,
+      as: 'area',
+      attributes: ['id', 'name'],
+      required: false,
+    },
+  ];
 
   if (query.ingredientId) {
     include.push({
       model: IngredientDTO,
-      as: 'ingredients', // should match alias in RecipeDTO
+      as: 'ingredients',
       where: { id: query.ingredientId },
       through: { attributes: [] },
       required: true,
@@ -84,6 +98,14 @@ export async function getRecipes(
         userId: recipeJson.userId,
         name: recipeJson.user?.name || '',
         avatarUrl: recipeJson.user?.avatarUrl || '',
+      },
+      category: {
+        categoryId: recipeJson.category?.id || '',
+        categoryName: recipeJson.category?.name || '',
+      },
+      area: {
+        areaId: recipeJson.area?.id || '',
+        areaName: recipeJson.area?.name || '',
       },
     };
 
@@ -131,9 +153,21 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
         attributes: ['avatarUrl', 'name'],
         required: false,
       },
+      {
+        model: CategoryDTO,
+        as: 'category',
+        attributes: ['id', 'name'],
+        required: false,
+      },
+      {
+        model: AreaDTO,
+        as: 'area',
+        attributes: ['id', 'name'],
+        required: false,
+      },
     ],
     // For correct ordering we need to use subquery
-    group: ['RecipeDTO.id', 'user.id'],
+    group: ['RecipeDTO.id', 'user.id', 'category.id', 'area.id'],
     order: [[literal('"favoritesCount"'), 'DESC']],
     limit: 10,
     subQuery: false,
@@ -148,8 +182,17 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
         name: recipeJson.user?.name || '',
         avatarUrl: recipeJson.user?.avatarUrl || '',
       },
+      category: {
+        categoryId: recipeJson.category?.id || '',
+        categoryName: recipeJson.category?.name || '',
+      },
+      area: {
+        areaId: recipeJson.area?.id || '',
+        areaName: recipeJson.area?.name || '',
+      },
     };
-
+    delete transformedRecipe.user;
+    delete transformedRecipe.userId;
     return GetRecipeResponseSchema.parse(transformedRecipe);
   });
 
