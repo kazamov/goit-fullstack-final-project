@@ -103,3 +103,16 @@ export const UserFollowerSchema = UserSchema.pick({
 });
 
 export type UserFollower = z.infer<typeof UserFollowerSchema>;
+
+export const UserFollowersSchema = z.array(UserFollowerSchema);
+
+export type UserFollowers = z.infer<typeof UserFollowersSchema>;
+
+// Following schemas
+export const UserFollowingSchema = UserFollowerSchema;
+
+export type UserFollowing = z.infer<typeof UserFollowingSchema>;
+
+export const UserFollowingsSchema = z.array(UserFollowingSchema);
+
+export type UserFollowings = z.infer<typeof UserFollowingsSchema>;

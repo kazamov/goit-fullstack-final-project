@@ -78,3 +78,15 @@ export async function updateAvatar(req: Request, res: Response) {
     await fs.unlink(file?.path as string);
   }
 }
+
+export async function getUserFollowings(req: Request, res: Response) {
+  const { userId } = req.params;
+
+  const followings = await service.getUserFollowings(userId);
+
+  if (!followings) {
+    throw new HttpError(`User with id '${userId}' not found`, 404);
+  }
+
+  res.status(200).json(followings);
+}

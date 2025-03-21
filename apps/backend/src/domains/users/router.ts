@@ -42,6 +42,12 @@ router.get(
   catchErrors(controller.getUserFollowers),
 );
 
+router.get(
+  '/:userId/followings',
+  authenticate,
+  catchErrors(controller.getUserFollowings),
+);
+
 router.patch(
   '/avatars',
   authenticate,
