@@ -1,4 +1,12 @@
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/Mulish-Regular.woff2') format('woff2');
+}
+
 :root {
-  --base-font: 'Inter', sans-serif;
+  --base-font: 'Mulish', sans-serif;
   --base-font-size: 16px;
 }
