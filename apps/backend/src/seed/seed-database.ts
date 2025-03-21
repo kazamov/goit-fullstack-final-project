@@ -18,8 +18,8 @@ import {
   syncDb,
   TestimonialDTO,
   UserDTO,
+  UserFollowersDTO,
 } from '../infrastructure/db/index.js';
-import { UserFollowersDTO } from '../infrastructure/db/models/UserFollowers.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataFolderPath = path.resolve(__dirname, 'data');
@@ -222,8 +222,13 @@ async function seedRecipes(): Promise<void> {
     const recipesSeedData = await loadFromFile(
       path.resolve(dataFolderPath, 'recipes.json'),
     );
+    const usersSeedData = await loadFromFile(
+      path.resolve(dataFolderPath, 'users2.json'),
+    );
 
-    if (recipesSeedData.length > 0) {
+    if (recipesSeedData.length > 0 && usersSeedData.length > 0) {
+      const userIds = usersSeedData.map((user) => user._id.$oid);
+
       for (const recipe of recipesSeedData) {
         const category = await CategoryDTO.findOne({
           where: { name: recipe.category },
@@ -247,6 +252,9 @@ async function seedRecipes(): Promise<void> {
           }
         }
 
+        const randomUserId =
+          userIds[Math.floor(Math.random() * userIds.length)];
+
         await RecipeDTO.create({
           id: recipe._id.$oid,
           title: recipe.title,
@@ -256,7 +264,7 @@ async function seedRecipes(): Promise<void> {
           time: parseInt(recipe.time, 10) || 0,
           servings: recipe.servings || 1,
           difficulty: recipe.difficulty || 'medium',
-          userId: recipe.owner.$oid,
+          userId: randomUserId,
           categoryId: category.id,
           areaId: areaId,
         });
@@ -271,7 +279,7 @@ async function seedRecipes(): Promise<void> {
       }
       console.log('Recipes seeding completed successfully.');
     } else {
-      console.log('No valid recipe data found to seed.');
+      console.log('No valid recipe or user data found to seed.');
     }
   } catch (error) {
     console.error('Error seeding recipes:', error);
