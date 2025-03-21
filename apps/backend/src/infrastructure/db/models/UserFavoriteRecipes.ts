@@ -10,7 +10,16 @@ import {
 import { RecipeDTO } from './Recipe.js';
 import { UserDTO } from './User.js';
 
-@Table({ tableName: 'user_favorite_recipes', timestamps: false })
+@Table({
+  tableName: 'user_favorite_recipes',
+  timestamps: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['userId', 'recipeId'],
+    },
+  ],
+})
 export class UserFavoriteRecipesDTO extends Model {
   @Column({
     type: DataType.STRING(24),

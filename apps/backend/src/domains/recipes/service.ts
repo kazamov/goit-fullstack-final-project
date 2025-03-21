@@ -18,6 +18,7 @@ import {
   IngredientDTO,
   RecipeDTO,
   UserDTO,
+  UserFavoriteRecipesDTO,
 } from '../../infrastructure/db/index.js';
 
 export type RecipeQuery = {
@@ -160,6 +161,28 @@ export async function updateRecipe(
   const updatedRecipe = await recipe.update(payload);
 
   return UpdateRecipeResponseSchema.parse(updatedRecipe.toJSON());
+}
+
+export async function addToFavorites(
+  recipeId: string,
+  userId: string,
+): Promise<UserFavoriteRecipesDTO> {
+  return UserFavoriteRecipesDTO.create({
+    userId: userId,
+    recipeId: recipeId,
+  });
+}
+
+export async function removeFromFavorites(
+  recipeId: string,
+  userId: string,
+): Promise<number> {
+  return UserFavoriteRecipesDTO.destroy({
+    where: {
+      userId: userId,
+      recipeId: recipeId,
+    },
+  });
 }
 
 export async function deleteRecipe(id: string): Promise<number> {
