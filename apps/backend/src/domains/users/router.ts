@@ -8,6 +8,7 @@ import {
 import { catchErrors } from '../../decorators/catchErrors.js';
 import { validateBody } from '../../decorators/validateBody.js';
 import { authenticate } from '../../middlewares/authenticate.js';
+import { upload } from '../../middlewares/upload.js';
 
 import * as controller from './controller.js';
 
@@ -39,6 +40,13 @@ router.get(
   '/:userId/followers',
   authenticate,
   catchErrors(controller.getUserFollowers),
+);
+
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  catchErrors(controller.updateAvatar),
 );
 
 export default router;
