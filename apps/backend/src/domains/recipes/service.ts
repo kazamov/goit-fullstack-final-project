@@ -1,3 +1,4 @@
+import type { Includeable, WhereOptions } from 'sequelize';
 import { col, fn, literal } from 'sequelize';
 
 import type {
@@ -6,6 +7,7 @@ import type {
   GetPaginatedRecipeResponse,
   GetRecipeDetailedResponse,
   GetRecipeResponse,
+  Recipe,
   UpdateRecipePayload,
   UpdateRecipeResponse,
 } from '@goit-fullstack-final-project/schemas';
@@ -37,7 +39,7 @@ export async function getRecipes(
   query: RecipeQuery,
 ): Promise<GetPaginatedRecipeResponse> {
   // Calculate where
-  const where: any = {};
+  const where: WhereOptions<Recipe> = {};
   if (query.categoryId) {
     where.categoryId = query.categoryId;
   }
@@ -51,7 +53,7 @@ export async function getRecipes(
   const offset = (page - 1) * limit;
 
   // Create include
-  const include: any[] = [
+  const include: Includeable[] = [
     {
       model: UserDTO,
       as: 'user',
@@ -93,7 +95,7 @@ export async function getRecipes(
 
   const totalPages = Math.ceil(count / limit);
   const items = rows.map((recipe) => {
-    const recipeJson = recipe.toJSON() as any;
+    const recipeJson = recipe.toJSON();
     const transformedRecipe = {
       ...recipeJson,
       owner: {
@@ -157,7 +159,7 @@ export async function getRecipe(
     return null;
   }
 
-  const recipeJson = recipe.toJSON() as any;
+  const recipeJson = recipe.toJSON();
   const transformedRecipe = {
     ...recipeJson,
     owner: {
@@ -223,7 +225,7 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
   });
 
   const items = recipes.map((recipe) => {
-    const recipeJson = recipe.toJSON() as any;
+    const recipeJson = recipe.toJSON();
     const transformedRecipe = {
       ...recipeJson,
       owner: {
