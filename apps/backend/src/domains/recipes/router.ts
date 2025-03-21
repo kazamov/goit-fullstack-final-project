@@ -8,6 +8,7 @@ import {
 import { catchErrors } from '../../decorators/catchErrors.js';
 import { validateBody } from '../../decorators/validateBody.js';
 import { authenticate } from '../../middlewares/authenticate.js';
+import { upload } from '../../middlewares/upload.js';
 
 import * as controller from './controller.js';
 
@@ -22,6 +23,8 @@ router.get('/:id', catchErrors(controller.getRecipe));
 router.post(
   '/',
   authenticate,
+  upload.single('thumb'),
+  // @ts-expect-error - TS does not understand that ingredients string should be transformed
   validateBody(CreateRecipePayloadSchema),
   catchErrors(controller.createRecipe),
 );

@@ -1,4 +1,6 @@
-import type { Includeable, WhereOptions } from 'sequelize';
+import fs from 'fs/promises';
+
+import type { Includeable, Transaction, WhereOptions } from 'sequelize';
 import { col, fn, literal } from 'sequelize';
 
 import type {
@@ -18,11 +20,14 @@ import {
   UpdateRecipeResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
 
+import HttpError from '../../helpers/HttpError.js';
+import { cloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
 import {
   AreaDTO,
   CategoryDTO,
   IngredientDTO,
   RecipeDTO,
+  RecipeIngredientDTO,
   UserDTO,
   UserFavoriteRecipesDTO,
 } from '../../infrastructure/db/index.js';
@@ -251,11 +256,106 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
 }
 
 export async function createRecipe(
+  userId: string,
   payload: CreateRecipePayload,
+  thumbFile: Express.Multer.File,
 ): Promise<CreateRecipeResponse> {
-  const recipe = await RecipeDTO.create(payload);
+  const { ingredients, ...otherProps } = payload;
 
-  return CreateRecipeResponseSchema.parse(recipe.toJSON());
+  let thumb = '';
+  let thumbId = '';
+  try {
+    const fileBuffer = await fs.readFile(thumbFile.path);
+
+    const { url, publicId } = await cloudinaryClient.uploadFile({
+      name: `${userId}-${thumbFile.originalname}`,
+      folder: 'avatars',
+      content: fileBuffer,
+    });
+    thumb = url;
+    thumbId = publicId;
+  } catch {
+    throw new HttpError(`Error uploading file to cloudinary`, 500);
+  } finally {
+    await fs.unlink(thumbFile.path as string);
+  }
+
+  const transaction = (await RecipeDTO.sequelize?.transaction()) as Transaction;
+
+  try {
+    // 0. Validate all ingredients exist before proceeding
+    if (ingredients.length > 0) {
+      const ingredientIds = ingredients.map((ing) => ing.id);
+
+      // Count how many of the provided ingredient IDs exist in the database
+      const existingIngredientsCount = await IngredientDTO.count({
+        where: {
+          id: ingredientIds,
+        },
+        transaction,
+      });
+
+      // If the count doesn't match, some ingredients don't exist
+      if (existingIngredientsCount !== ingredientIds.length) {
+        throw new HttpError(
+          'One or more ingredients do not exist in the database',
+          400,
+        );
+      }
+    }
+
+    // 1. Validate Area and Category IDs
+    if (otherProps.areaId) {
+      const area = await AreaDTO.findByPk(otherProps.areaId, {
+        transaction,
+      });
+      if (!area) {
+        throw new HttpError('Area not found', 400);
+      }
+    }
+    if (otherProps.categoryId) {
+      const category = await CategoryDTO.findByPk(otherProps.categoryId, {
+        transaction,
+      });
+      if (!category) {
+        throw new HttpError('Category not found', 400);
+      }
+    }
+
+    // 2. Create the recipe
+    const recipe = await RecipeDTO.create(
+      {
+        ...otherProps,
+        userId,
+        thumb,
+      },
+      { transaction },
+    );
+
+    // 3. Create recipe ingredients with the new recipe ID
+    if (ingredients && ingredients.length > 0) {
+      const recipeIngredients = ingredients.map((ingredient) => ({
+        recipeId: recipe.id,
+        ingredientId: ingredient.id,
+        measure: ingredient.measure,
+      }));
+
+      await RecipeIngredientDTO.bulkCreate(recipeIngredients, { transaction });
+    }
+
+    // Commit transaction
+    await transaction.commit();
+
+    // Return the created recipe
+    return CreateRecipeResponseSchema.parse(recipe.toJSON());
+  } catch (error) {
+    await Promise.all([
+      transaction.rollback(),
+      cloudinaryClient.deleteFile(thumbId),
+    ]);
+
+    throw error;
+  }
 }
 
 export async function updateRecipe(

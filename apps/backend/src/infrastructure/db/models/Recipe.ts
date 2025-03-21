@@ -51,7 +51,7 @@ export class RecipeDTO extends Model {
   @Column({
     type: DataType.STRING,
   })
-  declare thumb?: string;
+  declare thumb: string;
 
   @Column({
     type: DataType.INTEGER,

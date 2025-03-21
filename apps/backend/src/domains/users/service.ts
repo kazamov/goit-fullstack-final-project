@@ -218,7 +218,7 @@ export async function getUserFollowers(
 export async function updateAvatar(userId: string, file: Express.Multer.File) {
   const fileBuffer = await fs.readFile(file.path);
 
-  const avatarUrl = await cloudinaryClient.uploadFile({
+  const { url: avatarUrl } = await cloudinaryClient.uploadFile({
     name: `${userId}-${file.originalname}`,
     folder: 'avatars',
     content: fileBuffer,
