@@ -17,6 +17,7 @@
   border-radius: var(--border-radius);
   position: relative;
   width: 560px;
+  margin: 16px;
 }
 
 .closeButton {
@@ -27,4 +28,11 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+@media (max-width: 375px) {
+  .modalContent {
+    max-width: 343px;
+    padding: 60px 40px;
+  }
 }

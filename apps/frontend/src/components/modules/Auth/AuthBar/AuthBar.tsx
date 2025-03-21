@@ -10,11 +10,14 @@ const AuthBar = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
-  const signIn = () => {
-    console.log('signIn');
+  const onRedirectToSignIn = () => {
+    setIsSignUpOpen(false);
+    setIsSignInOpen(true);
   };
-  const signUp = () => {
-    console.log('signUp');
+
+  const onRedirectToSignUp = () => {
+    setIsSignUpOpen(false);
+    setIsSignInOpen(true);
   };
 
   return (
@@ -22,7 +25,7 @@ const AuthBar = () => {
       <div className={styles.authBar}>
         <Button
           kind="ghost"
-          type="submit"
+          type="button"
           size="small"
           clickHandler={() => setIsSignInOpen(true)}
         >
@@ -30,7 +33,7 @@ const AuthBar = () => {
         </Button>
         <Button
           kind="primary"
-          type="submit"
+          type="button"
           size="small"
           clickHandler={() => setIsSignUpOpen(true)}
         >
@@ -38,21 +41,15 @@ const AuthBar = () => {
         </Button>
       </div>
 
-      <SignInModal
-        isOpen={isSignInOpen}
-        onClose={() => setIsSignInOpen(false)}
-        onSubmit={signIn}
-      >
+      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)}>
         SignInModal
       </SignInModal>
 
       <SignUpModal
         isOpen={isSignUpOpen}
+        onRedirectToSignIn={onRedirectToSignIn}
         onClose={() => setIsSignUpOpen(false)}
-        onSubmit={signUp}
-      >
-        SignUpModal
-      </SignUpModal>
+      ></SignUpModal>
     </>
   );
 };

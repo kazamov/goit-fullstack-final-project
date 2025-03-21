@@ -1,0 +1,11 @@
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}

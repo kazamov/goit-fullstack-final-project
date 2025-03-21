@@ -13,6 +13,7 @@ import './index.css';
 import '../src/styles/colors.css';
 import '../src/styles/typography.css';
 import '../src/styles/layout.css';
+import '../src/styles/inputs.css';
 
 // Create router configuration
 const router = createBrowserRouter([

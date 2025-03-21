@@ -20,7 +20,7 @@ const UIKitPage = () => {
           <Button kind="secondary" type="submit">
             Add recipe
           </Button>
-          <Button kind="secondary" type="submit" disabled={true}>
+          <Button kind="plain" type="submit">
             Add recipe
           </Button>
         </div>
@@ -31,8 +31,13 @@ const UIKitPage = () => {
           <Button kind="secondary" size="small" type="submit">
             Add recipe
           </Button>
-          <Button kind="secondary" size="small" type="submit" disabled={true}>
+          <Button kind="plain" size="small" type="submit">
             Add recipe
+          </Button>
+        </div>
+        <div className={styles.kitCard}>
+          <Button kind="text" type="button">
+            Sign in
           </Button>
         </div>
       </div>
@@ -62,6 +67,31 @@ const UIKitPage = () => {
         <h2 className={styles.kitTitle}>AuthBar</h2>
         <div className={clsx(styles.kitCard, styles.kitCardDark)}>
           <AuthBar />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Input</h2>
+        <div className={clsx(styles.kitCard)}>
+          <div className="inputWrapper inputWrapperFilled">
+            <input
+              className="input"
+              value="Julia"
+              type="text"
+              placeholder="Name*"
+            />
+          </div>
+          <div className="inputWrapper">
+            <input className="input" type="text" placeholder="Name*" />
+          </div>
+          <div className="inputWrapper inputWrapperInvalid">
+            <input className="input" type="text" placeholder="Name*" />
+          </div>
+          <div className="inputWrapper inputWrapperInvalid">
+            <input className="input" type="text" placeholder="Name*" />
+            <span className="inputIcon">
+              ⓘ<span className="inputIconTooltip">Name is required</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
