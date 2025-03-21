@@ -27,6 +27,11 @@ export async function getRecipe(req: Request, res: Response) {
   res.json({ message: 'Get recipe' });
 }
 
+export async function getPopularRecipes(req: Request, res: Response) {
+  const recipes = await service.getPopularRecipes();
+  res.json(recipes);
+}
+
 export async function createRecipe(req: Request, res: Response) {
   const { body } = req;
 

@@ -1,3 +1,5 @@
+import { col, fn, literal } from 'sequelize';
+
 import type {
   CreateRecipePayload,
   CreateRecipeResponse,
@@ -11,7 +13,7 @@ import {
   UpdateRecipeResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { RecipeDTO } from '../../infrastructure/db/index.js';
+import { RecipeDTO, UserDTO } from '../../infrastructure/db/index.js';
 
 export async function getRecipes(): Promise<GetRecipeResponse[]> {
   const recipes = await RecipeDTO.findAll();
@@ -28,6 +30,38 @@ export async function getRecipe(id: string): Promise<GetRecipeResponse | null> {
   }
 
   return GetRecipeResponseSchema.parse(recipe.toJSON());
+}
+
+export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
+  const recipes = await RecipeDTO.findAll({
+    attributes: {
+      include: [
+        [
+          fn('COUNT', col('favoritedBy->UserFavoriteRecipesDTO.userId')),
+          'favoritesCount',
+        ],
+      ],
+    },
+    include: [
+      {
+        model: UserDTO,
+        as: 'favoritedBy',
+        attributes: [],
+        through: {
+          attributes: [],
+        },
+        required: false,
+      },
+    ],
+    group: ['RecipeDTO.id'],
+    order: [[literal('"favoritesCount"'), 'DESC']],
+    limit: 10,
+    subQuery: false,
+  });
+
+  return recipes.map((recipe) =>
+    GetRecipeResponseSchema.parse(recipe.toJSON()),
+  );
 }
 
 export async function createRecipe(
