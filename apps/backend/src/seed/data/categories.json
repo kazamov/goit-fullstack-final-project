@@ -3,90 +3,105 @@
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f8a"
     },
-    "name": "Seafood"
+    "name": "Seafood",
+    "description": "Dive into the rich world of ocean flavors with seafood dishes from every corner of the globe. From grilled shrimp to spicy fish stews, these recipes celebrate the bounty of the sea."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f8b"
     },
-    "name": "Lamb"
+    "name": "Lamb",
+    "description": "Explore tender, flavorful lamb recipes that bring together traditional spices and cooking methods from diverse cultures. Whether roasted, stewed, or grilled, lamb is a global favorite."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f8c"
     },
-    "name": "Starter"
+    "name": "Starter",
+    "description": "Start your meal right with inspiring appetizers and small plates. These recipes are perfect for setting the tone—from light bites to bold, flavor-packed creations."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f8d"
     },
-    "name": "Chicken"
+    "name": "Chicken",
+    "description": "Discover the most versatile protein with chicken recipes that span cultures and cuisines. Whether fried, roasted, or curried, there's a delicious dish for every taste."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f8e"
     },
-    "name": "Beef"
+    "name": "Beef",
+    "description": "Hearty and satisfying, beef recipes offer something for every craving. Enjoy international classics like stews, stir-fries, and grilled specialties."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f8f"
     },
-    "name": "Dessert"
+    "name": "Dessert",
+    "description": "Indulge in sweet creations from around the world. From delicate pastries to rich puddings, this category is your go-to for satisfying your sweet tooth."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f90"
     },
-    "name": "Vegan"
+    "name": "Vegan",
+    "description": "Full of color, flavor, and creativity, vegan recipes showcase plant-based cooking at its finest. Discover dishes that are both healthy and delicious."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f91"
     },
-    "name": "Pork"
+    "name": "Pork",
+    "description": "Pork brings bold flavors and tender textures to your table. Enjoy global recipes—from smoky barbecue to aromatic stir-fries and hearty roasts."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f92"
     },
-    "name": "Vegetarian"
+    "name": "Vegetarian",
+    "description": "Savor meat-free dishes that don't compromise on taste. These vegetarian recipes offer a delightful mix of vegetables, grains, and spices from all cuisines."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f93"
     },
-    "name": "Miscellaneous"
+    "name": "Miscellaneous",
+    "description": "A space for all things delicious that defy categorization. Unique, experimental, or fusion recipes live here—perfect for the culinary curious."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f94"
     },
-    "name": "Pasta"
+    "name": "Pasta",
+    "description": "Celebrate pasta in all its forms, from classic Italian favorites to international twists. Comforting, quick, and endlessly customizable."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f95"
     },
-    "name": "Breakfast"
+    "name": "Breakfast",
+    "description": "Start your day the flavorful way with breakfast recipes from around the world. Whether sweet or savory, there's a perfect morning bite for everyone."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f96"
     },
-    "name": "Side"
+    "name": "Side",
+    "description": "Complement your main dish with the perfect side. These recipes add flavor, texture, and variety to every meal."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f97"
     },
-    "name": "Goat"
+    "name": "Goat",
+    "description": "Rich and savory, goat meat is a delicacy in many cultures. Explore traditional dishes that highlight this unique and flavorful ingredient."
   },
   {
     "_id": {
       "$oid": "6462a6cd4c3d0ddd28897f98"
     },
-    "name": "Soup"
+    "name": "Soup",
+    "description": "Warm, comforting, and full of character—soups bring people together. Discover broths, purees, and hearty bowls from kitchens across the globe."
   }
 ]

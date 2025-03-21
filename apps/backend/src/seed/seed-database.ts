@@ -114,6 +114,7 @@ async function seedCategories(): Promise<void> {
         categoriesSeedData.map((category) => ({
           id: category._id.$oid,
           name: category.name,
+          description: category.description,
         })),
       );
       console.log('Categories seeding completed successfully.');

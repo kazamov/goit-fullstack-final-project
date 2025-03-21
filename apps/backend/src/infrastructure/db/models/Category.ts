@@ -29,6 +29,12 @@ export class CategoryDTO extends Model {
   })
   declare name: string;
 
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  declare description: string;
+
   @HasMany(() => RecipeDTO)
   declare recipes?: RecipeDTO[];
 }
