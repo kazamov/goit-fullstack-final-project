@@ -3,9 +3,9 @@ import { z } from 'zod';
 export const RecipeSchema = z.object({
   id: z.string(),
   title: z.string(),
-  category: z.string(),
-  owner: z.string(),
-  area: z.string(),
+  categoryId: z.string(),
+  userId: z.string(),
+  areaId: z.string(),
   instructions: z.string(),
   description: z.string(),
   thumb: z.string(),
@@ -60,3 +60,12 @@ export const UpdateRecipeResponseSchema = RecipeSchema.omit({
 });
 
 export type UpdateRecipeResponse = z.infer<typeof UpdateRecipeResponseSchema>;
+
+// Short details schemas
+export const ShortRecipeDetailsSchema = RecipeSchema.pick({
+  id: true,
+  title: true,
+  thumb: true,
+});
+
+export type ShortRecipeDetails = z.infer<typeof ShortRecipeDetailsSchema>;

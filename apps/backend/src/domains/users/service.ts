@@ -1,4 +1,8 @@
+import fs from 'fs/promises';
+
 import gravatar from 'gravatar';
+import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 
 import type {
   CreateUserPayload,
@@ -7,6 +11,8 @@ import type {
   LoginUserPayload,
   LoginUserResponse,
   OtherUserDetails,
+  UserFollowers,
+  UserFollowings,
   UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
 import {
@@ -15,12 +21,15 @@ import {
   JwtUserSchema,
   LoginUserResponseSchema,
   OtherUserDetailsSchema,
+  UserFollowersSchema,
+  UserFollowingsSchema,
   UserSchema,
 } from '@goit-fullstack-final-project/schemas';
 
 import HttpError from '../../helpers/HttpError.js';
 import { createToken } from '../../helpers/jwt.js';
 import { hashPassword, verifyPassword } from '../../helpers/password.js';
+import { cloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
 import { RecipeDTO, UserDTO } from '../../infrastructure/db/index.js';
 import { UserFavoriteRecipesDTO } from '../../infrastructure/db/models/UserFavoriteRecipes.js';
 import { UserFollowersDTO } from '../../infrastructure/db/models/UserFollowers.js';
@@ -139,4 +148,152 @@ export async function getUserDetails(
         favoriteRecipesCount,
         followersCount,
       });
+}
+
+export async function getUserFollowers(
+  userId: string,
+): Promise<UserFollowers | null> {
+  const userWithFollowers = await UserDTO.findByPk(userId, {
+    attributes: ['id'],
+    include: [
+      {
+        model: UserDTO,
+        as: 'followers',
+        attributes: ['id', 'name', 'email', 'avatarUrl'],
+        through: { attributes: [] },
+        include: [
+          {
+            model: RecipeDTO,
+            as: 'recipes',
+            attributes: ['id', 'title', 'thumb'],
+            separate: true,
+            limit: 10,
+            order: [['createdAt', 'DESC']],
+          },
+        ],
+        subQuery: false,
+      },
+    ],
+  });
+
+  if (!userWithFollowers) {
+    return null;
+  }
+
+  const followerIds = userWithFollowers.followers.map(
+    (follower) => follower.id,
+  );
+
+  const recipesCounts = (await RecipeDTO.findAll({
+    attributes: [
+      'userId',
+      [Sequelize.fn('COUNT', Sequelize.col('id')), 'recipesCount'],
+    ],
+    where: {
+      userId: {
+        [Op.in]: followerIds,
+      },
+    },
+    group: ['userId'],
+    raw: true,
+  })) as unknown as { userId: string; recipesCount: string }[];
+
+  const countsMap = recipesCounts.reduce<Record<string, number>>(
+    (map, item) => {
+      map[item.userId] = parseInt(item.recipesCount, 10);
+      return map;
+    },
+    {},
+  );
+
+  userWithFollowers.followers.forEach((follower) => {
+    follower.setDataValue('recipesCount', countsMap[follower.id] || 0);
+  });
+
+  return UserFollowersSchema.parse(
+    userWithFollowers.followers.map((follower) => follower.toJSON()),
+  );
+}
+
+export async function updateAvatar(userId: string, file: Express.Multer.File) {
+  if (!file) {
+    throw new HttpError('File is required', 400);
+  }
+
+  const fileBuffer = await fs.readFile(file.path);
+
+  const avatarUrl = await cloudinaryClient.uploadFile({
+    name: `${userId}-${file.originalname}`,
+    folder: 'avatars',
+    content: fileBuffer,
+  });
+
+  await UserDTO.update({ avatarUrl }, { where: { id: userId } });
+
+  return avatarUrl;
+}
+
+export async function getUserFollowings(
+  userId: string,
+): Promise<UserFollowings | null> {
+  const userWithFollowings = await UserDTO.findByPk(userId, {
+    attributes: ['id'],
+    include: [
+      {
+        model: UserDTO,
+        as: 'following',
+        attributes: ['id', 'name', 'email', 'avatarUrl'],
+        through: { attributes: [] },
+        include: [
+          {
+            model: RecipeDTO,
+            as: 'recipes',
+            attributes: ['id', 'title', 'thumb'],
+            separate: true,
+            limit: 10,
+            order: [['createdAt', 'DESC']],
+          },
+        ],
+        subQuery: false,
+      },
+    ],
+  });
+
+  if (!userWithFollowings) {
+    return null;
+  }
+
+  const followingIds = userWithFollowings.following.map(
+    (following) => following.id,
+  );
+
+  const recipesCounts = (await RecipeDTO.findAll({
+    attributes: [
+      'userId',
+      [Sequelize.fn('COUNT', Sequelize.col('id')), 'recipesCount'],
+    ],
+    where: {
+      userId: {
+        [Op.in]: followingIds,
+      },
+    },
+    group: ['userId'],
+    raw: true,
+  })) as unknown as { userId: string; recipesCount: string }[];
+
+  const countsMap = recipesCounts.reduce<Record<string, number>>(
+    (map, item) => {
+      map[item.userId] = parseInt(item.recipesCount, 10);
+      return map;
+    },
+    {},
+  );
+
+  userWithFollowings.following.forEach((follower) => {
+    follower.setDataValue('recipesCount', countsMap[follower.id] || 0);
+  });
+
+  return UserFollowingsSchema.parse(
+    userWithFollowings.following.map((follower) => follower.toJSON()),
+  );
 }

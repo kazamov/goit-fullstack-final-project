@@ -7,6 +7,7 @@ import {
   categoriesRouter,
   ingredientsRouter,
   recipesRouter,
+  testimonialsRouter,
   usersRouter,
 } from './domains/index.js';
 import type HttpError from './helpers/HttpError.js';
@@ -33,6 +34,7 @@ app.use('/api/areas', areasRouter);
 app.use('/api/recipes', recipesRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/ingredients', ingredientsRouter);
+app.use('/api/testimonials', testimonialsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });

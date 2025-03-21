@@ -14,7 +14,7 @@ import {
 
 import * as service from './service.js';
 
-export async function getRecipes(_req: Request, res: Response) {
+export async function getRecipes(req: Request, res: Response) {
   const recipes = await service.getRecipes();
 
   res.json(recipes);
@@ -29,7 +29,12 @@ export async function getRecipe(req: Request, res: Response) {
     throw new HttpError('Recipe not found', 404);
   }
 
-  res.json({ message: 'Get recipe' });
+  res.json(recipe);
+}
+
+export async function getPopularRecipes(req: Request, res: Response) {
+  const recipes = await service.getPopularRecipes();
+  res.json(recipes);
 }
 
 export async function createRecipe(req: Request, res: Response) {

@@ -5,11 +5,10 @@ import Modal from '../../../ui/Modal/Modal';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
   children: ReactNode;
 }
 
-const SignInModal = ({ isOpen, onClose, onSubmit, children }: ModalProps) => {
+const SignInModal = ({ isOpen, onClose, children }: ModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       {children}
