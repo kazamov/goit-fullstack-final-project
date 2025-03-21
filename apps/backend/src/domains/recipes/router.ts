@@ -15,7 +15,7 @@ const router: Router = Router();
 
 router.get('/', catchErrors(controller.getRecipes));
 
-router.get('/popular', controller.getPopularRecipes);
+router.get('/popular', catchErrors(controller.getPopularRecipes));
 
 router.get('/:id', catchErrors(controller.getRecipe));
 
