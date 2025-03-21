@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { GetIngredientResponseSchema } from './Ingredient.js';
+
 export const RecipeSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -53,6 +55,33 @@ export const GetPaginatedRecipeResponseSchema = z.object({
 
 export type GetPaginatedRecipeResponse = z.infer<
   typeof GetPaginatedRecipeResponseSchema
+>;
+
+export const GetRecipeDetailedResponseSchema = RecipeSchema.omit({
+  areaId: true,
+  categoryId: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  owner: z.object({
+    userId: z.string(),
+    name: z.string(),
+    avatarUrl: z.string(),
+  }),
+  category: z.object({
+    categoryId: z.string(),
+    categoryName: z.string(),
+  }),
+  area: z.object({
+    areaId: z.string(),
+    areaName: z.string(),
+  }),
+  ingredients: GetIngredientResponseSchema,
+});
+
+export type GetRecipeDetailedResponse = z.infer<
+  typeof GetRecipeDetailedResponseSchema
 >;
 
 // Create schemas
