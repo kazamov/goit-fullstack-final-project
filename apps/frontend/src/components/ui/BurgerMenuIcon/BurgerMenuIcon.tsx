@@ -1,7 +1,13 @@
-const BurgerMenuIcon = () => {
+import styles from './BurgerMenuIcon.module.css';
+
+interface BurgerMenuIconProps {
+  onClick: () => void;
+}
+
+const BurgerMenuIcon: React.FC<BurgerMenuIconProps> = ({ onClick }) => {
   // TO DO: Replace with icon from file
   return (
-    <div>
+    <button className={styles.menuIcon} onClick={onClick} type="button">
       <svg
         width="28"
         height="28"
@@ -11,34 +17,34 @@ const BurgerMenuIcon = () => {
       >
         <path
           d="M24.5 11.6665H3.5"
-          stroke="#050505"
+          stroke="white"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M24.5 7H3.5"
-          stroke="#050505"
+          stroke="white"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M24.5 16.3335H3.5"
-          stroke="#050505"
+          stroke="white"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M24.5 21H3.5"
-          stroke="#050505"
+          stroke="white"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
       </svg>
-    </div>
+    </button>
   );
 };
 
