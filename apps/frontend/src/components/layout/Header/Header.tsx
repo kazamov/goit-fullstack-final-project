@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import AuthBar from '../../modules/Auth/AuthBar/AuthBar';
 import UserBar from '../../modules/Auth/UserBar/UserBar';
+import BurgerMenuIcon from '../../ui/BurgerMenuIcon/BurgerMenuIcon';
 import Logo from '../../ui/Logo/Logo';
 import Navigation from '../../ui/Navigation/Navigation';
 
@@ -20,6 +21,7 @@ const Header = () => {
         <Logo isInversed={isInversed} />
         {isUserAuthorized && <Navigation isInversed={isInversed} />}
         {isUserAuthorized ? <UserBar /> : <AuthBar />}
+        {window.innerWidth < 768 ? <BurgerMenuIcon /> : null}
       </div>
     </div>
   );
