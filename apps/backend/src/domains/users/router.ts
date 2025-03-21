@@ -61,4 +61,10 @@ router.post(
   catchErrors(controller.followUser),
 );
 
+router.delete(
+  '/:userId/follow',
+  authenticate,
+  catchErrors(controller.unfollowUser),
+);
+
 export default router;
