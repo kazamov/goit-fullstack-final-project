@@ -7,10 +7,7 @@ import type {
 } from '@goit-fullstack-final-project/schemas';
 
 import HttpError from '../../helpers/HttpError.js';
-import {
-  RecipeDTO,
-  UniqueConstraintError,
-} from '../../infrastructure/db/index.js';
+import { RecipeDTO } from '../../infrastructure/db/index.js';
 
 import * as service from './service.js';
 
@@ -72,17 +69,8 @@ export async function addRecipeToFavorites(
     throw new HttpError('Recipe not found', 404);
   }
 
-  try {
-    await service.addToFavorites(recipeId, userId);
-    res.status(201).json({ message: 'Recipe added to favorites' });
-  } catch (error) {
-    if (error instanceof UniqueConstraintError) {
-      throw new HttpError('Recipe is already in favorites', 409);
-    }
-
-    console.error(error);
-    throw new HttpError(`Internal server error: ${error}`, 500);
-  }
+  await service.addToFavorites(recipeId, userId);
+  res.status(201).json({ message: 'Recipe added to favorites' });
 }
 
 export async function removeRecipeFromFavorites(
