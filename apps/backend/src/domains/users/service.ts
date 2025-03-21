@@ -1,4 +1,6 @@
 import gravatar from 'gravatar';
+import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 
 import type {
   CreateUserPayload,
@@ -7,6 +9,7 @@ import type {
   LoginUserPayload,
   LoginUserResponse,
   OtherUserDetails,
+  UserFollower,
   UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
 import {
@@ -15,6 +18,7 @@ import {
   JwtUserSchema,
   LoginUserResponseSchema,
   OtherUserDetailsSchema,
+  UserFollowerSchema,
   UserSchema,
 } from '@goit-fullstack-final-project/schemas';
 
@@ -139,4 +143,69 @@ export async function getUserDetails(
         favoriteRecipesCount,
         followersCount,
       });
+}
+
+export async function getUserFollowers(
+  userId: string,
+): Promise<UserFollower[] | null> {
+  const userWithFollowers = await UserDTO.findByPk(userId, {
+    attributes: ['id'],
+    include: [
+      {
+        model: UserDTO,
+        as: 'followers',
+        attributes: ['id', 'name', 'email', 'avatarUrl'],
+        through: { attributes: [] },
+        include: [
+          {
+            model: RecipeDTO,
+            as: 'recipes',
+            attributes: ['id', 'title', 'thumb'],
+            separate: true,
+            limit: 10,
+            order: [['createdAt', 'DESC']],
+          },
+        ],
+        subQuery: false,
+      },
+    ],
+  });
+
+  if (!userWithFollowers) {
+    return null;
+  }
+
+  const followerIds = userWithFollowers.followers.map(
+    (follower) => follower.id,
+  );
+
+  const recipesCounts = (await RecipeDTO.findAll({
+    attributes: [
+      'userId',
+      [Sequelize.fn('COUNT', Sequelize.col('id')), 'recipesCount'],
+    ],
+    where: {
+      userId: {
+        [Op.in]: followerIds,
+      },
+    },
+    group: ['userId'],
+    raw: true,
+  })) as unknown as { userId: string; recipesCount: string }[];
+
+  const countsMap = recipesCounts.reduce<Record<string, number>>(
+    (map, item) => {
+      map[item.userId] = parseInt(item.recipesCount, 10);
+      return map;
+    },
+    {},
+  );
+
+  userWithFollowers?.followers.forEach((follower) => {
+    follower.setDataValue('recipesCount', countsMap[follower.id] || 0);
+  });
+
+  return userWithFollowers.followers.map((follower) => {
+    return UserFollowerSchema.parse(follower.toJSON());
+  });
 }
