@@ -3,6 +3,7 @@ import { col, fn, literal } from 'sequelize';
 import type {
   CreateRecipePayload,
   CreateRecipeResponse,
+  GetPaginatedRecipeResponse,
   GetRecipeResponse,
   UpdateRecipePayload,
   UpdateRecipeResponse,
@@ -13,13 +14,87 @@ import {
   UpdateRecipeResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { RecipeDTO, UserDTO } from '../../infrastructure/db/index.js';
+import {
+  IngredientDTO,
+  RecipeDTO,
+  UserDTO,
+} from '../../infrastructure/db/index.js';
 
-export async function getRecipes(): Promise<GetRecipeResponse[]> {
-  const recipes = await RecipeDTO.findAll();
-  return recipes.map((recipe) =>
-    GetRecipeResponseSchema.parse(recipe.toJSON()),
-  );
+export type RecipeQuery = {
+  categoryId?: string;
+  areaId?: string;
+  ingredientId?: string;
+  page?: string | number;
+  perPage?: string | number;
+};
+
+export async function getRecipes(
+  query: RecipeQuery,
+): Promise<GetPaginatedRecipeResponse> {
+  // Calculate where
+  const where: any = {};
+  if (query.categoryId) {
+    where.categoryId = query.categoryId;
+  }
+  if (query.areaId) {
+    where.areaId = query.areaId;
+  }
+
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  // Create include
+  const include: any[] = [];
+
+  include.push({
+    model: UserDTO,
+    as: 'user', // should match alias in RecipeDTO
+    attributes: ['avatarUrl'],
+    required: false,
+  });
+
+  if (query.ingredientId) {
+    include.push({
+      model: IngredientDTO,
+      as: 'ingredients', // should match alias in RecipeDTO
+      where: { id: query.ingredientId },
+      through: { attributes: [] },
+      required: true,
+    });
+  }
+
+  // Use method findAndCountAll
+  const { count, rows } = await RecipeDTO.findAndCountAll({
+    where,
+    include,
+    limit,
+    offset,
+    distinct: true,
+  });
+
+  const totalPages = Math.ceil(count / limit);
+  const items = rows.map((recipe) => {
+    const recipeJson = recipe.toJSON() as any;
+    const transformedRecipe = {
+      ...recipeJson,
+      owner: {
+        userId: recipeJson.userId,
+        avatarUrl: recipeJson.user?.avatarUrl || '',
+      },
+    };
+    // Remove private fields
+    delete transformedRecipe.userId;
+    delete transformedRecipe.user;
+    return GetRecipeResponseSchema.parse(transformedRecipe);
+  });
+
+  return {
+    items,
+    page,
+    totalPages,
+  } as GetPaginatedRecipeResponse;
 }
 
 export async function getRecipe(id: string): Promise<GetRecipeResponse | null> {

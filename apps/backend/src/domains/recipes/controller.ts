@@ -10,9 +10,10 @@ import HttpError from '../../helpers/HttpError.js';
 import * as service from './service.js';
 
 export async function getRecipes(req: Request, res: Response) {
-  const recipes = await service.getRecipes();
-
-  res.json(recipes);
+  // Example: /api/recipes?page=1&perPage=5&areaId=6462a6f04c3d0ddd28897f9b&categoryId=6462a6cd4c3d0ddd28897f98&ingredientId=640c2dd963a319ea671e377e
+  const query = req.query as service.RecipeQuery;
+  const result = await service.getRecipes(query);
+  res.json(result);
 }
 
 export async function getRecipe(req: Request, res: Response) {
