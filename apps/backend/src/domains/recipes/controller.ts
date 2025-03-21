@@ -37,11 +37,20 @@ export async function getPopularRecipes(req: Request, res: Response) {
 }
 
 export async function createRecipe(req: Request, res: Response) {
-  const { body } = req;
+  const { body, file } = req;
 
-  const recipe = await service.createRecipe(body as CreateRecipePayload);
+  if (!file) {
+    throw new HttpError('Thumb is required', 400);
+  }
 
-  res.status(201).json(recipe);
+  const { id } = req.user as UserSchemaAttributes;
+
+  const recipe = await service.createRecipe(
+    id,
+    body as CreateRecipePayload,
+    file,
+  );
+  res.status(200).json(recipe);
 }
 
 export async function updateRecipe(req: Request, res: Response) {

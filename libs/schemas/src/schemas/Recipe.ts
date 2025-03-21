@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { GetIngredientResponseSchema } from './Ingredient.js';
+import { GetIngredientResponseSchema, IngredientSchema } from './Ingredient.js';
 
 export const RecipeSchema = z.object({
   id: z.string(),
@@ -11,8 +11,7 @@ export const RecipeSchema = z.object({
   instructions: z.string(),
   description: z.string(),
   thumb: z.string(),
-  time: z.number(),
-  // ingredients: z.array(IngredientSchema),
+  time: z.number({ coerce: true }),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -85,10 +84,46 @@ export type GetRecipeDetailedResponse = z.infer<
 >;
 
 // Create schemas
+
+const RecipeIngredientRefSchema = IngredientSchema.pick({ id: true }).extend({
+  measure: z.string(),
+});
+
 export const CreateRecipePayloadSchema = RecipeSchema.omit({
   id: true,
+  thumb: true,
   createdAt: true,
   updatedAt: true,
+  userId: true,
+}).extend({
+  ingredients: z.string().transform((val, ctx) => {
+    // Attempt to parse the ingredients JSON string into an array
+    try {
+      const value = JSON.parse(val); // Parse the JSON string
+
+      if (Array.isArray(value)) {
+        const ingredients = value.map((ingredient) =>
+          RecipeIngredientRefSchema.parse(ingredient),
+        );
+
+        return ingredients;
+      } else {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Ingredients must be an array',
+        });
+
+        return z.NEVER;
+      }
+    } catch {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Cannot parse ingredients',
+      });
+
+      return z.NEVER;
+    }
+  }),
 });
 
 export type CreateRecipePayload = z.infer<typeof CreateRecipePayloadSchema>;
