@@ -18,6 +18,7 @@ import {
   syncDb,
   TestimonialDTO,
   UserDTO,
+  UserFavoriteRecipesDTO,
   UserFollowersDTO,
 } from '../infrastructure/db/index.js';
 
@@ -228,6 +229,7 @@ async function seedRecipes(): Promise<void> {
 
     if (recipesSeedData.length > 0 && usersSeedData.length > 0) {
       const userIds = usersSeedData.map((user) => user._id.$oid);
+      const seededRecipeIds: string[] = [];
 
       for (const recipe of recipesSeedData) {
         const category = await CategoryDTO.findOne({
@@ -276,8 +278,32 @@ async function seedRecipes(): Promise<void> {
             measure: ingredient.measure,
           });
         }
+
+        seededRecipeIds.push(recipe._id.$oid);
       }
-      console.log('Recipes seeding completed successfully.');
+
+      // Adding favorite recipes
+      console.log('Seeding favorite recipes...');
+      for (const userId of userIds) {
+        const numberOfFavorites = Math.floor(Math.random() * 6); // 0 to 5 favorites
+        const shuffled = seededRecipeIds.sort(() => 0.5 - Math.random());
+        const selectedFavorites = shuffled.slice(0, numberOfFavorites);
+
+        for (const recipeId of selectedFavorites) {
+          try {
+            await UserFavoriteRecipesDTO.create({
+              userId,
+              recipeId,
+            });
+          } catch (e) {
+            console.warn(
+              `Could not add recipe '${recipeId}' to favorites of user '${userId}': ${e}`,
+            );
+          }
+        }
+      }
+
+      console.log('Recipes and favorites seeding completed successfully.');
     } else {
       console.log('No valid recipe or user data found to seed.');
     }

@@ -33,6 +33,18 @@ router.put(
   catchErrors(controller.updateRecipe),
 );
 
+router.post(
+  '/:id/favorite',
+  authenticate,
+  catchErrors(controller.addRecipeToFavorites),
+);
+
+router.delete(
+  '/:id/favorite',
+  authenticate,
+  catchErrors(controller.removeRecipeFromFavorites),
+);
+
 router.delete('/:id', authenticate, catchErrors(controller.deleteRecipe));
 
 export default router;

@@ -13,7 +13,11 @@ import {
   UpdateRecipeResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { RecipeDTO, UserDTO } from '../../infrastructure/db/index.js';
+import {
+  RecipeDTO,
+  UserDTO,
+  UserFavoriteRecipesDTO,
+} from '../../infrastructure/db/index.js';
 
 export async function getRecipes(): Promise<GetRecipeResponse[]> {
   const recipes = await RecipeDTO.findAll();
@@ -85,6 +89,28 @@ export async function updateRecipe(
   const updatedRecipe = await recipe.update(payload);
 
   return UpdateRecipeResponseSchema.parse(updatedRecipe.toJSON());
+}
+
+export async function addToFavorites(
+  recipeId: string,
+  userId: string,
+): Promise<UserFavoriteRecipesDTO> {
+  return UserFavoriteRecipesDTO.create({
+    userId: userId,
+    recipeId: recipeId,
+  });
+}
+
+export async function removeFromFavorites(
+  recipeId: string,
+  userId: string,
+): Promise<number> {
+  return UserFavoriteRecipesDTO.destroy({
+    where: {
+      userId: userId,
+      recipeId: recipeId,
+    },
+  });
 }
 
 export async function deleteRecipe(id: string): Promise<number> {
