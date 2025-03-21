@@ -28,13 +28,19 @@ router.post(
 
 router.post('/logout', authenticate, catchErrors(controller.logoutUser));
 
+router.get('/current', authenticate, catchErrors(controller.getCurrentUser));
+
 router.get(
-  '/details/:userId',
+  '/:userId/details',
   authenticate,
   catchErrors(controller.getUserDetails),
 );
 
-router.get('/current', authenticate, catchErrors(controller.getCurrentUser));
+router.get(
+  '/:userId/followers',
+  authenticate,
+  catchErrors(controller.getUserFollowers),
+);
 
 router.patch(
   '/avatars',
