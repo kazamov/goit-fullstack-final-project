@@ -66,6 +66,10 @@ export async function updateAvatar(req: Request, res: Response) {
   const { id: userId } = req.user as UserSchemaAttributes;
   const { file } = req;
 
+  if (!file) {
+    throw new HttpError('File is required', 400);
+  }
+
   try {
     const avatarUrl = await service.updateAvatar(
       userId,
