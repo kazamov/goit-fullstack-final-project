@@ -1,21 +1,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import * as yup from 'yup';
+
+import { CreateUserPayloadSchema } from '@goit-fullstack-final-project/schemas';
 
 import Button from '../../../../ui/Button/Button';
 
 import styles from './SignUpForm.module.css';
-
-const schema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  password: yup
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
-});
 
 type FormData = {
   name: string;
@@ -30,7 +22,10 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { errors, isValid },
     watch,
-  } = useForm<FormData>({ resolver: yupResolver(schema), mode: 'onSubmit' });
+  } = useForm<FormData>({
+    resolver: zodResolver(CreateUserPayloadSchema),
+    mode: 'onSubmit',
+  });
 
   const onSubmit = (data: FormData) => {
     console.log('Form submitted:', data);
