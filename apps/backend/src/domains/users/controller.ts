@@ -94,3 +94,12 @@ export async function getUserFollowings(req: Request, res: Response) {
 
   res.status(200).json(followings);
 }
+
+export async function followUser(req: Request, res: Response) {
+  const { id: currentUserId } = req.user as UserSchemaAttributes;
+  const { userId } = req.params;
+
+  await service.followUser(currentUserId, userId);
+
+  res.status(200).json({ message: 'User followed' });
+}

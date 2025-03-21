@@ -55,4 +55,10 @@ router.patch(
   catchErrors(controller.updateAvatar),
 );
 
+router.post(
+  '/:userId/follow',
+  authenticate,
+  catchErrors(controller.followUser),
+);
+
 export default router;
