@@ -27,6 +27,7 @@ export const GetRecipeResponseSchema = RecipeSchema.omit({
 }).extend({
   owner: z.object({
     userId: z.string(),
+    name: z.string(),
     avatarUrl: z.string(),
   }),
 });

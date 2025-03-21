@@ -52,7 +52,7 @@ export async function getRecipes(
   include.push({
     model: UserDTO,
     as: 'user', // should match alias in RecipeDTO
-    attributes: ['avatarUrl'],
+    attributes: ['avatarUrl', 'name'],
     required: false,
   });
 
@@ -82,6 +82,7 @@ export async function getRecipes(
       ...recipeJson,
       owner: {
         userId: recipeJson.userId,
+        name: recipeJson.user?.name || '',
         avatarUrl: recipeJson.user?.avatarUrl || '',
       },
     };
@@ -123,21 +124,40 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
         model: UserDTO,
         as: 'favoritedBy',
         attributes: [],
-        through: {
-          attributes: [],
-        },
+        through: { attributes: [] },
+        required: false,
+      },
+      {
+        model: UserDTO,
+        as: 'user',
+        attributes: ['avatarUrl', 'name'],
         required: false,
       },
     ],
-    group: ['RecipeDTO.id'],
+    // For correct ordering we need to use subquery
+    group: ['RecipeDTO.id', 'user.id'],
     order: [[literal('"favoritesCount"'), 'DESC']],
     limit: 10,
     subQuery: false,
   });
 
-  return recipes.map((recipe) =>
-    GetRecipeResponseSchema.parse(recipe.toJSON()),
-  );
+  const items = recipes.map((recipe) => {
+    const recipeJson = recipe.toJSON() as any;
+    const transformedRecipe = {
+      ...recipeJson,
+      owner: {
+        userId: recipeJson.userId,
+        name: recipeJson.user?.name || '',
+        avatarUrl: recipeJson.user?.avatarUrl || '',
+      },
+    };
+    // Remove private fields from GetRecipeResponseSchema
+    delete transformedRecipe.user;
+    delete transformedRecipe.userId;
+    return GetRecipeResponseSchema.parse(transformedRecipe);
+  });
+
+  return items;
 }
 
 export async function createRecipe(
