@@ -9,15 +9,6 @@ import Button from '../../../../ui/Button/Button';
 
 import styles from './SignUpForm.module.css';
 
-// const schema = yup.object().shape({
-//   name: z.string().required('Name is required'),
-//   email: z.string().email('Invalid email').required('Email is required'),
-//   password: yup
-//     .string()
-//     .min(6, 'Password must be at least 6 characters')
-//     .required('Password is required'),
-// });
-
 type FormData = {
   name: string;
   email: string;
