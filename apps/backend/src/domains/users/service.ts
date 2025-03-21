@@ -216,10 +216,6 @@ export async function getUserFollowers(
 }
 
 export async function updateAvatar(userId: string, file: Express.Multer.File) {
-  if (!file) {
-    throw new HttpError('File is required', 400);
-  }
-
   const fileBuffer = await fs.readFile(file.path);
 
   const avatarUrl = await cloudinaryClient.uploadFile({

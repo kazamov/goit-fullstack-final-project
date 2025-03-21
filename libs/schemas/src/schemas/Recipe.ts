@@ -18,9 +18,25 @@ export const RecipeSchema = z.object({
 export type Recipe = z.infer<typeof RecipeSchema>;
 
 // Get schemas
-export const GetRecipeResponseSchema = RecipeSchema.omit({
-  createdAt: true,
-  updatedAt: true,
+export const GetRecipeResponseSchema = RecipeSchema.pick({
+  id: true,
+  title: true,
+  description: true,
+  thumb: true,
+}).extend({
+  owner: z.object({
+    userId: z.string(),
+    name: z.string(),
+    avatarUrl: z.string(),
+  }),
+  category: z.object({
+    categoryId: z.string(),
+    categoryName: z.string(),
+  }),
+  area: z.object({
+    areaId: z.string(),
+    areaName: z.string(),
+  }),
 });
 
 export type GetRecipeResponse = z.infer<typeof GetRecipeResponseSchema>;
@@ -28,6 +44,16 @@ export type GetRecipeResponse = z.infer<typeof GetRecipeResponseSchema>;
 export const GetRecipeListResponseSchema = z.array(GetRecipeResponseSchema);
 
 export type GetRecipeListResponse = z.infer<typeof GetRecipeListResponseSchema>;
+
+export const GetPaginatedRecipeResponseSchema = z.object({
+  items: GetRecipeListResponseSchema,
+  page: z.number(),
+  totalPages: z.number(),
+});
+
+export type GetPaginatedRecipeResponse = z.infer<
+  typeof GetPaginatedRecipeResponseSchema
+>;
 
 // Create schemas
 export const CreateRecipePayloadSchema = RecipeSchema.omit({

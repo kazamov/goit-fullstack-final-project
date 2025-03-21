@@ -3,6 +3,7 @@ import { col, fn, literal } from 'sequelize';
 import type {
   CreateRecipePayload,
   CreateRecipeResponse,
+  GetPaginatedRecipeResponse,
   GetRecipeResponse,
   UpdateRecipePayload,
   UpdateRecipeResponse,
@@ -14,16 +15,108 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import {
+  AreaDTO,
+  CategoryDTO,
+  IngredientDTO,
   RecipeDTO,
   UserDTO,
   UserFavoriteRecipesDTO,
 } from '../../infrastructure/db/index.js';
 
-export async function getRecipes(): Promise<GetRecipeResponse[]> {
-  const recipes = await RecipeDTO.findAll();
-  return recipes.map((recipe) =>
-    GetRecipeResponseSchema.parse(recipe.toJSON()),
-  );
+export type RecipeQuery = {
+  categoryId?: string;
+  areaId?: string;
+  ingredientId?: string;
+  page?: string | number;
+  perPage?: string | number;
+};
+
+export async function getRecipes(
+  query: RecipeQuery,
+): Promise<GetPaginatedRecipeResponse> {
+  // Calculate where
+  const where: any = {};
+  if (query.categoryId) {
+    where.categoryId = query.categoryId;
+  }
+  if (query.areaId) {
+    where.areaId = query.areaId;
+  }
+
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  // Create include
+  const include: any[] = [
+    {
+      model: UserDTO,
+      as: 'user',
+      attributes: ['avatarUrl', 'name'],
+      required: false,
+    },
+    {
+      model: CategoryDTO,
+      as: 'category',
+      attributes: ['id', 'name'],
+      required: false,
+    },
+    {
+      model: AreaDTO,
+      as: 'area',
+      attributes: ['id', 'name'],
+      required: false,
+    },
+  ];
+
+  if (query.ingredientId) {
+    include.push({
+      model: IngredientDTO,
+      as: 'ingredients',
+      where: { id: query.ingredientId },
+      through: { attributes: [] },
+      required: true,
+    });
+  }
+
+  // Use method findAndCountAll
+  const { count, rows } = await RecipeDTO.findAndCountAll({
+    where,
+    include,
+    limit,
+    offset,
+    distinct: true,
+  });
+
+  const totalPages = Math.ceil(count / limit);
+  const items = rows.map((recipe) => {
+    const recipeJson = recipe.toJSON() as any;
+    const transformedRecipe = {
+      ...recipeJson,
+      owner: {
+        userId: recipeJson.userId,
+        name: recipeJson.user?.name || '',
+        avatarUrl: recipeJson.user?.avatarUrl || '',
+      },
+      category: {
+        categoryId: recipeJson.category?.id || '',
+        categoryName: recipeJson.category?.name || '',
+      },
+      area: {
+        areaId: recipeJson.area?.id || '',
+        areaName: recipeJson.area?.name || '',
+      },
+    };
+
+    return GetRecipeResponseSchema.parse(transformedRecipe);
+  });
+
+  return {
+    items,
+    page,
+    totalPages,
+  } as GetPaginatedRecipeResponse;
 }
 
 export async function getRecipe(id: string): Promise<GetRecipeResponse | null> {
@@ -51,21 +144,59 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
         model: UserDTO,
         as: 'favoritedBy',
         attributes: [],
-        through: {
-          attributes: [],
-        },
+        through: { attributes: [] },
+        required: false,
+      },
+      {
+        model: UserDTO,
+        as: 'user',
+        attributes: ['avatarUrl', 'name'],
+        required: false,
+      },
+      {
+        model: CategoryDTO,
+        as: 'category',
+        attributes: ['id', 'name'],
+        required: false,
+      },
+      {
+        model: AreaDTO,
+        as: 'area',
+        attributes: ['id', 'name'],
         required: false,
       },
     ],
-    group: ['RecipeDTO.id'],
+    // For correct ordering we need to use subquery
+    group: ['RecipeDTO.id', 'user.id', 'category.id', 'area.id'],
     order: [[literal('"favoritesCount"'), 'DESC']],
     limit: 10,
     subQuery: false,
   });
 
-  return recipes.map((recipe) =>
-    GetRecipeResponseSchema.parse(recipe.toJSON()),
-  );
+  const items = recipes.map((recipe) => {
+    const recipeJson = recipe.toJSON() as any;
+    const transformedRecipe = {
+      ...recipeJson,
+      owner: {
+        userId: recipeJson.userId,
+        name: recipeJson.user?.name || '',
+        avatarUrl: recipeJson.user?.avatarUrl || '',
+      },
+      category: {
+        categoryId: recipeJson.category?.id || '',
+        categoryName: recipeJson.category?.name || '',
+      },
+      area: {
+        areaId: recipeJson.area?.id || '',
+        areaName: recipeJson.area?.name || '',
+      },
+    };
+    delete transformedRecipe.user;
+    delete transformedRecipe.userId;
+    return GetRecipeResponseSchema.parse(transformedRecipe);
+  });
+
+  return items;
 }
 
 export async function createRecipe(
