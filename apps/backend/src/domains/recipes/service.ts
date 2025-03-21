@@ -4,12 +4,14 @@ import type {
   CreateRecipePayload,
   CreateRecipeResponse,
   GetPaginatedRecipeResponse,
+  GetRecipeDetailedResponse,
   GetRecipeResponse,
   UpdateRecipePayload,
   UpdateRecipeResponse,
 } from '@goit-fullstack-final-project/schemas';
 import {
   CreateRecipeResponseSchema,
+  GetRecipeDetailedResponseSchema,
   GetRecipeResponseSchema,
   UpdateRecipeResponseSchema,
 } from '@goit-fullstack-final-project/schemas';
@@ -119,14 +121,61 @@ export async function getRecipes(
   } as GetPaginatedRecipeResponse;
 }
 
-export async function getRecipe(id: string): Promise<GetRecipeResponse | null> {
-  const recipe = await RecipeDTO.findByPk(id);
+export async function getRecipe(
+  id: string,
+): Promise<GetRecipeDetailedResponse | null> {
+  const recipe = await RecipeDTO.findByPk(id, {
+    include: [
+      {
+        model: UserDTO,
+        as: 'user',
+        attributes: ['avatarUrl', 'name'],
+        required: false,
+      },
+      {
+        model: CategoryDTO,
+        as: 'category',
+        attributes: ['id', 'name'],
+        required: false,
+      },
+      {
+        model: AreaDTO,
+        as: 'area',
+        attributes: ['id', 'name'],
+        required: false,
+      },
+      {
+        model: IngredientDTO,
+        as: 'ingredients',
+        through: { attributes: [] },
+        required: false,
+      },
+    ],
+  });
 
   if (!recipe) {
     return null;
   }
 
-  return GetRecipeResponseSchema.parse(recipe.toJSON());
+  const recipeJson = recipe.toJSON() as any;
+  const transformedRecipe = {
+    ...recipeJson,
+    owner: {
+      userId: recipeJson.userId,
+      name: recipeJson.user?.name || '',
+      avatarUrl: recipeJson.user?.avatarUrl || '',
+    },
+    category: {
+      categoryId: recipeJson.category?.id || '',
+      categoryName: recipeJson.category?.name || '',
+    },
+    area: {
+      areaId: recipeJson.area?.id || '',
+      areaName: recipeJson.area?.name || '',
+    },
+  };
+
+  return GetRecipeDetailedResponseSchema.parse(transformedRecipe);
 }
 
 export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
