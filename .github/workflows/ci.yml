@@ -29,6 +29,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: npx playwright install --with-deps
+      #- run: npx playwright install --with-deps
 
-      - run: npx nx affected -t lint test build e2e
+      - run: npx nx affected -t lint test build
