@@ -293,3 +293,27 @@ export async function getUserFollowings(
     userWithFollowings.following.map((follower) => follower.toJSON()),
   );
 }
+
+export async function followUser(
+  currentUserId: string,
+  userId: string,
+): Promise<void> {
+  const user = await UserDTO.findByPk(userId);
+
+  if (!user) {
+    throw new HttpError(`User with id '${userId}' not found`, 404);
+  }
+
+  const existingFollower = await UserFollowersDTO.findOne({
+    where: { followerId: currentUserId, followingId: userId },
+  });
+
+  if (existingFollower) {
+    throw new HttpError(`Already following user with id '${userId}'`, 409);
+  }
+
+  await UserFollowersDTO.create({
+    followerId: currentUserId,
+    followingId: userId,
+  });
+}
