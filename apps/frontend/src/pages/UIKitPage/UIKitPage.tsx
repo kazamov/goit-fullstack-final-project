@@ -20,7 +20,7 @@ const UIKitPage = () => {
           <Button kind="secondary" type="submit">
             Add recipe
           </Button>
-          <Button kind="plain" type="submit">
+          <Button kind="primary" type="submit" disabled={true}>
             Add recipe
           </Button>
         </div>
@@ -31,7 +31,7 @@ const UIKitPage = () => {
           <Button kind="secondary" size="small" type="submit">
             Add recipe
           </Button>
-          <Button kind="plain" size="small" type="submit">
+          <Button kind="secondary" size="small" type="submit" disabled={true}>
             Add recipe
           </Button>
         </div>
