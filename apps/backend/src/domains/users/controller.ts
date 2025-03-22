@@ -60,6 +60,15 @@ export async function getUserRecipes(req: Request, res: Response) {
   res.status(200).json(recipes);
 }
 
+export async function getUserFavorites(req: Request, res: Response) {
+  const { id: userId } = req.user as UserSchemaAttributes;
+  const query = req.query as OwnRecipeQuery;
+
+  const favorites = await service.getUserFavorites(userId, query);
+
+  res.status(200).json(favorites);
+}
+
 export async function getUserFollowers(req: Request, res: Response) {
   const { userId } = req.params;
 

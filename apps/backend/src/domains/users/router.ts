@@ -43,6 +43,12 @@ router.get(
 );
 
 router.get(
+  '/favorites',
+  authenticate,
+  catchErrors(controller.getUserFavorites),
+);
+
+router.get(
   '/:userId/followers',
   authenticate,
   catchErrors(controller.getUserFollowers),

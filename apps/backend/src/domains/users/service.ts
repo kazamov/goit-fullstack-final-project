@@ -182,6 +182,42 @@ export async function getUserRecipes(
   } as GetPaginatedRecipeShort;
 }
 
+export async function getUserFavorites(
+  userId: string,
+  query: OwnRecipeQuery,
+): Promise<GetPaginatedRecipeShort> {
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  const { count, rows } = await RecipeDTO.findAndCountAll({
+    include: [
+      {
+        model: UserDTO,
+        as: 'favoritedBy',
+        attributes: [],
+        through: { attributes: [] },
+        where: { id: userId },
+        required: true,
+      },
+    ],
+    limit,
+    offset,
+    order: [['createdAt', 'DESC']],
+    distinct: true,
+  });
+
+  const totalPages = Math.ceil(count / limit);
+  const recipes = rows.map((recipe) => recipe.toJSON());
+
+  return {
+    items: GetRecipeShortSchema.array().parse(recipes),
+    page,
+    totalPages,
+  } as GetPaginatedRecipeShort;
+}
+
 export async function getUserFollowers(
   userId: string,
 ): Promise<UserFollowers | null> {
