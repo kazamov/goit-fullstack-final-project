@@ -8,17 +8,13 @@ import App from './App.jsx';
 
 import './index.css';
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  createRoot(rootElement).render(
-    <StrictMode>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>
-    </StrictMode>,
-  );
-} else {
-  console.error('Root element not found');
-}
+const rootElement = document.getElementById('root') as HTMLElement;
+createRoot(rootElement).render(
+  <StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </StrictMode>,
+);
