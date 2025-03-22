@@ -71,4 +71,7 @@ img {
 input,
 button {
   font-family: var(--base-font);
+  border: none;
+  background-color: transparent;
+  padding: 0;
 }

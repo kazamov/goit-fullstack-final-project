@@ -11,7 +11,7 @@
   color: var(--white);
 }
 
-@media (max-width: 375px) {
+@media (max-width: 767px) {
   .logo {
     font-size: 20px;
     line-height: 24px;
