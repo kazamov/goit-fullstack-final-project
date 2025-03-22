@@ -37,6 +37,12 @@ router.get(
 );
 
 router.get(
+  '/:userId/recipes',
+  authenticate,
+  catchErrors(controller.getUserRecipes),
+);
+
+router.get(
   '/:userId/followers',
   authenticate,
   catchErrors(controller.getUserFollowers),
