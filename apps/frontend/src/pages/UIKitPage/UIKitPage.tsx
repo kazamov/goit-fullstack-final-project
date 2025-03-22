@@ -5,6 +5,7 @@ import Button from '../../components/ui/Button/Button';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
+import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
 
 import styles from './UIKitPage.module.css';
@@ -101,6 +102,17 @@ const UIKitPage = () => {
             <MainTitle title="Categories" />
             <SubTitle title="Discover a limitless world of culinary possibilities and enjoy exquisite recipes that combine taste, style and the warm atmosphere of the kitchen." />
           </div>
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Path Info</h2>
+        <div className={clsx(styles.kitCard)}>
+          <PathInfo
+            pages={[
+              { name: 'Home', path: '/' },
+              { name: 'Add Recipe', path: '/add-recipe' },
+            ]}
+          />
         </div>
       </div>
     </div>

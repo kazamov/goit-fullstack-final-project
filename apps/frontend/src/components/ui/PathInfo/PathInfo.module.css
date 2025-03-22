@@ -1,0 +1,30 @@
+.pathInfoList {
+  display: flex;
+  gap: 8px;
+}
+
+.pathInfoSeparator {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin: 0 8px 0 0;
+}
+
+.pathInfoLink {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--gray);
+}
+
+.pathInfoCurrent {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: var(--black);
+}
