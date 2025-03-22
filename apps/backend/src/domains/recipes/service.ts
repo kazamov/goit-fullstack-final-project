@@ -269,7 +269,7 @@ export async function createRecipe(
 
     const { url, publicId } = await cloudinaryClient.uploadFile({
       name: `${userId}-${thumbFile.originalname}`,
-      folder: 'avatars',
+      folder: 'thumbs',
       content: fileBuffer,
     });
     thumb = url;
@@ -346,8 +346,13 @@ export async function createRecipe(
     // Commit transaction
     await transaction.commit();
 
+    const finalRecipe = {
+      ...recipe.toJSON(),
+      ingredients,
+    };
+
     // Return the created recipe
-    return CreateRecipeResponseSchema.parse(recipe.toJSON());
+    return CreateRecipeResponseSchema.parse(finalRecipe);
   } catch (error) {
     await Promise.all([
       transaction.rollback(),
