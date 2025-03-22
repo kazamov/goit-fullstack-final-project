@@ -7,7 +7,10 @@ import type {
 } from '@goit-fullstack-final-project/schemas';
 
 import HttpError from '../../helpers/HttpError.js';
-import { RecipeDTO } from '../../infrastructure/db/index.js';
+import {
+  RecipeDTO,
+  UserFavoriteRecipesDTO,
+} from '../../infrastructure/db/index.js';
 
 import type { RecipeQuery } from './service.js';
 import * as service from './service.js';
@@ -78,6 +81,17 @@ export async function addRecipeToFavorites(
   const recipe = await RecipeDTO.findByPk(recipeId);
   if (!recipe) {
     throw new HttpError('Recipe not found', 404);
+  }
+
+  const favouriteRecipe = await UserFavoriteRecipesDTO.findOne({
+    where: {
+      userId,
+      recipeId,
+    },
+  });
+
+  if (favouriteRecipe) {
+    throw new HttpError('Recipe already in favorites', 409);
   }
 
   await service.addToFavorites(recipeId, userId);
