@@ -1,5 +1,5 @@
 const PathInfo = () => {
-  return <div></div>;
+  return <div>PathInfo</div>;
 };
 
 export default PathInfo;

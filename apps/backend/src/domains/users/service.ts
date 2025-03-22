@@ -8,6 +8,7 @@ import type {
   CreateUserPayload,
   CreateUserResponse,
   CurrentUserDetails,
+  GetPaginatedRecipeShort,
   LoginUserPayload,
   LoginUserResponse,
   OtherUserDetails,
@@ -18,6 +19,7 @@ import type {
 import {
   CreateUserResponseSchema,
   CurrentUserDetailsSchema,
+  GetRecipeShortSchema,
   JwtUserSchema,
   LoginUserResponseSchema,
   OtherUserDetailsSchema,
@@ -38,6 +40,11 @@ type UserQuery =
   | Pick<UserSchemaAttributes, 'email'>
   | Pick<UserSchemaAttributes, 'id'>
   | Pick<UserSchemaAttributes, 'email' | 'id'>;
+
+export type OwnRecipeQuery = {
+  page?: string | number;
+  perPage?: string | number;
+};
 
 export async function findUser(
   query: UserQuery,
@@ -148,6 +155,67 @@ export async function getUserDetails(
         favoriteRecipesCount,
         followersCount,
       });
+}
+
+export async function getUserRecipes(
+  userId: string,
+  query: OwnRecipeQuery,
+): Promise<GetPaginatedRecipeShort> {
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  const { count, rows: items } = await RecipeDTO.findAndCountAll({
+    where: { userId },
+    limit,
+    offset,
+    order: [['updatedAt', 'DESC']],
+  });
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    items: GetRecipeShortSchema.array().parse(items),
+    page,
+    totalPages,
+  } as GetPaginatedRecipeShort;
+}
+
+export async function getUserFavorites(
+  userId: string,
+  query: OwnRecipeQuery,
+): Promise<GetPaginatedRecipeShort> {
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  const { count, rows } = await RecipeDTO.findAndCountAll({
+    include: [
+      {
+        model: UserDTO,
+        as: 'favoritedBy',
+        attributes: [],
+        through: { attributes: [] },
+        where: { id: userId },
+        required: true,
+      },
+    ],
+    limit,
+    offset,
+    order: [['createdAt', 'DESC']],
+    distinct: true,
+  });
+
+  const totalPages = Math.ceil(count / limit);
+  const recipes = rows.map((recipe) => recipe.toJSON());
+
+  return {
+    items: GetRecipeShortSchema.array().parse(recipes),
+    page,
+    totalPages,
+  } as GetPaginatedRecipeShort;
 }
 
 export async function getUserFollowers(

@@ -6,7 +6,7 @@ import styles from './Button.module.css';
 interface ButtonProps {
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  kind: 'primary' | 'secondary' | 'ghost' | 'text' | 'plain';
+  kind: 'primary' | 'secondary' | 'ghost' | 'text';
   size?: 'small' | 'medium';
   clickHandler?: () => void;
   disabled?: boolean;

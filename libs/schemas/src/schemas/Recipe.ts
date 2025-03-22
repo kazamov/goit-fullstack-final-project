@@ -11,6 +11,7 @@ export const RecipeSchema = z.object({
   instructions: z.string(),
   description: z.string(),
   thumb: z.string(),
+  thumbId: z.string().nullable(),
   time: z.number({ coerce: true }),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -42,14 +43,33 @@ export const GetRecipeResponseSchema = RecipeSchema.pick({
 
 export type GetRecipeResponse = z.infer<typeof GetRecipeResponseSchema>;
 
+export const GetRecipeShortSchema = RecipeSchema.pick({
+  id: true,
+  title: true,
+  thumb: true,
+  description: true,
+});
+
+export type GetRecipeShort = z.infer<typeof GetRecipeShortSchema>;
+
+export const GetPaginatedRecipeShortSchema = z.object({
+  page: z.number(),
+  totalPages: z.number(),
+  items: z.array(GetRecipeResponseSchema.pick({})),
+});
+
+export type GetPaginatedRecipeShort = z.infer<
+  typeof GetPaginatedRecipeShortSchema
+>;
+
 export const GetRecipeListResponseSchema = z.array(GetRecipeResponseSchema);
 
 export type GetRecipeListResponse = z.infer<typeof GetRecipeListResponseSchema>;
 
 export const GetPaginatedRecipeResponseSchema = z.object({
-  items: GetRecipeListResponseSchema,
   page: z.number(),
   totalPages: z.number(),
+  items: GetRecipeListResponseSchema,
 });
 
 export type GetPaginatedRecipeResponse = z.infer<
@@ -85,7 +105,7 @@ export type GetRecipeDetailedResponse = z.infer<
 
 // Create schemas
 
-const RecipeIngredientRefSchema = IngredientSchema.pick({ id: true }).extend({
+const RecipeIngredientSchema = IngredientSchema.pick({ id: true }).extend({
   measure: z.string(),
 });
 
@@ -103,7 +123,7 @@ export const CreateRecipePayloadSchema = RecipeSchema.omit({
 
       if (Array.isArray(value)) {
         const ingredients = value.map((ingredient) =>
-          RecipeIngredientRefSchema.parse(ingredient),
+          RecipeIngredientSchema.parse(ingredient),
         );
 
         return ingredients;
@@ -131,6 +151,8 @@ export type CreateRecipePayload = z.infer<typeof CreateRecipePayloadSchema>;
 export const CreateRecipeResponseSchema = RecipeSchema.omit({
   createdAt: true,
   updatedAt: true,
+}).extend({
+  ingredients: z.array(RecipeIngredientSchema),
 });
 
 export type CreateRecipeResponse = z.infer<typeof CreateRecipeResponseSchema>;

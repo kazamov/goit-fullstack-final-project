@@ -11,6 +11,7 @@ import {
 
 import HttpError from '../../helpers/HttpError.js';
 
+import type { OwnRecipeQuery } from './service.js';
 import * as service from './service.js';
 
 export async function createUser(req: Request, res: Response) {
@@ -48,6 +49,24 @@ export async function getUserDetails(req: Request, res: Response) {
   const user = await service.getUserDetails(userId, currentUserId);
 
   res.status(200).json(user);
+}
+
+export async function getUserRecipes(req: Request, res: Response) {
+  const { userId } = req.params;
+  const query = req.query as OwnRecipeQuery;
+
+  const recipes = await service.getUserRecipes(userId, query);
+
+  res.status(200).json(recipes);
+}
+
+export async function getUserFavorites(req: Request, res: Response) {
+  const { id: userId } = req.user as UserSchemaAttributes;
+  const query = req.query as OwnRecipeQuery;
+
+  const favorites = await service.getUserFavorites(userId, query);
+
+  res.status(200).json(favorites);
 }
 
 export async function getUserFollowers(req: Request, res: Response) {

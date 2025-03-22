@@ -7,7 +7,10 @@ import type {
 } from '@goit-fullstack-final-project/schemas';
 
 import HttpError from '../../helpers/HttpError.js';
-import { RecipeDTO } from '../../infrastructure/db/index.js';
+import {
+  RecipeDTO,
+  UserFavoriteRecipesDTO,
+} from '../../infrastructure/db/index.js';
 
 import type { RecipeQuery } from './service.js';
 import * as service from './service.js';
@@ -80,6 +83,17 @@ export async function addRecipeToFavorites(
     throw new HttpError('Recipe not found', 404);
   }
 
+  const favouriteRecipe = await UserFavoriteRecipesDTO.findOne({
+    where: {
+      userId,
+      recipeId,
+    },
+  });
+
+  if (favouriteRecipe) {
+    throw new HttpError('Recipe already in favorites', 409);
+  }
+
   await service.addToFavorites(recipeId, userId);
   res.status(201).json({ message: 'Recipe added to favorites' });
 }
@@ -105,13 +119,10 @@ export async function removeRecipeFromFavorites(
 }
 
 export async function deleteRecipe(req: Request, res: Response) {
-  const { params } = req;
+  const { params, user } = req;
+  const userId = (user as UserSchemaAttributes).id;
 
-  const numberOfRecords = await service.deleteRecipe(params.id);
-
-  if (!numberOfRecords) {
-    throw new HttpError('Recipe not found', 404);
-  }
+  await service.deleteRecipe(userId, params.id);
 
   res.json({ success: true });
 }

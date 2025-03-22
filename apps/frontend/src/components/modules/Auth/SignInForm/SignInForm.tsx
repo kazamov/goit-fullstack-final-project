@@ -3,19 +3,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 
-import { CreateUserPayloadSchema } from '@goit-fullstack-final-project/schemas';
+import { LoginUserPayloadSchema } from '@goit-fullstack-final-project/schemas';
 
-import Button from '../../../../ui/Button/Button';
+import Button from '../../../ui/Button/Button';
 
-import styles from './SignUpForm.module.css';
+import styles from './SignInForm.module.css';
 
 type FormData = {
-  name: string;
-  email: string;
   password: string;
+  email: string;
 };
 
-const SignUpForm = () => {
+const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -23,15 +22,14 @@ const SignUpForm = () => {
     formState: { errors, isValid },
     watch,
   } = useForm<FormData>({
-    resolver: zodResolver(CreateUserPayloadSchema),
-    mode: 'onSubmit',
+    resolver: zodResolver(LoginUserPayloadSchema),
+    mode: 'onChange',
   });
 
   const onSubmit = (data: FormData) => {
     console.log('Form submitted:', data);
   };
 
-  const nameValue = watch('name');
   const emailValue = watch('email');
   const passwordValue = watch('password');
 
@@ -50,26 +48,8 @@ const SignUpForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.signUpForm}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.signInForm}>
       <div className={styles.inputsContainer}>
-        <div
-          className={buildInputClass({
-            isInvalid: !!errors.name,
-            value: nameValue,
-          })}
-        >
-          <input
-            className="input"
-            type="text"
-            placeholder="Name*"
-            {...register('name')}
-          />
-          {!!errors.name && (
-            <span className="inputIcon">
-              ⓘ<span className="inputIconTooltip">{errors.name?.message}</span>
-            </span>
-          )}
-        </div>
         <div
           className={buildInputClass({
             isInvalid: !!errors.email,
@@ -82,9 +62,7 @@ const SignUpForm = () => {
             {...register('email')}
           />
           {!!errors.email && (
-            <span className="inputIcon">
-              ⓘ<span className="inputIconTooltip">{errors.email?.message}</span>
-            </span>
+            <span className="inputError">{errors.email.message}</span>
           )}
         </div>
         <div
@@ -110,20 +88,15 @@ const SignUpForm = () => {
             </button>
           )}
           {!!errors.password && (
-            <span className="inputIcon">
-              ⓘ
-              <span className="inputIconTooltip">
-                {errors.password?.message}
-              </span>
-            </span>
+            <span className="inputError">{errors.password.message}</span>
           )}
         </div>
       </div>
-      <Button kind="plain" type="submit">
-        Create
+      <Button kind="primary" type="submit" disabled={!isValid}>
+        Sign in
       </Button>
     </form>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
