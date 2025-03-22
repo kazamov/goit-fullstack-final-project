@@ -16,8 +16,8 @@ const AuthBar = () => {
   };
 
   const onRedirectToSignUp = () => {
-    setIsSignUpOpen(false);
-    setIsSignInOpen(true);
+    setIsSignUpOpen(true);
+    setIsSignInOpen(false);
   };
 
   return (
@@ -41,9 +41,11 @@ const AuthBar = () => {
         </Button>
       </div>
 
-      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)}>
-        SignInModal
-      </SignInModal>
+      <SignInModal
+        isOpen={isSignInOpen}
+        onRedirectToSignUp={onRedirectToSignUp}
+        onClose={() => setIsSignInOpen(false)}
+      ></SignInModal>
 
       <SignUpModal
         isOpen={isSignUpOpen}

@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const CategorySchema = z.object({
   id: z.string(),
   name: z.string(),
+  description: z.string(),
   recipes: z.array(z.number().int()),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -14,6 +15,7 @@ export const GetCategoryResponseSchema = z.array(
   CategorySchema.pick({
     id: true,
     name: true,
+    description: true,
   }),
 );
 

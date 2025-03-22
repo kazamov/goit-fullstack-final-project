@@ -49,9 +49,16 @@ export class RecipeDTO extends Model {
   declare instructions: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(2000),
   })
-  declare thumb?: string;
+  declare thumb: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  declare thumbId: string | null;
 
   @Column({
     type: DataType.INTEGER,

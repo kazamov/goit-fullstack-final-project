@@ -37,6 +37,18 @@ router.get(
 );
 
 router.get(
+  '/:userId/recipes',
+  authenticate,
+  catchErrors(controller.getUserRecipes),
+);
+
+router.get(
+  '/favorites',
+  authenticate,
+  catchErrors(controller.getUserFavorites),
+);
+
+router.get(
   '/:userId/followers',
   authenticate,
   catchErrors(controller.getUserFollowers),
@@ -53,6 +65,18 @@ router.patch(
   authenticate,
   upload.single('avatar'),
   catchErrors(controller.updateAvatar),
+);
+
+router.post(
+  '/:userId/follow',
+  authenticate,
+  catchErrors(controller.followUser),
+);
+
+router.delete(
+  '/:userId/follow',
+  authenticate,
+  catchErrors(controller.unfollowUser),
 );
 
 export default router;

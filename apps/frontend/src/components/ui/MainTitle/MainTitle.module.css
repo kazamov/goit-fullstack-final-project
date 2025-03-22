@@ -1,0 +1,15 @@
+.mainTitle {
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 44px;
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+}
+
+@media (max-width: 375px) {
+  .mainTitle {
+    font-size: 28px;
+    line-height: 32px;
+    margin: 0 0 16px 0;
+  }
+}

@@ -7,14 +7,19 @@ import type {
 } from '@goit-fullstack-final-project/schemas';
 
 import HttpError from '../../helpers/HttpError.js';
-import { RecipeDTO } from '../../infrastructure/db/index.js';
+import {
+  RecipeDTO,
+  UserFavoriteRecipesDTO,
+} from '../../infrastructure/db/index.js';
 
+import type { RecipeQuery } from './service.js';
 import * as service from './service.js';
 
 export async function getRecipes(req: Request, res: Response) {
-  const recipes = await service.getRecipes();
-
-  res.json(recipes);
+  // Example: /api/recipes?page=1&perPage=5&areaId=6462a6f04c3d0ddd28897f9b&categoryId=6462a6cd4c3d0ddd28897f98&ingredientId=640c2dd963a319ea671e377e
+  const query = req.query as RecipeQuery;
+  const result = await service.getRecipes(query);
+  res.json(result);
 }
 
 export async function getRecipe(req: Request, res: Response) {
@@ -35,11 +40,20 @@ export async function getPopularRecipes(req: Request, res: Response) {
 }
 
 export async function createRecipe(req: Request, res: Response) {
-  const { body } = req;
+  const { body, file } = req;
 
-  const recipe = await service.createRecipe(body as CreateRecipePayload);
+  if (!file) {
+    throw new HttpError('Thumb is required', 400);
+  }
 
-  res.status(201).json(recipe);
+  const { id } = req.user as UserSchemaAttributes;
+
+  const recipe = await service.createRecipe(
+    id,
+    body as CreateRecipePayload,
+    file,
+  );
+  res.status(200).json(recipe);
 }
 
 export async function updateRecipe(req: Request, res: Response) {
@@ -69,6 +83,17 @@ export async function addRecipeToFavorites(
     throw new HttpError('Recipe not found', 404);
   }
 
+  const favouriteRecipe = await UserFavoriteRecipesDTO.findOne({
+    where: {
+      userId,
+      recipeId,
+    },
+  });
+
+  if (favouriteRecipe) {
+    throw new HttpError('Recipe already in favorites', 409);
+  }
+
   await service.addToFavorites(recipeId, userId);
   res.status(201).json({ message: 'Recipe added to favorites' });
 }
@@ -94,13 +119,10 @@ export async function removeRecipeFromFavorites(
 }
 
 export async function deleteRecipe(req: Request, res: Response) {
-  const { params } = req;
+  const { params, user } = req;
+  const userId = (user as UserSchemaAttributes).id;
 
-  const numberOfRecords = await service.deleteRecipe(params.id);
-
-  if (!numberOfRecords) {
-    throw new HttpError('Recipe not found', 404);
-  }
+  await service.deleteRecipe(userId, params.id);
 
   res.json({ success: true });
 }

@@ -8,6 +8,7 @@ import type {
   CreateUserPayload,
   CreateUserResponse,
   CurrentUserDetails,
+  GetPaginatedRecipeShort,
   LoginUserPayload,
   LoginUserResponse,
   OtherUserDetails,
@@ -18,6 +19,7 @@ import type {
 import {
   CreateUserResponseSchema,
   CurrentUserDetailsSchema,
+  GetRecipeShortSchema,
   JwtUserSchema,
   LoginUserResponseSchema,
   OtherUserDetailsSchema,
@@ -38,6 +40,11 @@ type UserQuery =
   | Pick<UserSchemaAttributes, 'email'>
   | Pick<UserSchemaAttributes, 'id'>
   | Pick<UserSchemaAttributes, 'email' | 'id'>;
+
+export type OwnRecipeQuery = {
+  page?: string | number;
+  perPage?: string | number;
+};
 
 export async function findUser(
   query: UserQuery,
@@ -150,6 +157,67 @@ export async function getUserDetails(
       });
 }
 
+export async function getUserRecipes(
+  userId: string,
+  query: OwnRecipeQuery,
+): Promise<GetPaginatedRecipeShort> {
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  const { count, rows: items } = await RecipeDTO.findAndCountAll({
+    where: { userId },
+    limit,
+    offset,
+    order: [['updatedAt', 'DESC']],
+  });
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    items: GetRecipeShortSchema.array().parse(items),
+    page,
+    totalPages,
+  } as GetPaginatedRecipeShort;
+}
+
+export async function getUserFavorites(
+  userId: string,
+  query: OwnRecipeQuery,
+): Promise<GetPaginatedRecipeShort> {
+  // Pagination
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
+  const { count, rows } = await RecipeDTO.findAndCountAll({
+    include: [
+      {
+        model: UserDTO,
+        as: 'favoritedBy',
+        attributes: [],
+        through: { attributes: [] },
+        where: { id: userId },
+        required: true,
+      },
+    ],
+    limit,
+    offset,
+    order: [['createdAt', 'DESC']],
+    distinct: true,
+  });
+
+  const totalPages = Math.ceil(count / limit);
+  const recipes = rows.map((recipe) => recipe.toJSON());
+
+  return {
+    items: GetRecipeShortSchema.array().parse(recipes),
+    page,
+    totalPages,
+  } as GetPaginatedRecipeShort;
+}
+
 export async function getUserFollowers(
   userId: string,
 ): Promise<UserFollowers | null> {
@@ -216,13 +284,9 @@ export async function getUserFollowers(
 }
 
 export async function updateAvatar(userId: string, file: Express.Multer.File) {
-  if (!file) {
-    throw new HttpError('File is required', 400);
-  }
-
   const fileBuffer = await fs.readFile(file.path);
 
-  const avatarUrl = await cloudinaryClient.uploadFile({
+  const { url: avatarUrl } = await cloudinaryClient.uploadFile({
     name: `${userId}-${file.originalname}`,
     folder: 'avatars',
     content: fileBuffer,
@@ -296,4 +360,49 @@ export async function getUserFollowings(
   return UserFollowingsSchema.parse(
     userWithFollowings.following.map((follower) => follower.toJSON()),
   );
+}
+
+export async function followUser(
+  currentUserId: string,
+  userId: string,
+): Promise<void> {
+  const user = await UserDTO.findByPk(userId);
+
+  if (!user) {
+    throw new HttpError(`User with id '${userId}' not found`, 404);
+  }
+
+  const existingFollower = await UserFollowersDTO.findOne({
+    where: { followerId: currentUserId, followingId: userId },
+  });
+
+  if (existingFollower) {
+    throw new HttpError(`Already following user with id '${userId}'`, 409);
+  }
+
+  await UserFollowersDTO.create({
+    followerId: currentUserId,
+    followingId: userId,
+  });
+}
+
+export async function unfollowUser(
+  currentUserId: string,
+  userId: string,
+): Promise<void> {
+  const user = await UserDTO.findByPk(userId);
+
+  if (!user) {
+    throw new HttpError(`User with id '${userId}' not found`, 404);
+  }
+
+  const existingFollower = await UserFollowersDTO.findOne({
+    where: { followerId: currentUserId, followingId: userId },
+  });
+
+  if (!existingFollower) {
+    throw new HttpError(`Not following user with id '${userId}'`, 409);
+  }
+
+  await existingFollower.destroy();
 }
