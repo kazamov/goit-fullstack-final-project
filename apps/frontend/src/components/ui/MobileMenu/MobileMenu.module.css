@@ -1,4 +1,4 @@
-.MobileMenu {
+.mobileMenu {
   color: var(--white);
   display: flex;
   flex-direction: column;
@@ -11,7 +11,7 @@
   transform: translateX(-50%);
 }
 
-.MobileMenuLink {
+.mobileMenuLink {
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 700;

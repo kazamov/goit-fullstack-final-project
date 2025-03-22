@@ -4,11 +4,11 @@ import styles from './MobileMenu.module.css';
 
 const MobileMenu = () => {
   return (
-    <div className={styles.MobileMenu}>
-      <NavLink to="/" className={styles.MobileMenuLink}>
+    <div className={styles.mobileMenu}>
+      <NavLink to="/" className={styles.mobileMenuLink}>
         Home
       </NavLink>
-      <NavLink to="/recipe/add" className={styles.MobileMenuLink}>
+      <NavLink to="/recipe/add" className={styles.mobileMenuLink}>
         Add recipe
       </NavLink>
     </div>
