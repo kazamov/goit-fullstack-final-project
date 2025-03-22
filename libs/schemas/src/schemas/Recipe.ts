@@ -42,14 +42,33 @@ export const GetRecipeResponseSchema = RecipeSchema.pick({
 
 export type GetRecipeResponse = z.infer<typeof GetRecipeResponseSchema>;
 
+export const GetRecipeShortSchema = RecipeSchema.pick({
+  id: true,
+  title: true,
+  thumb: true,
+  description: true,
+});
+
+export type GetRecipeShort = z.infer<typeof GetRecipeShortSchema>;
+
+export const GetPaginatedRecipeShortSchema = z.object({
+  page: z.number(),
+  totalPages: z.number(),
+  items: z.array(GetRecipeResponseSchema.pick({})),
+});
+
+export type GetPaginatedRecipeShort = z.infer<
+  typeof GetPaginatedRecipeShortSchema
+>;
+
 export const GetRecipeListResponseSchema = z.array(GetRecipeResponseSchema);
 
 export type GetRecipeListResponse = z.infer<typeof GetRecipeListResponseSchema>;
 
 export const GetPaginatedRecipeResponseSchema = z.object({
-  items: GetRecipeListResponseSchema,
   page: z.number(),
   totalPages: z.number(),
+  items: GetRecipeListResponseSchema,
 });
 
 export type GetPaginatedRecipeResponse = z.infer<
