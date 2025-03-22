@@ -1,0 +1,10 @@
+.menuIconButton {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
