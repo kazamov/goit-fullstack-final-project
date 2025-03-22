@@ -14,6 +14,7 @@ const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
     testimonials: testimonialsReducer,
+    // additional reducers can be added here
   }),
 );
 
