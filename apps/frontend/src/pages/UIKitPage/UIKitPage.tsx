@@ -3,7 +3,9 @@ import clsx from 'clsx';
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
 import Button from '../../components/ui/Button/Button';
 import Logo from '../../components/ui/Logo/Logo';
+import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
+import SubTitle from '../../components/ui/SubTitle/SubTitle';
 
 import styles from './UIKitPage.module.css';
 
@@ -88,9 +90,16 @@ const UIKitPage = () => {
           </div>
           <div className="inputWrapper inputWrapperInvalid">
             <input className="input" type="text" placeholder="Name*" />
-            <span className="inputIcon">
-              ⓘ<span className="inputIconTooltip">Name is required</span>
-            </span>
+            <span className="inputError">Name is required</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Main Title/Sub Title</h2>
+        <div className={clsx(styles.kitCard)}>
+          <div className="flex column">
+            <MainTitle title="Categories" />
+            <SubTitle title="Discover a limitless world of culinary possibilities and enjoy exquisite recipes that combine taste, style and the warm atmosphere of the kitchen." />
           </div>
         </div>
       </div>
