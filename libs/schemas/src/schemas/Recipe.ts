@@ -11,6 +11,7 @@ export const RecipeSchema = z.object({
   instructions: z.string(),
   description: z.string(),
   thumb: z.string(),
+  thumbId: z.string().nullable(),
   time: z.number({ coerce: true }),
   createdAt: z.date(),
   updatedAt: z.date(),
