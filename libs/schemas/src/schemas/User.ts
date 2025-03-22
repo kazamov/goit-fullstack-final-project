@@ -4,9 +4,9 @@ import { ShortRecipeDetailsSchema } from './Recipe.js';
 
 export const UserSchema = z.object({
   id: z.string(),
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string().nonempty(),
+  name: z.string().nonempty('Name cannot be empty'),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
   avatarUrl: z.string(),
   token: z.string().nullable(),
   // favorite_recipes: z.array(z.number().int()),

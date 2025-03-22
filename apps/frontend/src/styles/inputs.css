@@ -6,6 +6,7 @@
   border: 1px solid var(--gray);
   border-radius: var(--border-radius);
   height: 56px;
+  position: relative;
 }
 
 .inputWrapperFilled {
@@ -15,6 +16,14 @@
 
 .inputWrapperInvalid {
   border: 1px solid var(--red);
+}
+
+.inputError {
+  color: var(--red);
+  position: absolute;
+  bottom: -20px;
+  left: 14px;
+  font-size: 12px;
 }
 
 .inputButtonIcon {

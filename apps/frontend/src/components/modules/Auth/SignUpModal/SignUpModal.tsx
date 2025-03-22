@@ -1,7 +1,7 @@
 import Button from '../../../ui/Button/Button';
 import Modal from '../../../ui/Modal/Modal';
 import ModalTitle from '../../../ui/ModalTitle/ModalTitle';
-import SignUpForm from '../AuthBar/SignUpForm/SignUpForm';
+import SignUpForm from '../SignUpForm/SignUpForm';
 
 import styles from './SignUpModal.module.css';
 
