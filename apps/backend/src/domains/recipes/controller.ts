@@ -105,13 +105,10 @@ export async function removeRecipeFromFavorites(
 }
 
 export async function deleteRecipe(req: Request, res: Response) {
-  const { params } = req;
+  const { params, user } = req;
+  const userId = (user as UserSchemaAttributes).id;
 
-  const numberOfRecords = await service.deleteRecipe(params.id);
-
-  if (!numberOfRecords) {
-    throw new HttpError('Recipe not found', 404);
-  }
+  await service.deleteRecipe(userId, params.id);
 
   res.json({ success: true });
 }

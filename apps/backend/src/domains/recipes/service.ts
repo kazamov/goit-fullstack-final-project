@@ -28,6 +28,7 @@ import {
   IngredientDTO,
   RecipeDTO,
   RecipeIngredientDTO,
+  RecipeRatingDTO,
   UserDTO,
   UserFavoriteRecipesDTO,
 } from '../../infrastructure/db/index.js';
@@ -269,7 +270,7 @@ export async function createRecipe(
 
     const { url, publicId } = await cloudinaryClient.uploadFile({
       name: `${userId}-${thumbFile.originalname}`,
-      folder: 'avatars',
+      folder: 'thumbs',
       content: fileBuffer,
     });
     thumb = url;
@@ -328,6 +329,7 @@ export async function createRecipe(
         ...otherProps,
         userId,
         thumb,
+        thumbId,
       },
       { transaction },
     );
@@ -346,8 +348,13 @@ export async function createRecipe(
     // Commit transaction
     await transaction.commit();
 
+    const finalRecipe = {
+      ...recipe.toJSON(),
+      ingredients,
+    };
+
     // Return the created recipe
-    return CreateRecipeResponseSchema.parse(recipe.toJSON());
+    return CreateRecipeResponseSchema.parse(finalRecipe);
   } catch (error) {
     await Promise.all([
       transaction.rollback(),
@@ -395,6 +402,47 @@ export async function removeFromFavorites(
   });
 }
 
-export async function deleteRecipe(id: string): Promise<number> {
-  return RecipeDTO.destroy({ where: { id } });
+export async function deleteRecipe(userId: string, id: string): Promise<void> {
+  const transaction = (await RecipeDTO.sequelize?.transaction()) as Transaction;
+
+  try {
+    const recipe = await RecipeDTO.findOne({
+      where: { id, userId },
+      transaction,
+    });
+
+    if (!recipe) {
+      throw new HttpError('Recipe not found', 404);
+    }
+
+    await Promise.all([
+      RecipeRatingDTO.destroy({
+        where: { recipeId: id },
+        transaction,
+      }),
+      RecipeIngredientDTO.destroy({
+        where: { recipeId: id },
+        transaction,
+      }),
+      UserFavoriteRecipesDTO.destroy({
+        where: { recipeId: id },
+        transaction,
+      }),
+    ]);
+
+    await recipe.destroy({ transaction });
+
+    await transaction.commit();
+
+    if (recipe.thumbId) {
+      try {
+        await cloudinaryClient.deleteFile(recipe.thumbId);
+      } catch {
+        // Handle error if needed
+      }
+    }
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 }
