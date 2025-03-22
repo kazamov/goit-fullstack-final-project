@@ -7,7 +7,8 @@ import styles from './UserBar.module.css';
 
 const user = {
   name: 'John',
-  avatar: '',
+  avatar:
+    'https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FydG9vbnxlbnwwfHwwfHx8MA%3D%3D',
   id: 1,
 };
 
