@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
+import SubTitle from '../../components/ui/_SubTitle/SubTitle';
 import Button from '../../components/ui/Button/Button';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
-import SubTitle from '../../components/ui/SubTitle/SubTitle';
 
 import styles from './UIKitPage.module.css';
 
