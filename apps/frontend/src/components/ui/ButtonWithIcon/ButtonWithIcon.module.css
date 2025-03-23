@@ -1,0 +1,97 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid;
+}
+
+.button.primary {
+  background-color: var(--black);
+}
+
+.button.secondary {
+  background-color: var(--white);
+  border-color: var(--gray);
+}
+
+.button.ghost {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+}
+
+.button.primary .icon {
+  fill: var(--white);
+}
+
+.button.secondary .icon {
+  fill: var(--black);
+}
+
+.button.ghost .icon {
+  fill: var(--white);
+}
+
+.button:disabled {
+  background-color: var(--gray);
+  cursor: not-allowed;
+  border-color: var(--gray);
+}
+
+.button.primary:disabled .icon,
+.button.secondary:disabled .icon {
+  fill: var(--white);
+}
+
+.button.large {
+  width: 56px;
+  height: 56px;
+}
+
+.button.large .icon {
+  height: 20px;
+  width: 20px;
+}
+
+.button.medium {
+  width: 42px;
+  height: 42px;
+}
+
+.button.medium .icon {
+  height: 18px;
+  width: 18px;
+}
+
+.button.small {
+  height: 36px;
+  width: 36px;
+}
+
+.button.small .icon {
+  height: 16px;
+  width: 16px;
+}
+
+@media (max-width: 767px) {
+  .button.large {
+    width: 48px;
+    height: 48px;
+  }
+
+  .button.large .icon {
+    height: 16px;
+    width: 16px;
+  }
+
+  .button.medium {
+    width: 36px;
+    height: 36px;
+  }
+
+  .button.medium .icon {
+    height: 16px;
+    width: 16px;
+  }
+}
