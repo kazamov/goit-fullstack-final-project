@@ -4,7 +4,7 @@
   max-width: 1440px; /* maximum width */
 }
 
-/*  On screens less than 768px
+/*  On screens less or equal 768px
     Tablet
 */
 @media (max-width: 768px) {
@@ -13,7 +13,7 @@
   }
 }
 
-/*  On screens less than 375px
+/*  On screens less or equal 375px
     Mobile
 */
 @media (max-width: 375px) {
