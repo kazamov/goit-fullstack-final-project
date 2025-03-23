@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
 import Button from '../../components/ui/Button/Button';
+import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
@@ -64,6 +65,73 @@ const UIKitPage = () => {
           <Button kind="text" type="button">
             Sign in
           </Button>
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Buttons</h2>
+        <div className={styles.kitCard}>
+          <ButtonWithIcon
+            kind="primary"
+            size="large"
+            type="submit"
+            iconType="icon-heart"
+          />
+          <ButtonWithIcon
+            kind="secondary"
+            size="large"
+            type="submit"
+            iconType="icon-heart"
+          />
+          <ButtonWithIcon
+            kind="secondary"
+            size="large"
+            type="submit"
+            iconType="icon-heart"
+            disabled={true}
+          />
+        </div>
+        <div className={styles.kitCard}>
+          <ButtonWithIcon kind="primary" type="submit" iconType="icon-heart" />
+          <ButtonWithIcon
+            kind="secondary"
+            type="submit"
+            iconType="icon-heart"
+          />
+          <ButtonWithIcon
+            kind="primary"
+            type="submit"
+            disabled={true}
+            iconType="icon-heart"
+          />
+        </div>
+        <div className={styles.kitCard}>
+          <ButtonWithIcon
+            kind="primary"
+            size="small"
+            type="submit"
+            iconType="icon-heart"
+          />
+          <ButtonWithIcon
+            kind="secondary"
+            size="small"
+            type="submit"
+            iconType="icon-heart"
+          />
+          <ButtonWithIcon
+            kind="secondary"
+            size="small"
+            type="submit"
+            iconType="icon-heart"
+            disabled={true}
+          />
+        </div>
+        <div className={clsx(styles.kitCard, styles.kitCardDark)}>
+          <ButtonWithIcon
+            kind="ghost"
+            size="large"
+            type="submit"
+            iconType="icon-heart"
+          />
         </div>
       </div>
       <div>
