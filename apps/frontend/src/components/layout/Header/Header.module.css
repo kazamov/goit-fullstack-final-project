@@ -11,10 +11,8 @@
   position: relative;
 }
 
-.inversedHeader {
-  /* background-color: var(--black); */
-
-  /* TO DO: check how it is better to do for hero section */
-  /* border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius); */
+.menuContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }

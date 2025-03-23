@@ -5,7 +5,7 @@
   text-transform: uppercase;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 767px) {
   .modalTitle {
     font-size: 28px;
     line-height: 32px;

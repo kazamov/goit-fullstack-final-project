@@ -88,7 +88,7 @@
   color: var(--red);
 }
 
-@media (max-width: 375px) {
+@media (max-width: 767px) {
   .inputWrapper {
     padding: 14px;
     height: 48px;
