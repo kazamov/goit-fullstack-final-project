@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
@@ -11,6 +12,27 @@ import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import styles from './UIKitPage.module.css';
 
 const UIKitPage = () => {
+  const [text, setText] = useState(
+    'Is a healthy salad recipe that’s big on nutrients and flavor. ',
+  );
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const adjustHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustHeight();
+  }, [text]);
+
+  useEffect(() => {
+    window.addEventListener('resize', adjustHeight);
+    return () => window.removeEventListener('resize', adjustHeight);
+  }, []);
+
   return (
     <div className={styles.kitContainer}>
       <h1>UI Kit</h1>
@@ -92,6 +114,50 @@ const UIKitPage = () => {
           <div className="inputWrapper inputWrapperInvalid">
             <input className="input" type="text" placeholder="Name*" />
             <span className="inputError">Name is required</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>TextArea with count</h2>
+        <div className={clsx(styles.kitCard)}>
+          <div className="textAreaWrapper textAreaWrapperCounter">
+            <textarea
+              className="textArea"
+              ref={textareaRef}
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
+              maxLength={200}
+              rows={1}
+              placeholder="Enter a description"
+            />
+            <div className="textAreaCounter">
+              <span className={text.length ? 'textAreaCounterCurrent' : ''}>
+                {text.length}
+              </span>
+              <span>/200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>TextArea</h2>
+        <div className={clsx(styles.kitCard)}>
+          <div className="textAreaWrapper">
+            <textarea
+              className="textArea"
+              rows={1}
+              placeholder="Enter quantity"
+            />
+          </div>
+          <div className="textAreaWrapper textAreaWrapperInvalid">
+            <textarea
+              className="textArea"
+              rows={1}
+              placeholder="Enter quantity"
+            />
+            <span className="textAreaError">Quantity isrequired</span>
           </div>
         </div>
       </div>

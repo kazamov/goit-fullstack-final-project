@@ -88,9 +88,75 @@
   color: var(--red);
 }
 
+.textAreaWrapper {
+  display: flex;
+  padding: 16px 0;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray);
+  position: relative;
+}
+
+.textAreaWrapperInvalid {
+  border-bottom: 1px solid var(--red);
+}
+
+.textAreaError {
+  color: var(--red);
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  font-size: 12px;
+}
+
+.textArea {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: var(--black);
+  width: 100%;
+  resize: none;
+}
+
+.textArea::placeholder {
+  color: var(--gray);
+}
+
+.textAreaWrapperInvalid .textArea::placeholder {
+  color: var(--red);
+}
+
+.textAreaCounter {
+  color: var(--gray);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+}
+
+.textAreaCounterCurrent {
+  color: var(--black);
+}
+
+.textAreaWrapperCounter {
+  gap: 40px;
+}
+
 @media (max-width: 375px) {
   .inputWrapper {
     padding: 14px;
     height: 48px;
+  }
+
+  .textAreaWrapper {
+    padding: 14px 0;
+  }
+
+  .input {
+    font-size: 14px;
+  }
+
+  .textArea {
+    font-size: 14px;
   }
 }
