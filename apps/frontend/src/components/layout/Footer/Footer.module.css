@@ -31,31 +31,31 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid #bfbebe;
+  border: 1px solid var(--gray);
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease;
 }
 
 .socialList a:hover {
-  background-color: #f0f0f0;
-  border-color: #1a1a1a;
+  background-color: var(--gray);
+  border-color: var(--dark-gray);
 }
 
 .icon {
   width: 20px;
   height: 20px;
-  fill: #050505;
+  fill: var(--black);
   transition: fill 0.3s ease;
 }
 
 .icon:hover {
-  fill: #1a1a1a;
+  fill: var(--dark-gray);
 }
 
 .separator {
   border: none;
-  border-top: 1px solid #bfbebe;
+  border-top: 1px solid var(--gray);
   margin-block: 40px;
 }
 
