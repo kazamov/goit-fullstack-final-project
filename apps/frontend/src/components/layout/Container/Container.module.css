@@ -1,0 +1,23 @@
+.container {
+  margin: 0 auto; /* centralizing */
+  padding: 0 80px; /* desktop padding */
+  max-width: 1440px; /* maximum width */
+}
+
+/*  On screens less than 768px
+    Tablet
+*/
+@media (max-width: 768px) {
+  .container {
+    padding: 0 32px;
+  }
+}
+
+/*  On screens less than 375px
+    Mobile
+*/
+@media (max-width: 375px) {
+  .container {
+    padding: 0 16px;
+  }
+}
