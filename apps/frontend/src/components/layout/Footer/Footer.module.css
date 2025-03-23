@@ -1,0 +1,64 @@
+.footer {
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.socialList {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+.socialList a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #bfbebe;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.socialList a:hover {
+  background-color: #f0f0f0;
+  border-color: #1a1a1a;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: #050505;
+  transition: fill 0.3s ease;
+}
+
+.icon:hover {
+  fill: #1a1a1a;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid #bfbebe;
+  margin-block: 40px;
+}
+
+.footerText {
+  font-size: 14px;
+}
