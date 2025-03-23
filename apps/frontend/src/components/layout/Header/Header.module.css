@@ -6,7 +6,7 @@
 }
 
 .headerContainer {
-  padding: 40px 80px;
+  padding: 40px 0;
   z-index: var(--z-index-header);
   position: relative;
 }
