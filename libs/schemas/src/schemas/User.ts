@@ -44,7 +44,6 @@ export const CreateUserResponseSchema = UserSchema.pick({
   id: true,
   name: true,
   email: true,
-  token: true,
   avatarUrl: true,
 });
 
@@ -61,7 +60,6 @@ export const LoginUserResponseSchema = UserSchema.pick({
   id: true,
   name: true,
   email: true,
-  token: true,
   avatarUrl: true,
 });
 
