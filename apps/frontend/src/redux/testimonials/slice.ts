@@ -1,8 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import type { GetTestimonialResponse } from '@goit-fullstack-final-project/schemas';
+
 export interface Testimonials {
-  items: string[];
+  items: GetTestimonialResponse;
   loading: boolean;
   error: string | null;
 }
@@ -39,7 +41,7 @@ const testimonialsSlice = createSlice({
       })
       .addCase(
         fetchTestimonials.fulfilled,
-        (state, action: PayloadAction<string[]>) => {
+        (state, action: PayloadAction<GetTestimonialResponse>) => {
           state.loading = false;
           state.items = action.payload;
         },

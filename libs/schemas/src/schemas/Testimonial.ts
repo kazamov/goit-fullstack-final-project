@@ -16,7 +16,11 @@ export const GetTestimonialResponseSchema = z.array(
     id: true,
     text: true,
     rating: true,
-    userId: true,
+  }).extend({
+    user: z.object({
+      userId: z.string(),
+      name: z.string(),
+    }),
   }),
 );
 
