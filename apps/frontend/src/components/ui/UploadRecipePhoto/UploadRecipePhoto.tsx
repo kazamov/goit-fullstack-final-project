@@ -15,11 +15,10 @@ const UploadRecipePhoto = () => {
     const selectedImage = e.target.files[0];
     setImage(selectedImage);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(selectedImage);
+    const objectUrl = URL.createObjectURL(selectedImage);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
   };
 
   return (
