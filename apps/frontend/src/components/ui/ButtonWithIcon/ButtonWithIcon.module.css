@@ -21,16 +21,20 @@
   background: transparent;
 }
 
+.button .icon {
+  fill: none;
+}
+
 .button.primary .icon {
-  fill: var(--white);
+  stroke: var(--white);
 }
 
 .button.secondary .icon {
-  fill: var(--black);
+  stroke: var(--black);
 }
 
 .button.ghost .icon {
-  fill: var(--white);
+  stroke: var(--white);
 }
 
 .button:disabled {
@@ -41,7 +45,7 @@
 
 .button.primary:disabled .icon,
 .button.secondary:disabled .icon {
-  fill: var(--white);
+  stroke: var(--white);
 }
 
 .button.large {
@@ -81,8 +85,8 @@
   }
 
   .button.large .icon {
-    height: 16px;
-    width: 16px;
+    height: 20px;
+    width: 20px;
   }
 
   .button.medium {
