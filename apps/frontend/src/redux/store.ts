@@ -3,6 +3,7 @@ import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
 import storage from 'redux-persist/lib/storage';
 
+import { categoriesReducer } from './categories/slice';
 import { testimonialsReducer } from './testimonials/slice';
 
 const persistConfig = {
@@ -14,6 +15,7 @@ const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
     testimonials: testimonialsReducer,
+    categories: categoriesReducer,
     // additional reducers can be added here
   }),
 );
