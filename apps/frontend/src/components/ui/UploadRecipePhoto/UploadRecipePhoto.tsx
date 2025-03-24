@@ -39,7 +39,7 @@ const UploadRecipePhoto = () => {
                 )?.click()
               }
             >
-              <use href={`/icons.svg#icon-camera`}></use>
+              <use href={`/images/icons.svg#icon-camera`}></use>
             </svg>
             <p className={styles.noFileSelectedText}>Upload a photo</p>
           </>
