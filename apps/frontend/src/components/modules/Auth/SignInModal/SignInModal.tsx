@@ -23,7 +23,7 @@ const SignInModal = ({ isOpen, onClose, onRedirectToSignUp }: ModalProps) => {
       <div className={styles.buttonContainer}>
         <span className={styles.modalHint}> Don't have an account? </span>
         <Button kind="text" type="button" clickHandler={onRedirectToSignUp}>
-          Sign up
+          Create account
         </Button>
       </div>
     </Modal>

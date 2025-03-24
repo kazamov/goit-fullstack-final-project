@@ -5,12 +5,13 @@ import clsx from 'clsx';
 import styles from './Logo.module.css';
 
 interface LogoProps {
+  className?: string;
   isInversed: boolean;
 }
 
-const Logo: FC<LogoProps> = ({ isInversed }) => {
+const Logo: FC<LogoProps> = ({ isInversed, className }) => {
   return (
-    <NavLink to="/">
+    <NavLink className={className} to="/">
       <span className={clsx(styles.logo, isInversed && styles.inversedLogo)}>
         foodies
       </span>
