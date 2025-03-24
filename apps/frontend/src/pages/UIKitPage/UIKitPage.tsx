@@ -80,13 +80,13 @@ const UIKitPage = () => {
             kind="secondary"
             size="large"
             type="submit"
-            iconType="icon-heart"
+            iconType="icon-trash"
           />
           <ButtonWithIcon
             kind="secondary"
             size="large"
             type="submit"
-            iconType="icon-heart"
+            iconType="icon-trash"
             disabled={true}
           />
         </div>
@@ -95,13 +95,13 @@ const UIKitPage = () => {
           <ButtonWithIcon
             kind="secondary"
             type="submit"
-            iconType="icon-heart"
+            iconType="icon-minus"
           />
           <ButtonWithIcon
             kind="primary"
             type="submit"
             disabled={true}
-            iconType="icon-heart"
+            iconType="icon-plus"
           />
         </div>
         <div className={styles.kitCard}>
@@ -109,7 +109,7 @@ const UIKitPage = () => {
             kind="primary"
             size="small"
             type="submit"
-            iconType="icon-heart"
+            iconType="icon-arrow-up-right"
           />
           <ButtonWithIcon
             kind="secondary"
