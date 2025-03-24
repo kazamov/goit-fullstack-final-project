@@ -10,3 +10,7 @@
     line-height: 20px;
   }
 }
+
+.testimonialsSubTitle {
+  color: var(--dark-gray);
+}
