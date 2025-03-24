@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
+import { COOKIES_SESSION_KEY } from '../constants/cookies.js';
 import { findUser } from '../domains/users/service.js';
 import HttpError from '../helpers/HttpError.js';
 import { verifyToken } from '../helpers/jwt.js';
@@ -9,15 +10,10 @@ export async function authenticate(
   res: Response,
   next: NextFunction,
 ) {
-  const { authorization } = req.headers;
+  const token = req.cookies[COOKIES_SESSION_KEY];
 
-  if (!authorization) {
-    return next(new HttpError('Authorization header was missed', 401));
-  }
-
-  const [bearer, token] = authorization.split(' ');
-  if (bearer !== 'Bearer' || !token) {
-    return next(new HttpError('Invalid token', 401));
+  if (!token) {
+    return next(new HttpError('Authentication token is missing', 401));
   }
 
   const { data, error } = verifyToken(token);

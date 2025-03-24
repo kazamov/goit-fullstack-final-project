@@ -1,8 +1,13 @@
 let cachedConfig: Config | null = null;
 
 export interface Config {
+  isProduction: boolean;
+  isDevelopment: boolean;
+  isTest: boolean;
+
   host: string;
   port: number;
+
   db: {
     name: string;
     username: string;
@@ -29,6 +34,10 @@ function loadConfig(): Config {
   }
 
   cachedConfig = {
+    isProduction: process.env.NODE_ENV === 'production',
+    isDevelopment: process.env.NODE_ENV === 'development',
+    isTest: process.env.NODE_ENV === 'test',
+
     host: process.env.HOST || 'localhost',
     port: parseInt(process.env.PORT || '3000'),
 
