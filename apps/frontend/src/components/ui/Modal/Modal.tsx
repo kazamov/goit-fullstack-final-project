@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
-import { useEffect } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
+import clsx from 'clsx';
 
 import styles from './Modal.module.css';
 
@@ -7,38 +8,92 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  headerContent?: () => ReactNode;
+  fullScreen?: boolean;
 }
 
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
-  useEffect(() => {
-    console.log('modal');
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+interface CloseIconProps {
+  className?: string;
+}
 
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', handleKeyDown);
+const CloseIcon: FC<CloseIconProps> = ({ className }) => {
+  return (
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M18 6L6 18"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 6L18 18"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+const Modal: FC<ModalProps> = ({
+  isOpen,
+  headerContent,
+  fullScreen,
+  onClose,
+  children,
+}) => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) {
+      return;
     }
 
-    return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleKeyDown);
-    };
+    if (isOpen) {
+      dialog.showModal();
+    } else if (dialog.open) {
+      dialog.close();
+    }
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) {
+      return;
+    }
+
+    dialog.addEventListener('close', onClose);
+    return () => {
+      dialog.removeEventListener('close', onClose);
+    };
+  }, [onClose]);
 
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        {/* TO DO: change icon when icons are ready */}
-        <button className={styles.closeButton} onClick={onClose}>
-          &times;
+    <dialog
+      ref={dialogRef}
+      className={clsx({ [styles.fullScreen]: fullScreen }, styles.modal)}
+    >
+      <div>
+        {headerContent?.()}
+        <button
+          className={styles.closeButton}
+          onClick={onClose}
+          aria-label="Close modal"
+        >
+          <CloseIcon className={styles.icon} />
         </button>
-        {children}
       </div>
-    </div>
+      {children}
+    </dialog>
   );
 };
 
