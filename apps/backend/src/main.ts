@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import morgan from 'morgan';
@@ -22,6 +23,7 @@ const { port, host, db } = getConfig();
 
 const app = express();
 
+app.use(cookieParser());
 app.use(morgan('tiny'));
 app.use(express.json());
 

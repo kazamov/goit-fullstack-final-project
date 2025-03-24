@@ -9,25 +9,48 @@ import {
   type UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
 
+import { getConfig } from '../../config.js';
+import {
+  COOKIES_EXPIRATION_TIME,
+  COOKIES_SESSION_KEY,
+} from '../../constants/cookies.js';
 import HttpError from '../../helpers/HttpError.js';
 
 import type { OwnRecipeQuery } from './service.js';
 import * as service from './service.js';
 
+const config = getConfig();
+
 export async function createUser(req: Request, res: Response) {
   const { body } = req;
 
-  const user = await service.createUser(body as CreateUserPayload);
+  const [user, token] = await service.createUser(body as CreateUserPayload);
 
-  res.status(201).json(user);
+  res
+    .cookie(COOKIES_SESSION_KEY, token, {
+      httpOnly: true,
+      secure: config.isProduction,
+      sameSite: 'strict',
+      maxAge: COOKIES_EXPIRATION_TIME,
+    })
+    .status(201)
+    .json({ user });
 }
 
 export async function loginUser(req: Request, res: Response) {
   const { body } = req;
 
-  const user = await service.loginUser(body as LoginUserPayload);
+  const [user, token] = await service.loginUser(body as LoginUserPayload);
 
-  res.status(200).json(user);
+  res
+    .cookie(COOKIES_SESSION_KEY, token, {
+      httpOnly: true,
+      secure: config.isProduction,
+      sameSite: 'strict',
+      maxAge: COOKIES_EXPIRATION_TIME,
+    })
+    .status(200)
+    .json({ user });
 }
 
 export async function logoutUser(req: Request, res: Response) {
@@ -35,7 +58,14 @@ export async function logoutUser(req: Request, res: Response) {
 
   await service.logoutUser(id);
 
-  res.status(204).send();
+  res
+    .clearCookie(COOKIES_SESSION_KEY, {
+      httpOnly: true,
+      secure: config.isProduction,
+      sameSite: 'strict',
+    })
+    .status(204)
+    .send();
 }
 
 export async function getCurrentUser(req: Request, res: Response) {

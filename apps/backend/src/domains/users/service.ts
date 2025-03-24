@@ -56,7 +56,7 @@ export async function findUser(
 
 export async function createUser(
   payload: CreateUserPayload,
-): Promise<CreateUserResponse> {
+): Promise<[CreateUserResponse, string]> {
   const { name, email, password } = payload;
   const user = await findUser({ email });
 
@@ -80,12 +80,12 @@ export async function createUser(
 
   createdUser.update({ token }, { returning: true });
 
-  return CreateUserResponseSchema.parse(createdUser.toJSON());
+  return [CreateUserResponseSchema.parse(createdUser.toJSON()), token];
 }
 
 export async function loginUser(
   payload: LoginUserPayload,
-): Promise<LoginUserResponse> {
+): Promise<[LoginUserResponse, string]> {
   const { email, password } = payload;
   const user = await UserDTO.findOne({ where: { email } });
 
@@ -104,7 +104,7 @@ export async function loginUser(
 
   await user.update({ token }, { returning: true });
 
-  return LoginUserResponseSchema.parse(user.toJSON());
+  return [LoginUserResponseSchema.parse(user.toJSON()), token];
 }
 
 export async function logoutUser(id: string): Promise<void> {
