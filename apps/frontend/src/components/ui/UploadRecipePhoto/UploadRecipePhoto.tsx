@@ -4,6 +4,8 @@ import { useState } from 'react';
 import styles from './UploadRecipePhoto.module.css';
 
 const UploadRecipePhoto = () => {
+  // ToDo: dispatch selected image to "recipes" redux store
+  // or declare and submit it in the parent component
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
