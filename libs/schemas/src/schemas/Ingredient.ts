@@ -21,3 +21,13 @@ export const GetIngredientResponseSchema = z.array(
 );
 
 export type GetIngredientResponse = z.infer<typeof GetIngredientResponseSchema>;
+
+export const IngredientCardObjectSchema = IngredientSchema.pick({
+  id: true,
+  name: true,
+  imageUrl: true,
+}).extend({
+  amount: z.string(),
+});
+
+export type IngredientCardObject = z.infer<typeof IngredientCardObjectSchema>;
