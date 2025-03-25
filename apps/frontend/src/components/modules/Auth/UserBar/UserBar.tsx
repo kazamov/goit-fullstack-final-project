@@ -62,7 +62,7 @@ const UserBar = () => {
         <span className={styles.username}>{user?.name || 'User'}</span>
         <svg className={styles.chevron}>
           <use
-            href={`/src/images/icons.svg#icon-chevron-${isMenuOpen ? 'up' : 'down'}`}
+            href={`/images/icons.svg#icon-chevron-${isMenuOpen ? 'up' : 'down'}`}
           />
         </svg>
       </button>
