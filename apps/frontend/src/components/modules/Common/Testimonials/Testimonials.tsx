@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import clsx from 'clsx';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -17,7 +18,7 @@ interface TestimonialsProps {
   testimonials: GetTestimonialResponse;
 }
 
-const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
+const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
   return (
     <section id="testimonials" className={clsx(styles.section)}>
       <Container>
@@ -28,7 +29,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
           />
           <MainTitle title="Testimonials" className="testimonialsMainTitle" />
           <svg className={clsx(styles.icon)}>
-            <use href={`/src/images/icons.svg#icon-quotes`} />
+            <use href={`/images/icons.svg#icon-quotes`} />
           </svg>
           <Swiper
             spaceBetween={30}

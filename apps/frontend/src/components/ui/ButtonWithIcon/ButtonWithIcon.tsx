@@ -27,7 +27,7 @@ const ButtonWithIcon = ({
       onClick={clickHandler}
     >
       <svg className={styles.icon}>
-        <use href={`/src/images/icons.svg#${iconType}`} />
+        <use href={`/images/icons.svg#${iconType}`} />
       </svg>
     </button>
   );

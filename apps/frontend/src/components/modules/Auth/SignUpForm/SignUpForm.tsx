@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 
-import { CreateUserPayloadSchema } from '@goit-fullstack-final-project/schemas';
+import type { CreateUserResponse } from '@goit-fullstack-final-project/schemas';
+import {
+  CreateUserPayloadSchema,
+  CreateUserResponseSchema,
+} from '@goit-fullstack-final-project/schemas';
 
+import { tryCatch } from '../../../../helpers/catchError';
+import { post } from '../../../../helpers/http';
+import { setCurrentUser } from '../../../../redux/users/slice';
 import Button from '../../../ui/Button/Button';
 
 import styles from './SignUpForm.module.css';
@@ -16,6 +24,7 @@ type FormData = {
 };
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -27,9 +36,23 @@ const SignUpForm = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
-  };
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      const [error, user] = await tryCatch(
+        post<CreateUserResponse>('/api/users/register', data, {
+          schema: CreateUserResponseSchema,
+        }),
+      );
+
+      if (error) {
+        console.error('Registration failed:', error);
+        return;
+      }
+
+      dispatch(setCurrentUser(user));
+    },
+    [dispatch],
+  );
 
   const nameValue = watch('name');
   const emailValue = watch('email');
@@ -118,3 +141,6 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
+function dispatch(arg0: any) {
+  throw new Error('Function not implemented.');
+}

@@ -1,6 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { tryCatch } from '../../../../helpers/catchError';
+import { post } from '../../../../helpers/http';
+import { setCurrentUser } from '../../../../redux/users/slice';
 import LogOutModal from '../LogOutModal/LogOutModal';
 
 import styles from './UserBar.module.css';
@@ -13,12 +17,17 @@ const user = {
 };
 
 const UserBar = () => {
+  const dispatch = useDispatch();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogOutOpen, setIsLogOutOpen] = useState(false);
-  const onConfirm = () => {
-    console.log('logout');
-  };
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const onConfirm = useCallback(async () => {
+    await tryCatch(post('/api/users/logout', {}));
+
+    dispatch(setCurrentUser(null));
+  }, [dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,11 +59,12 @@ const UserBar = () => {
         ) : (
           <div className={styles.defaultAvatar}>{initial}</div>
         )}
-        <div>
-          <span className={styles.username}>{user?.name || 'User'}</span>
-          {/* TO DO: change icon */}
-          <span className={styles.chevron}>-</span>
-        </div>
+        <span className={styles.username}>{user?.name || 'User'}</span>
+        <svg className={styles.chevron}>
+          <use
+            href={`/images/icons.svg#icon-chevron-${isMenuOpen ? 'up' : 'down'}`}
+          />
+        </svg>
       </button>
 
       {isMenuOpen && (

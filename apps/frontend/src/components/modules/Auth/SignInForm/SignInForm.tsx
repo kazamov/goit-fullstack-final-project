@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 
-import { LoginUserPayloadSchema } from '@goit-fullstack-final-project/schemas';
+import type { LoginUserResponse } from '@goit-fullstack-final-project/schemas';
+import {
+  LoginUserPayloadSchema,
+  LoginUserResponseSchema,
+} from '@goit-fullstack-final-project/schemas';
 
+import { tryCatch } from '../../../../helpers/catchError';
+import { post } from '../../../../helpers/http';
+import { setCurrentUser } from '../../../../redux/users/slice';
 import Button from '../../../ui/Button/Button';
 
 import styles from './SignInForm.module.css';
@@ -15,6 +23,8 @@ type FormData = {
 };
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -26,9 +36,23 @@ const SignInForm = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
-  };
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      const [error, user] = await tryCatch(
+        post<LoginUserResponse>('/api/users/login', data, {
+          schema: LoginUserResponseSchema,
+        }),
+      );
+
+      if (error) {
+        console.error('Login failed:', error);
+        return;
+      }
+
+      dispatch(setCurrentUser(user));
+    },
+    [dispatch],
+  );
 
   const emailValue = watch('email');
   const passwordValue = watch('password');
