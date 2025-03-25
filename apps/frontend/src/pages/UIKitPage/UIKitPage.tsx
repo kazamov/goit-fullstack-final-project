@@ -8,6 +8,7 @@ import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
 import PathInfo from '../../components/ui/PathInfo/PathInfo';
+import RecipeCard from '../../components/ui/RecipeCard/RecipeCard';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import UploadRecipePhoto from '../../components/ui/UploadRecipePhoto/UploadRecipePhoto';
 
@@ -254,6 +255,45 @@ const UIKitPage = () => {
         <h2 className={styles.kitTitle}>Recipe photo uploader</h2>
         <div className={clsx(styles.kitCard, styles.kitCardWidth)}>
           <UploadRecipePhoto />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Recipe Card</h2>
+        <div className={clsx(styles.kitCard, styles.kitCardRecipe)}>
+          <RecipeCard
+            recipe={{
+              id: '6462a8f74c3d0ddd28897fcd',
+              title: 'Battenberg Cake',
+              description:
+                'A classic British cake made with almond sponge cake and covered with marzipan. It is traditionally pink and yellow checkered in appearance.',
+              thumb:
+                'https://ftp.goit.study/img/so-yummy/preview/Battenberg%20Cake.jpg',
+              owner: {
+                userId: '64c8d958249fae54bae90bb7',
+                name: 'Larry Pageim',
+                avatarUrl:
+                  '//www.gravatar.com/avatar/5d5a7360e20c02ea336f0440a148e8bf?s=200&r=pg&d=retro',
+              },
+              category: {
+                categoryId: '6462a6cd4c3d0ddd28897f8f',
+                categoryName: 'Dessert',
+              },
+              area: {
+                areaId: '6462a6f04c3d0ddd28897fa1',
+                areaName: 'British',
+              },
+            }}
+            isFavorite={false}
+            onOpenProfile={() =>
+              console.log(
+                `Check auth and open a profile for user '64c8d958249fae54bae90bb7'`,
+              )
+            }
+            onToggleFavorite={() =>
+              console.log('Check auth and toggle favorite')
+            }
+            onOpenRecipe={() => console.log('Open a recipe')}
+          />
         </div>
       </div>
     </div>

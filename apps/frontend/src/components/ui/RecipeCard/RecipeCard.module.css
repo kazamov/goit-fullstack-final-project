@@ -1,0 +1,106 @@
+.image {
+  border-radius: var(--border-radius);
+  height: 275px;
+  width: 100%;
+  object-fit: cover;
+  margin: 0 0 16px 0;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .image {
+    height: 230px;
+    border-radius: 20px;
+  }
+}
+
+.title {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .title {
+    font-size: 18px;
+  }
+}
+
+.description {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--dark-gray);
+  margin-bottom: 8px;
+  /* makes the text overflow wrap with "…" at the end */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: normal;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius);
+  object-fit: cover;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.ownerName {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--black);
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .ownerName {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}

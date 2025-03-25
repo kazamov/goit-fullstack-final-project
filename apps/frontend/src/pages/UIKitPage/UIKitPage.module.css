@@ -29,3 +29,10 @@
 .kitCardWidth {
   width: 407px;
 }
+
+.kitCardRecipe {
+  width: 290px;
+  padding: 0;
+  border: none;
+  outline: 2px dashed #a855f7;
+}
