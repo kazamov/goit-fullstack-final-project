@@ -7,9 +7,12 @@ import clsx from 'clsx';
 import type {
   GetPaginatedRecipeShort,
   GetRecipeResponse,
+  GetRecipeShort,
 } from '@goit-fullstack-final-project/schemas';
 import { GetPaginatedRecipeShortSchema } from '@goit-fullstack-final-project/schemas';
 
+import { tryCatch } from '../../../helpers/catchError';
+import { del, get, post } from '../../../helpers/http';
 import { selectCurrentUser } from '../../../redux/users/selectors';
 import Container from '../../layout/Container/Container';
 import RecipeCard from '../../ui/RecipeCard/RecipeCard';
@@ -32,24 +35,27 @@ const PopularRecipes: FC<PopularRecipesProps> = ({ recipes }) => {
   });
 
   useEffect(() => {
-    if (isUserLoggedIn) {
-      fetch('/api/users/favorites')
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          throw new Error('Network response was not ok.');
-        })
-        .then((data) => {
-          setFavorites(GetPaginatedRecipeShortSchema.parse(data));
-        })
-        .catch((error) => {
-          console.error(
-            'There has been a problem with your fetch operation:',
-            error,
-          );
-        });
-    }
+    if (!isUserLoggedIn) return;
+
+    const fetchFavorites = async () => {
+      const [error, data] = await tryCatch(
+        get<GetPaginatedRecipeShort>('/api/users/favorites', {
+          schema: GetPaginatedRecipeShortSchema,
+        }),
+      );
+
+      if (error) {
+        console.error(
+          'There has been a problem with your fetch operation:',
+          error,
+        );
+        return;
+      }
+
+      setFavorites(data);
+    };
+
+    fetchFavorites();
   }, [isUserLoggedIn]);
 
   const handleOpenProfile = (userId: string) => {
@@ -61,54 +67,49 @@ const PopularRecipes: FC<PopularRecipesProps> = ({ recipes }) => {
     }
   };
 
-  const handleToggleFavorite = (recipeId: string, newState: boolean) => {
-    if (isUserLoggedIn) {
-      // Fetch favorites update only if user is logged in
-      fetch(`/api/recipes/${recipeId}/favorite`, {
-        method: newState ? 'POST' : 'DELETE',
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Something went wrong');
-          }
-          setFavorites((prev) => {
-            if (newState) {
-              // Find recipe in the list
-              const foundRecipe = recipes.find((r) => r.id === recipeId);
-
-              // If not found — no actions
-              if (!foundRecipe) {
-                return prev;
-              }
-
-              // Create short recipe
-              const shortRecipe = {
-                id: foundRecipe.id,
-                title: foundRecipe.title,
-                thumb: foundRecipe.thumb,
-                description: foundRecipe.description,
-              };
-
-              return {
-                ...prev,
-                items: [...prev.items, shortRecipe],
-              };
-            }
-
-            // If newState = false — remove recipe
-            return {
-              ...prev,
-              items: prev.items.filter((item) => item.id !== recipeId),
-            };
-          });
-        })
-        .catch((error) => {
-          console.error('Error updating favorites:', error);
-        });
-    } else {
+  const handleToggleFavorite = async (recipeId: string, newState: boolean) => {
+    if (!isUserLoggedIn) {
       console.log('You need to login first!');
-      // TODO: Відкриття модального вікна login
+      // TODO: Відкрити модальне вікно логіну
+      return;
     }
+
+    const [error] = await tryCatch(
+      newState
+        ? post(`/api/recipes/${recipeId}/favorite`, {})
+        : del(`/api/recipes/${recipeId}/favorite`),
+    );
+
+    if (error) {
+      console.error('Error updating favorites:', error);
+      return;
+    }
+
+    setFavorites((prev) => {
+      if (newState) {
+        // Find recipe in list for adding
+        const foundRecipe = recipes.find((r) => r.id === recipeId);
+        if (!foundRecipe) return prev;
+
+        const shortRecipe: GetRecipeShort = {
+          id: foundRecipe.id,
+          title: foundRecipe.title,
+          thumb: foundRecipe.thumb,
+          description: foundRecipe.description,
+        };
+
+        return {
+          ...prev,
+          items: [...prev.items, shortRecipe],
+        };
+      }
+
+      // Remove recipe from favorites list
+      return {
+        ...prev,
+        items: prev.items.filter((item) => item.id !== recipeId),
+      };
+    });
   };
 
   const handleOpenRecipe = (recipeId: string) => {

@@ -6,27 +6,32 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import PopularRecipes from '../../components/modules/PopularRecipes/PopularRecipes';
+import { tryCatch } from '../../helpers/catchError';
+import { get } from '../../helpers/http';
 
 const RecipePage = () => {
   const [popularRecipes, setPopularRecipes] = useState<GetRecipeResponse[]>([]);
 
   useEffect(() => {
-    fetch('/api/recipes/popular')
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error('Network response was not ok.');
-      })
-      .then((data) => {
-        setPopularRecipes(GetRecipeListResponseSchema.parse(data));
-      })
-      .catch((error) => {
+    const fetchPopularRecipes = async () => {
+      const [error, data] = await tryCatch(
+        get<GetRecipeResponse[]>('/api/recipes/popular', {
+          schema: GetRecipeListResponseSchema,
+        }),
+      );
+
+      if (error) {
         console.error(
           'There has been a problem with your fetch operation:',
           error,
         );
-      });
+        return;
+      }
+
+      setPopularRecipes(data);
+    };
+
+    fetchPopularRecipes();
   }, []);
 
   return (
