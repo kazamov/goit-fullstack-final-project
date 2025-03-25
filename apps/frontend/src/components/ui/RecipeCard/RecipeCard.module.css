@@ -22,6 +22,14 @@
   text-transform: uppercase;
   color: var(--black);
   margin-bottom: 8px;
+  /* makes the text overflow wrap with "…" at the end */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 /* mobile */
@@ -44,7 +52,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  word-break: break-all;
+  overflow-wrap: break-word;
   white-space: normal;
 }
 
