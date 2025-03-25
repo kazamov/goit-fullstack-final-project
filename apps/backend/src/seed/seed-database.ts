@@ -106,7 +106,7 @@ async function seedCategories(): Promise<void> {
   console.log('Seeding Categories...');
   try {
     const categoriesSeedData = await loadFromFile(
-      path.resolve(dataFolderPath, 'categories.json'),
+      path.resolve(dataFolderPath, 'categories-with-images.json'),
     );
 
     if (categoriesSeedData.length > 0) {
@@ -115,6 +115,7 @@ async function seedCategories(): Promise<void> {
           id: category._id.$oid,
           name: category.name,
           description: category.description,
+          images: category.images,
         })),
       );
       console.log('Categories seeding completed successfully.');

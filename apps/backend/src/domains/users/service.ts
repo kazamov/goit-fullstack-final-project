@@ -31,7 +31,7 @@ import {
 import HttpError from '../../helpers/HttpError.js';
 import { createToken } from '../../helpers/jwt.js';
 import { hashPassword, verifyPassword } from '../../helpers/password.js';
-import { cloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
+import { CloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
 import { RecipeDTO, UserDTO } from '../../infrastructure/db/index.js';
 import { UserFavoriteRecipesDTO } from '../../infrastructure/db/models/UserFavoriteRecipes.js';
 import { UserFollowersDTO } from '../../infrastructure/db/models/UserFollowers.js';
@@ -45,6 +45,8 @@ export type OwnRecipeQuery = {
   page?: string | number;
   perPage?: string | number;
 };
+
+const cloudinaryClient = CloudinaryClient.getInstance();
 
 export async function findUser(
   query: UserQuery,

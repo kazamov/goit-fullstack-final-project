@@ -21,7 +21,7 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import HttpError from '../../helpers/HttpError.js';
-import { cloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
+import { CloudinaryClient } from '../../infrastructure/cloudinaryClient/cloudinaryClient.js';
 import {
   AreaDTO,
   CategoryDTO,
@@ -32,6 +32,8 @@ import {
   UserDTO,
   UserFavoriteRecipesDTO,
 } from '../../infrastructure/db/index.js';
+
+const cloudinaryClient = CloudinaryClient.getInstance();
 
 export type RecipeQuery = {
   categoryId?: string;
