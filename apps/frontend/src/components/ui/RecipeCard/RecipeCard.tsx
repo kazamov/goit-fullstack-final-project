@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import { useState } from 'react';
 import clsx from 'clsx';
 
@@ -16,7 +17,7 @@ interface RecipeCardProps {
   onOpenRecipe?: (recipeId: string) => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({
+const RecipeCard: FC<RecipeCardProps> = ({
   recipe,
   isFavorite = false,
   onToggleFavorite,
