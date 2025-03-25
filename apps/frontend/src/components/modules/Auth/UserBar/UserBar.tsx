@@ -59,11 +59,12 @@ const UserBar = () => {
         ) : (
           <div className={styles.defaultAvatar}>{initial}</div>
         )}
-        <div>
-          <span className={styles.username}>{user?.name || 'User'}</span>
-          {/* TO DO: change icon */}
-          <span className={styles.chevron}>-</span>
-        </div>
+        <span className={styles.username}>{user?.name || 'User'}</span>
+        <svg className={styles.chevron}>
+          <use
+            href={`/src/images/icons.svg#icon-chevron-${isMenuOpen ? 'up' : 'down'}`}
+          />
+        </svg>
       </button>
 
       {isMenuOpen && (
