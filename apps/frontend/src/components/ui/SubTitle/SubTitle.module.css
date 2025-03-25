@@ -14,4 +14,5 @@
 
 .testimonialsSubTitle {
   color: var(--dark-gray);
+  max-width: 100%;
 }
