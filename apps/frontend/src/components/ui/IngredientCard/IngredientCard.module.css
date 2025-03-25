@@ -1,0 +1,63 @@
+.ingredientCard {
+  display: flex;
+  align-items: center;
+  width: 155px;
+  height: 75px;
+  gap: 10px;
+  position: relative;
+}
+
+.ingredientInfoWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.ingredientImageWrapper {
+  border: 1px solid var(--gray);
+  border-radius: 15px;
+  width: 75px;
+  height: 75px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ingredientImage {
+  width: 55px;
+  height: 55px;
+  object-position: center;
+}
+
+.ingredientInfoWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.ingredientTitle {
+  color: var(--black);
+}
+
+.ingredientAmount {
+  color: var(--gray);
+}
+
+.deleteButton {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  display: flex;
+}
+
+.deleteButtonIcon {
+  width: 16px;
+  height: 16px;
+}

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
 import Button from '../../components/ui/Button/Button';
 import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
+import IngredientCard from '../../components/ui/IngredientCard/IngredientCard';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
@@ -35,6 +36,29 @@ const UIKitPage = () => {
     window.addEventListener('resize', adjustHeight);
     return () => window.removeEventListener('resize', adjustHeight);
   }, []);
+
+  const ingredientsProps = [
+    {
+      ingredient: {
+        id: '640c2dd963a319ea671e36f9',
+        name: 'Gruyère',
+        imageUrl:
+          'https://ftp.goit.study/img/so-yummy/ingredients/640c2dd963a319ea671e36f9.png',
+        amount: '3',
+      },
+      onDelete: () =>
+        console.log(`Delete ingredient with id: ${'640c2dd963a319ea671e36f9'}`),
+    },
+    {
+      ingredient: {
+        id: '640c2dd963a319ea671e37f5',
+        name: 'Cabbage',
+        imageUrl:
+          'https://ftp.goit.study/img/so-yummy/ingredients/640c2dd963a319ea671e37f5.png',
+        amount: '400 g',
+      },
+    },
+  ];
 
   return (
     <div className={styles.kitContainer}>
@@ -294,6 +318,14 @@ const UIKitPage = () => {
             }
             onOpenRecipe={() => console.log('Open a recipe')}
           />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Ingredient Card</h2>
+        <div className={clsx(styles.kitCard)}>
+          {ingredientsProps.map((props) => (
+            <IngredientCard key={props.ingredient.id} {...props} />
+          ))}
         </div>
       </div>
     </div>
