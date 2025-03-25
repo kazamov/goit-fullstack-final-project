@@ -1,10 +1,9 @@
 import type { RootState } from '../store';
 
-export const selectCategories = (state: RootState) =>
-  state.persisted.categories.items;
+export const selectCategories = (state: RootState) => state.categories.items;
 export const selectCategoriesLoading = (state: RootState) =>
-  state.persisted.categories.loading;
+  state.categories.loading;
 export const selectCategoriesError = (state: RootState) =>
-  state.persisted.categories.error;
+  state.categories.error;
 export const selectCurrentCategory = (state: RootState) =>
-  state.persisted.categories.currentCategory;
+  state.categories.currentCategory;

@@ -1,40 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import persistReducer from 'redux-persist/es/persistReducer';
-import persistStore from 'redux-persist/es/persistStore';
-import storage from 'redux-persist/lib/storage';
 
 import { categoriesReducer } from './categories/slice';
 import { testimonialsReducer } from './testimonials/slice';
-
-const persistConfig = {
-  key: 'foodies',
-  storage,
-};
-
-const persistedReducer = persistReducer(
-  persistConfig,
-  combineReducers({
-    testimonials: testimonialsReducer,
-    categories: categoriesReducer,
-    // additional reducers can be added here
-  }),
-);
+import { usersReducer } from './users/slice';
 
 const rootReducer = combineReducers({
-  persisted: persistedReducer,
+  testimonials: testimonialsReducer,
+  users: usersReducer,
+  categories: categoriesReducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['persist/PERSIST'],
-      },
-    }),
 });
-
-export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
 export type RootState = ReturnType<AppStore['getState']>;

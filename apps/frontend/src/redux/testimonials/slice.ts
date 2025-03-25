@@ -23,8 +23,8 @@ export const fetchTestimonials = createAsyncThunk(
       if (!response.ok) throw new Error('Failed to fetch testimonials');
       const data = await response.json();
       return data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue((error as Error).message);
     }
   },
 );

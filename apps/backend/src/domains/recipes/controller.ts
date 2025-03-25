@@ -115,7 +115,7 @@ export async function removeRecipeFromFavorites(
     throw new HttpError('Recipe was not in favorites', 404);
   }
 
-  res.status(204).send();
+  res.status(200).send({ message: 'Recipe removed from favorites' });
 }
 
 export async function deleteRecipe(req: Request, res: Response) {

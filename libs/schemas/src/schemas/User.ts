@@ -15,8 +15,6 @@ export const UserSchema = z.object({
   updatedAt: z.date(),
 });
 
-export type User = z.infer<typeof UserSchema>;
-
 export type UserSchemaAttributes = z.infer<typeof UserSchema>;
 
 export const JwtUserSchema = UserSchema.pick({ email: true, id: true });
@@ -24,12 +22,20 @@ export const JwtUserSchema = UserSchema.pick({ email: true, id: true });
 export type JwtUserPayload = z.infer<typeof JwtUserSchema>;
 
 // Get schemas
-export const GetCurrentUserResponseSchema = UserSchema.pick({
+const UserShortDetailsSchema = UserSchema.pick({
   id: true,
   name: true,
   email: true,
   avatarUrl: true,
 });
+
+export type UserShortDetails = z.infer<typeof UserShortDetailsSchema>;
+
+export const GetCurrentUserResponseSchema = UserShortDetailsSchema;
+
+export type GetCurrentUserResponse = z.infer<
+  typeof GetCurrentUserResponseSchema
+>;
 
 // Create schemas
 export const CreateUserPayloadSchema = UserSchema.pick({
@@ -40,12 +46,7 @@ export const CreateUserPayloadSchema = UserSchema.pick({
 
 export type CreateUserPayload = z.infer<typeof CreateUserPayloadSchema>;
 
-export const CreateUserResponseSchema = UserSchema.pick({
-  id: true,
-  name: true,
-  email: true,
-  avatarUrl: true,
-});
+export const CreateUserResponseSchema = UserShortDetailsSchema;
 
 export type CreateUserResponse = z.infer<typeof CreateUserResponseSchema>;
 
@@ -56,18 +57,14 @@ export const LoginUserPayloadSchema = UserSchema.pick({
 
 export type LoginUserPayload = z.infer<typeof LoginUserPayloadSchema>;
 
-export const LoginUserResponseSchema = UserSchema.pick({
-  id: true,
-  name: true,
-  email: true,
-  avatarUrl: true,
-});
+export const LoginUserResponseSchema = UserShortDetailsSchema;
 
 export type LoginUserResponse = z.infer<typeof LoginUserResponseSchema>;
 
 // Update schemas
 
 // Details schemas
+
 export const CurrentUserDetailsSchema = UserSchema.pick({
   id: true,
   name: true,
