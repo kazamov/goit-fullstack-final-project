@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
@@ -11,6 +12,7 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
+import { delay } from '../../../../helpers/delay';
 import { post } from '../../../../helpers/http';
 import { setModalOpened } from '../../../../redux/ui/slice';
 import { setCurrentUser } from '../../../../redux/users/slice';
@@ -31,16 +33,19 @@ const SignInForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
     watch,
     reset,
+    setFocus,
   } = useForm<FormData>({
     resolver: zodResolver(LoginUserPayloadSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
   const onSubmit = useCallback(
     async (data: FormData) => {
+      await delay(300);
+
       const [error, user] = await tryCatch(
         post<LoginUserResponse>('/api/users/login', data, {
           schema: LoginUserResponseSchema,
@@ -48,7 +53,8 @@ const SignInForm = () => {
       );
 
       if (error) {
-        console.error('Login failed:', error);
+        toast.error(error.message);
+        setFocus('email', { shouldSelect: true });
         return;
       }
 
@@ -56,7 +62,7 @@ const SignInForm = () => {
       dispatch(setModalOpened({ modal: 'login', opened: false }));
       reset();
     },
-    [dispatch, reset],
+    [dispatch, reset, setFocus],
   );
 
   const emailValue = watch('email');
@@ -130,7 +136,7 @@ const SignInForm = () => {
       <Button
         kind="primary"
         type="submit"
-        disabled={!isValid || isSubmitting}
+        disabled={isSubmitting}
         busy={isSubmitting}
       >
         Sign in

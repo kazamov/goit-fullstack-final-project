@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
@@ -11,6 +12,7 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
+import { delay } from '../../../../helpers/delay';
 import { post } from '../../../../helpers/http';
 import type { AppDispatch } from '../../../../redux/store';
 import { setModalOpened } from '../../../../redux/ui/slice';
@@ -32,16 +34,19 @@ const SignUpForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
     watch,
     reset,
+    setFocus,
   } = useForm<FormData>({
     resolver: zodResolver(CreateUserPayloadSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
   const onSubmit = useCallback(
     async (data: FormData) => {
+      await delay(300);
+
       const [error, user] = await tryCatch(
         post<CreateUserResponse>('/api/users/register', data, {
           schema: CreateUserResponseSchema,
@@ -49,7 +54,8 @@ const SignUpForm = () => {
       );
 
       if (error) {
-        console.error('Registration failed:', error);
+        toast.error(error.message);
+        setFocus('email', { shouldSelect: true });
         return;
       }
 
@@ -57,7 +63,7 @@ const SignUpForm = () => {
       dispatch(setModalOpened({ modal: 'register', opened: false }));
       reset();
     },
-    [dispatch, reset],
+    [dispatch, reset, setFocus],
   );
 
   const nameValue = watch('name');
@@ -91,6 +97,7 @@ const SignUpForm = () => {
             className="input"
             type="text"
             placeholder="Name*"
+            autoComplete="off"
             {...register('name')}
           />
           {!!errors.name && (
@@ -106,6 +113,7 @@ const SignUpForm = () => {
           <input
             className="input"
             placeholder="Email*"
+            autoComplete="off"
             {...register('email')}
           />
           {!!errors.email && (
@@ -122,6 +130,7 @@ const SignUpForm = () => {
             className="input"
             type={showPassword ? 'text' : 'password'}
             placeholder="Password*"
+            autoComplete="off"
             {...register('password')}
           />
           {passwordValue?.trim() && (
@@ -131,7 +140,13 @@ const SignUpForm = () => {
               onClick={() => setShowPassword(!showPassword)}
               aria-label="Toggle password visibility"
             >
-              {showPassword ? '+' : '-'}
+              <svg className={styles.togglePasswordVisibility}>
+                {showPassword ? (
+                  <use href="/images/icons.svg#icon-eye" />
+                ) : (
+                  <use href="/images/icons.svg#icon-eye-off" />
+                )}
+              </svg>
             </button>
           )}
           {!!errors.password && (
@@ -142,7 +157,7 @@ const SignUpForm = () => {
       <Button
         kind="primary"
         type="submit"
-        disabled={!isValid || isSubmitting}
+        disabled={isSubmitting}
         busy={isSubmitting}
       >
         Create

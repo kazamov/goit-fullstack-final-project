@@ -5,7 +5,7 @@
     slideUp 0.3s;
   width: 560px;
   padding: 80px;
-  border: none;
+  border: 1px solid var(--black);
   background-color: var(--white);
   border-radius: var(--border-radius);
 
@@ -18,13 +18,6 @@
 
   &::backdrop {
     display: none;
-    animation: fadeOut 0.3s;
-  }
-
-  &[open]::backdrop {
-    display: block;
-    animation: fadeIn 0.3s;
-    background-color: rgba(0, 0, 0, 0.5);
   }
 
   & .closeButton {
@@ -126,11 +119,6 @@
 
     &[open] {
       animation: fadeIn 0.3s;
-    }
-
-    &::backdrop,
-    &::backdrop[open] {
-      display: none;
     }
 
     & .closeButton {

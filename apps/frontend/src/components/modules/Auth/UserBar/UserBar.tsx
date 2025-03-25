@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
 import type { UserShortDetails } from '@goit-fullstack-final-project/schemas';
@@ -23,6 +23,7 @@ interface UserBarProps {
 
 const UserBar: FC<UserBarProps> = ({ currentUser }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isLogoutModalOpen = useSelector(selectIsLogoutModalOpened);
 
@@ -43,7 +44,8 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
 
     dispatch(setCurrentUser(null));
     dispatch(setModalOpened({ modal: 'logout', opened: false }));
-  }, [dispatch]);
+    navigate('/');
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
