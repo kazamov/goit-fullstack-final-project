@@ -9,3 +9,10 @@
   flex-direction: column;
   gap: 24px;
 }
+
+.togglePasswordVisibility {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  cursor: pointer;
+}

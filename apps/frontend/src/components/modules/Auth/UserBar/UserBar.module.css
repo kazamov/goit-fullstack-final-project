@@ -51,6 +51,11 @@
   width: 18px;
   fill: none;
   stroke: var(--white);
+  transition: transform 0.2s ease-in-out;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
 }
 
 .dropdownMenu {
@@ -63,9 +68,43 @@
   background-color: var(--black);
   border-radius: 16px;
   padding: 16px;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 8px;
+  animation: dropdownDisappear 0.3s forwards;
+}
+
+.dropdownMenuVisible {
+  display: flex;
+  animation: dropdownAppear 0.3s forwards;
+}
+
+@keyframes dropdownAppear {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dropdownDisappear {
+  0% {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    display: none;
+    transform: translateY(-20px);
+    opacity: 0;
+  }
 }
 
 .menuItem,

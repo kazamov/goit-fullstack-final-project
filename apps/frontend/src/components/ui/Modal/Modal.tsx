@@ -1,5 +1,5 @@
-import type { FC, ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
+import type { FC, MouseEvent, ReactNode } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import styles from './Modal.module.css';
@@ -12,37 +12,6 @@ interface ModalProps {
   fullScreen?: boolean;
 }
 
-interface CloseIconProps {
-  className?: string;
-}
-
-const CloseIcon: FC<CloseIconProps> = ({ className }) => {
-  return (
-    <svg
-      className={className}
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <path
-        d="M18 6L6 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M6 6L18 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
 const Modal: FC<ModalProps> = ({
   isOpen,
   headerContent,
@@ -51,6 +20,35 @@ const Modal: FC<ModalProps> = ({
   children,
 }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleCloseDialog = useCallback(() => {
+    const dialog = dialogRef.current;
+    if (dialog) {
+      dialog.close();
+    }
+  }, []);
+
+  const handleAnimationEnd = useCallback(() => {
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.open) {
+      onClose();
+    }
+  }, [onClose]);
+
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const dialog = dialogRef.current;
+    if (dialog) {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width;
+      if (!isInDialog) {
+        dialog.close();
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -63,33 +61,40 @@ const Modal: FC<ModalProps> = ({
     } else if (dialog.open) {
       dialog.close();
     }
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) {
+  useLayoutEffect(() => {
+    if (!fullScreen) {
       return;
     }
 
-    dialog.addEventListener('close', onClose);
+    if (isOpen) {
+      document.body.style.overflow = 'clip';
+    } else {
+      document.body.style.overflow = '';
+    }
     return () => {
-      dialog.removeEventListener('close', onClose);
+      document.body.style.overflow = '';
     };
-  }, [onClose]);
+  }, [fullScreen, isOpen]);
 
   return (
     <dialog
       ref={dialogRef}
       className={clsx({ [styles.fullScreen]: fullScreen }, styles.modal)}
+      onAnimationEnd={handleAnimationEnd}
+      onClick={handleClickOutside}
     >
       <div>
         {headerContent?.()}
         <button
           className={styles.closeButton}
-          onClick={onClose}
+          onClick={handleCloseDialog}
           aria-label="Close modal"
         >
-          <CloseIcon className={styles.icon} />
+          <svg className={styles.icon}>
+            <use href="/images/icons.svg#icon-close" />
+          </svg>
         </button>
       </div>
       {children}

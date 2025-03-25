@@ -7,6 +7,7 @@
   cursor: pointer;
   border: none;
   text-transform: uppercase;
+  gap: 4px;
 }
 
 .primary {
@@ -62,5 +63,20 @@
     font-size: 16px;
     line-height: 20px;
     padding: 14px 32px;
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

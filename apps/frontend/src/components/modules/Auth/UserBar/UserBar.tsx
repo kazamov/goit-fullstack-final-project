@@ -1,33 +1,51 @@
+import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+
+import type { UserShortDetails } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { post } from '../../../../helpers/http';
+import {
+  selectIsLogoutModalOpened,
+  setModalOpened,
+} from '../../../../redux/ui/slice';
 import { setCurrentUser } from '../../../../redux/users/slice';
 import LogOutModal from '../LogOutModal/LogOutModal';
 
 import styles from './UserBar.module.css';
 
-const user = {
-  name: 'John',
-  avatar:
-    'https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FydG9vbnxlbnwwfHwwfHx8MA%3D%3D',
-  id: 1,
-};
+interface UserBarProps {
+  currentUser: UserShortDetails | null;
+}
 
-const UserBar = () => {
+const UserBar: FC<UserBarProps> = ({ currentUser }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isLogoutModalOpen = useSelector(selectIsLogoutModalOpened);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLogOutOpen, setIsLogOutOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const handleLogoutClick = useCallback(() => {
+    setIsMenuOpen(false);
+    dispatch(setModalOpened({ modal: 'logout', opened: true }));
+  }, [dispatch]);
+
+  const handleLogoutClose = useCallback(() => {
+    dispatch(setModalOpened({ modal: 'logout', opened: false }));
+  }, [dispatch]);
 
   const onConfirm = useCallback(async () => {
     await tryCatch(post('/api/users/logout', {}));
 
     dispatch(setCurrentUser(null));
-  }, [dispatch]);
+    dispatch(setModalOpened({ modal: 'logout', opened: false }));
+    navigate('/');
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,51 +63,70 @@ const UserBar = () => {
     };
   }, []);
 
-  const initial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
-
   return (
-    <div className={styles.container} ref={menuRef}>
-      <button
-        type="button"
-        className={styles.profileButton}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        {user?.avatar ? (
-          <img src={user.avatar} alt="User avatar" className={styles.avatar} />
-        ) : (
-          <div className={styles.defaultAvatar}>{initial}</div>
-        )}
-        <span className={styles.username}>{user?.name || 'User'}</span>
-        <svg className={styles.chevron}>
-          <use
-            href={`/images/icons.svg#icon-chevron-${isMenuOpen ? 'up' : 'down'}`}
-          />
-        </svg>
-      </button>
-
-      {isMenuOpen && (
-        <ul className={styles.dropdownMenu}>
-          <li className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>
-            <Link to={`/user/${user.id}`}>Profile</Link>
-          </li>
-          <li className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>
-            <button
-              type="button"
-              className={styles.menuButton}
-              onClick={() => setIsLogOutOpen(true)}
+    <>
+      {currentUser && (
+        <div className={styles.container} ref={menuRef}>
+          <button
+            type="button"
+            className={styles.profileButton}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {currentUser.avatarUrl ? (
+              <img
+                src={currentUser.avatarUrl}
+                alt="User avatar"
+                className={styles.avatar}
+              />
+            ) : (
+              <div className={styles.defaultAvatar}>
+                {currentUser.name
+                  ? currentUser.name.charAt(0).toUpperCase()
+                  : 'U'}
+              </div>
+            )}
+            <span className={styles.username}>
+              {currentUser.name || 'User'}
+            </span>
+            <svg
+              className={clsx(styles.chevron, { [styles.rotated]: isMenuOpen })}
             >
-              Log Out
-            </button>
-          </li>
-        </ul>
-      )}
+              <use href={'/images/icons.svg#icon-chevron-down'} />
+            </svg>
+          </button>
 
+          <ul
+            className={clsx(styles.dropdownMenu, {
+              [styles.dropdownMenuVisible]: isMenuOpen,
+            })}
+          >
+            <li
+              className={styles.menuItem}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Link to={`/user/${currentUser.id}`}>Profile</Link>
+            </li>
+            <li
+              className={styles.menuItem}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <button
+                type="button"
+                className={styles.menuButton}
+                onClick={handleLogoutClick}
+              >
+                Log Out
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
       <LogOutModal
-        isOpen={isLogOutOpen}
+        isOpen={isLogoutModalOpen}
         onConfirm={onConfirm}
-        onClose={() => setIsLogOutOpen(false)}
+        onClose={handleLogoutClose}
       />
-    </div>
+    </>
   );
 };
 

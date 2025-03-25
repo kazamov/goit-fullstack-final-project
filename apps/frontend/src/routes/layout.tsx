@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
@@ -16,6 +17,7 @@ export function Layout() {
 
   return (
     <>
+      <Toaster />
       <Header />
       <main>
         <Outlet />

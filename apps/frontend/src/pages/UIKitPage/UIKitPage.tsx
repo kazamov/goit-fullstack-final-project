@@ -185,7 +185,7 @@ const UIKitPage = () => {
       <div>
         <h2 className={styles.kitTitle}>AuthBar</h2>
         <div className={clsx(styles.kitCard, styles.kitCardDark)}>
-          <AuthBar />
+          <AuthBar userSignedIn={false} />
         </div>
       </div>
       <div>
