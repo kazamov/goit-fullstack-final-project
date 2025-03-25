@@ -30,7 +30,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({ isInversed }) => {
         <svg
           className={clsx(styles.burgerMenu, { [styles.inversed]: isInversed })}
         >
-          <use href="/src/images/icons.svg#icon-burger-menu" />
+          <use href="/images/icons.svg#icon-burger-menu" />
         </svg>
       </MenuIcon>
       <Modal

@@ -11,7 +11,7 @@ const NetworkLinks = () => {
           aria-label="Facebook"
         >
           <svg className={styles.icon}>
-            <use href="/src/images/icons.svg#icon-facebook" />
+            <use href="/images/icons.svg#icon-facebook" />
           </svg>
         </a>
       </li>
@@ -23,7 +23,7 @@ const NetworkLinks = () => {
           aria-label="Instagram"
         >
           <svg className={styles.icon}>
-            <use href="/src/images/icons.svg#icon-instagram" />
+            <use href="/images/icons.svg#icon-instagram" />
           </svg>
         </a>
       </li>
@@ -35,7 +35,7 @@ const NetworkLinks = () => {
           aria-label="YouTube"
         >
           <svg className={styles.icon}>
-            <use href="/src/images/icons.svg#icon-youtube" />
+            <use href="/images/icons.svg#icon-youtube" />
           </svg>
         </a>
       </li>
