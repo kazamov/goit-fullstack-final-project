@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AddRecipePage from './pages/AddRecipePage/AddRecipePage';
 import HomePage from './pages/HomePage/HomePage';
 import RecipePage from './pages/RecipePage/RecipePage';
-import UIKitPage from './pages/UIKitPage/UIKitPage';
 import UserPage from './pages/UserPage/UserPage';
 import { Layout } from './routes/layout';
 
@@ -24,8 +23,16 @@ const router = createBrowserRouter([
       { path: '/recipe/:id', element: <RecipePage /> },
       { path: '/recipe/add', element: <AddRecipePage /> },
       { path: '/user/:id', element: <UserPage /> },
-      { path: '/kit', element: <UIKitPage /> },
     ],
+  },
+  {
+    path: '/kit',
+    lazy: async () => {
+      const { default: Component } = await import(
+        './pages/UIKitPage/UIKitPage'
+      );
+      return { Component };
+    },
   },
 ]);
 

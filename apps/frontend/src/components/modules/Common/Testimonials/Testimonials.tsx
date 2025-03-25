@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import clsx from 'clsx';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -17,7 +18,7 @@ interface TestimonialsProps {
   testimonials: GetTestimonialResponse;
 }
 
-const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
+const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
   return (
     <section id="testimonials" className={clsx(styles.section)}>
       <Container>
