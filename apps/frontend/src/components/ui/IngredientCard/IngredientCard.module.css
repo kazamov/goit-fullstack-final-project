@@ -1,10 +1,14 @@
 .ingredientCard {
   display: flex;
   align-items: center;
-  width: 155px;
+  width: 152px;
   height: 75px;
   gap: 10px;
   position: relative;
+}
+
+.ingredientCardDeletable {
+  width: 155px;
 }
 
 .ingredientInfoWrapper {
@@ -60,4 +64,27 @@
 .deleteButtonIcon {
   width: 16px;
   height: 16px;
+}
+
+@media (min-width: 768px) {
+  .ingredientCard,
+  .ingredientCardDeletable {
+    width: 178px;
+    height: 90px;
+    gap: 14px;
+  }
+
+  .ingredientInfoWrapper {
+    gap: 4px;
+  }
+
+  .ingredientImageWrapper {
+    width: 90px;
+    height: 90px;
+  }
+
+  .ingredientImage {
+    width: 60px;
+    height: 60px;
+  }
 }

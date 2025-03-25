@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import type { IngredientCardObject } from '@goit-fullstack-final-project/schemas';
 
 import styles from './IngredientCard.module.css';
@@ -10,7 +12,11 @@ const IngredientCard = ({
   onDelete?: (id: string) => void;
 }) => {
   return (
-    <div className={styles.ingredientCard}>
+    <div
+      className={clsx(styles.ingredientCard, {
+        [styles.ingredientCardDeletable]: onDelete,
+      })}
+    >
       <div className={styles.ingredientImageWrapper}>
         <img
           src={ingredient.imageUrl}
