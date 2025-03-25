@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useState } from 'react';
 import clsx from 'clsx';
 
 import type { GetRecipeResponse } from '@goit-fullstack-final-project/schemas';
@@ -24,16 +23,11 @@ const RecipeCard: FC<RecipeCardProps> = ({
   onOpenProfile,
   onOpenRecipe,
 }) => {
-  const [favorite, setFavorite] = useState(isFavorite);
-
   const isMobile = useMediaQuery('(max-width: 767px)');
 
-  const handleToggleFavorite = () => {
-    const newState = !favorite;
-    setFavorite(newState);
-
+  const handleClickFavorite = () => {
     if (onToggleFavorite) {
-      onToggleFavorite(recipe.id, newState);
+      onToggleFavorite(recipe.id, !isFavorite);
     }
   };
 
@@ -85,7 +79,7 @@ const RecipeCard: FC<RecipeCardProps> = ({
             iconType="icon-heart"
             size={isMobile ? 'small' : 'medium'}
             aria-label="Add to favorites"
-            clickHandler={handleToggleFavorite}
+            clickHandler={handleClickFavorite}
           />
 
           {/* Arrow button */}

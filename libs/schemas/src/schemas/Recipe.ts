@@ -55,7 +55,7 @@ export type GetRecipeShort = z.infer<typeof GetRecipeShortSchema>;
 export const GetPaginatedRecipeShortSchema = z.object({
   page: z.number(),
   totalPages: z.number(),
-  items: z.array(GetRecipeResponseSchema.pick({})),
+  items: z.array(GetRecipeShortSchema),
 });
 
 export type GetPaginatedRecipeShort = z.infer<

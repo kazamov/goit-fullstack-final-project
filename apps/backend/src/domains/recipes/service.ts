@@ -226,7 +226,7 @@ export async function getPopularRecipes(): Promise<GetRecipeResponse[]> {
     // For correct ordering we need to use subquery
     group: ['RecipeDTO.id', 'user.id', 'category.id', 'area.id'],
     order: [[literal('"favoritesCount"'), 'DESC']],
-    limit: 10,
+    limit: 4,
     subQuery: false,
   });
 

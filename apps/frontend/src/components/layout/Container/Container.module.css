@@ -4,19 +4,19 @@
   max-width: 1440px; /* maximum width */
 }
 
-/*  On screens less or equal 768px
+/*  On screens less or equal 1439px
     Tablet
 */
-@media (max-width: 768px) {
+@media (max-width: 1439px) {
   .container {
     padding: 0 32px;
   }
 }
 
-/*  On screens less or equal 375px
+/*  On screens less or equal 767px
     Mobile
 */
-@media (max-width: 375px) {
+@media (max-width: 767px) {
   .container {
     padding: 0 16px;
   }
