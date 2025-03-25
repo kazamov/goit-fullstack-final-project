@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { FC, MouseEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
@@ -35,6 +35,21 @@ const Modal: FC<ModalProps> = ({
     }
   }, [onClose]);
 
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const dialog = dialogRef.current;
+    if (dialog) {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width;
+      if (!isInDialog) {
+        dialog.close();
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) {
@@ -68,6 +83,7 @@ const Modal: FC<ModalProps> = ({
       ref={dialogRef}
       className={clsx({ [styles.fullScreen]: fullScreen }, styles.modal)}
       onAnimationEnd={handleAnimationEnd}
+      onClick={handleClickOutside}
     >
       <div>
         {headerContent?.()}
