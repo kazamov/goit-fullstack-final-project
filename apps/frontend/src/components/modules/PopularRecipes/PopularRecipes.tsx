@@ -1,4 +1,7 @@
-import { type FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
 import type {
@@ -7,6 +10,7 @@ import type {
 } from '@goit-fullstack-final-project/schemas';
 import { GetPaginatedRecipeShortSchema } from '@goit-fullstack-final-project/schemas';
 
+import { selectCurrentUser } from '../../../redux/users/selectors';
 import Container from '../../layout/Container/Container';
 import RecipeCard from '../../ui/RecipeCard/RecipeCard';
 
@@ -17,6 +21,10 @@ interface PopularRecipesProps {
 }
 
 const PopularRecipes: FC<PopularRecipesProps> = ({ recipes }) => {
+  const navigate = useNavigate();
+  const currentUser = useSelector(selectCurrentUser);
+  const isUserLoggedIn = Boolean(currentUser);
+
   const [favorites, setFavorites] = useState<GetPaginatedRecipeShort>({
     items: [],
     page: 1,
@@ -24,80 +32,87 @@ const PopularRecipes: FC<PopularRecipesProps> = ({ recipes }) => {
   });
 
   useEffect(() => {
-    fetch('/api/users/favorites')
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error('Network response was not ok.');
-      })
-      .then((data) => {
-        setFavorites(GetPaginatedRecipeShortSchema.parse(data));
-      })
-      .catch((error) => {
-        console.error(
-          'There has been a problem with your fetch operation:',
-          error,
-        );
-      });
-  }, []);
+    if (isUserLoggedIn) {
+      fetch('/api/users/favorites')
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          throw new Error('Network response was not ok.');
+        })
+        .then((data) => {
+          setFavorites(GetPaginatedRecipeShortSchema.parse(data));
+        })
+        .catch((error) => {
+          console.error(
+            'There has been a problem with your fetch operation:',
+            error,
+          );
+        });
+    }
+  }, [isUserLoggedIn]);
 
   const handleOpenProfile = (userId: string) => {
-    // Наприклад, перехід на сторінку /profile/...
-    console.log('Open profile for owner:', userId);
+    if (isUserLoggedIn) {
+      navigate(`/user/${userId}`);
+    } else {
+      console.log('You need to login first!');
+      // TODO: Відкриття модального вікна login
+    }
   };
 
   const handleToggleFavorite = (recipeId: string, newState: boolean) => {
-    console.log(`Recipe ${recipeId} is now favorite?`, newState);
+    if (isUserLoggedIn) {
+      // Fetch favorites update only if user is logged in
+      fetch(`/api/recipes/${recipeId}/favorite`, {
+        method: newState ? 'POST' : 'DELETE',
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Something went wrong');
+          }
+          setFavorites((prev) => {
+            if (newState) {
+              // Find recipe in the list
+              const foundRecipe = recipes.find((r) => r.id === recipeId);
 
-    // check if user is logged in
+              // If not found — no actions
+              if (!foundRecipe) {
+                return prev;
+              }
 
-    // API call:
-    fetch(`/api/recipes/${recipeId}/favorite`, {
-      method: newState ? 'POST' : 'DELETE',
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Something went wrong');
-        }
-        setFavorites((prev) => {
-          if (newState) {
-            // Find recipe in the list
-            const foundRecipe = recipes.find((r) => r.id === recipeId);
+              // Create short recipe
+              const shortRecipe = {
+                id: foundRecipe.id,
+                title: foundRecipe.title,
+                thumb: foundRecipe.thumb,
+                description: foundRecipe.description,
+              };
 
-            // If not found — no actions
-            if (!foundRecipe) {
-              return prev;
+              return {
+                ...prev,
+                items: [...prev.items, shortRecipe],
+              };
             }
 
-            // Create short recipe
-            const shortRecipe = {
-              id: foundRecipe.id,
-              title: foundRecipe.title,
-              thumb: foundRecipe.thumb,
-              description: foundRecipe.description,
-            };
-
+            // If newState = false — remove recipe
             return {
               ...prev,
-              items: [...prev.items, shortRecipe],
+              items: prev.items.filter((item) => item.id !== recipeId),
             };
-          }
-
-          // If newState = false — remove recipe
-          return {
-            ...prev,
-            items: prev.items.filter((item) => item.id !== recipeId),
-          };
+          });
+        })
+        .catch((error) => {
+          console.error('Error updating favorites:', error);
         });
-      })
-      .catch((error) => {
-        console.error('Error updating favorites:', error);
-      });
+    } else {
+      console.log('You need to login first!');
+      // TODO: Відкриття модального вікна login
+    }
   };
 
   const handleOpenRecipe = (recipeId: string) => {
-    console.log('Open recipe:', recipeId);
+    navigate(`/recipe/${recipeId}`);
   };
 
   return (
