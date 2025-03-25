@@ -1,0 +1,50 @@
+.uploadRecipePhoto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 318px;
+  border: 1px dashed var(--gray);
+  border-radius: 30px;
+  overflow: clip;
+}
+
+.uploadLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  border-radius: 30px;
+  width: 100%;
+  height: 100%;
+}
+
+.uploadInput {
+  display: none;
+}
+
+.noFileSelectedText {
+  color: var(--main);
+  text-decoration: underline;
+}
+
+.uploadIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}

@@ -9,6 +9,7 @@ import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
 import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
+import UploadRecipePhoto from '../../components/ui/UploadRecipePhoto/UploadRecipePhoto';
 
 import styles from './UIKitPage.module.css';
 
@@ -247,6 +248,12 @@ const UIKitPage = () => {
               { name: 'Add Recipe', path: '/add-recipe' },
             ]}
           />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Recipe photo uploader</h2>
+        <div className={clsx(styles.kitCard, styles.kitCardWidth)}>
+          <UploadRecipePhoto />
         </div>
       </div>
     </div>
