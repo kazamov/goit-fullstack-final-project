@@ -27,25 +27,21 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
 
   const isMobile = useMediaQuery('(max-width: 767px)');
 
-  // Обробник кліку на сердечко
   const handleToggleFavorite = () => {
     const newState = !favorite;
     setFavorite(newState);
 
-    // Якщо передано колбек - викликаємо його
     if (onToggleFavorite) {
       onToggleFavorite(recipe.id, newState);
     }
   };
 
-  // Обробник кліку на аватар (відкрити профіль)
   const handleOpenProfile = () => {
     if (onOpenProfile) {
       onOpenProfile(recipe.owner.userId);
     }
   };
 
-  // Обробник кліку на стрілочку (відкрити рецепт)
   const handleOpenRecipe = () => {
     if (onOpenRecipe) {
       onOpenRecipe(recipe.id);
