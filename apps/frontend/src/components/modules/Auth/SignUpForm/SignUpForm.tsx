@@ -12,6 +12,8 @@ import {
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { post } from '../../../../helpers/http';
+import type { AppDispatch } from '../../../../redux/store';
+import { setModalOpened } from '../../../../redux/ui/slice';
 import { setCurrentUser } from '../../../../redux/users/slice';
 import Button from '../../../ui/Button/Button';
 
@@ -24,13 +26,15 @@ type FormData = {
 };
 
 const SignUpForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     watch,
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(CreateUserPayloadSchema),
     mode: 'onChange',
@@ -50,8 +54,10 @@ const SignUpForm = () => {
       }
 
       dispatch(setCurrentUser(user));
+      dispatch(setModalOpened({ modal: 'register', opened: false }));
+      reset();
     },
-    [dispatch],
+    [dispatch, reset],
   );
 
   const nameValue = watch('name');
@@ -133,7 +139,12 @@ const SignUpForm = () => {
           )}
         </div>
       </div>
-      <Button kind="primary" type="submit" disabled={!isValid}>
+      <Button
+        kind="primary"
+        type="submit"
+        disabled={!isValid || isSubmitting}
+        busy={isSubmitting}
+      >
         Create
       </Button>
     </form>
@@ -141,6 +152,3 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
-}

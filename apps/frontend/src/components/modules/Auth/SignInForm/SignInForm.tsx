@@ -12,6 +12,7 @@ import {
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { post } from '../../../../helpers/http';
+import { setModalOpened } from '../../../../redux/ui/slice';
 import { setCurrentUser } from '../../../../redux/users/slice';
 import Button from '../../../ui/Button/Button';
 
@@ -26,11 +27,13 @@ const SignInForm = () => {
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     watch,
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(LoginUserPayloadSchema),
     mode: 'onChange',
@@ -50,8 +53,10 @@ const SignInForm = () => {
       }
 
       dispatch(setCurrentUser(user));
+      dispatch(setModalOpened({ modal: 'login', opened: false }));
+      reset();
     },
-    [dispatch],
+    [dispatch, reset],
   );
 
   const emailValue = watch('email');
@@ -108,7 +113,13 @@ const SignInForm = () => {
               onClick={() => setShowPassword(!showPassword)}
               aria-label="Toggle password visibility"
             >
-              {showPassword ? '+' : '-'}
+              <svg className={styles.togglePasswordVisibility}>
+                {showPassword ? (
+                  <use href="/images/icons.svg#icon-eye" />
+                ) : (
+                  <use href="/images/icons.svg#icon-eye-off" />
+                )}
+              </svg>
             </button>
           )}
           {!!errors.password && (
@@ -116,7 +127,12 @@ const SignInForm = () => {
           )}
         </div>
       </div>
-      <Button kind="primary" type="submit" disabled={!isValid}>
+      <Button
+        kind="primary"
+        type="submit"
+        disabled={!isValid || isSubmitting}
+        busy={isSubmitting}
+      >
         Sign in
       </Button>
     </form>

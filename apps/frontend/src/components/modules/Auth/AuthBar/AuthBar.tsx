@@ -1,56 +1,76 @@
-import { useState } from 'react';
+import type { FC } from 'react';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import type { AppDispatch } from '../../../../redux/store';
+import {
+  selectIsLoginModalOpened,
+  selectIsRegisterModalOpened,
+  setModalOpened,
+} from '../../../../redux/ui/slice';
 import Button from '../../../ui/Button/Button';
 import SignInModal from '../SignInModal/SignInModal';
 import SignUpModal from '../SignUpModal/SignUpModal';
 
 import styles from './AuthBar.module.css';
 
-const AuthBar = () => {
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+interface AuthBarProps {
+  userSignedIn: boolean;
+}
 
-  const onRedirectToSignIn = () => {
-    setIsSignUpOpen(false);
-    setIsSignInOpen(true);
-  };
+const AuthBar: FC<AuthBarProps> = ({ userSignedIn }) => {
+  const dispatch = useDispatch<AppDispatch>();
 
-  const onRedirectToSignUp = () => {
-    setIsSignUpOpen(true);
-    setIsSignInOpen(false);
-  };
+  const isLoginOpened = useSelector(selectIsLoginModalOpened);
+  const isRegisterOpened = useSelector(selectIsRegisterModalOpened);
+
+  const openSignInModal = useCallback(() => {
+    dispatch(setModalOpened({ modal: 'login', opened: true }));
+  }, [dispatch]);
+  const openSignUpModal = useCallback(() => {
+    dispatch(setModalOpened({ modal: 'register', opened: true }));
+  }, [dispatch]);
+
+  const closeSignInModal = useCallback(() => {
+    dispatch(setModalOpened({ modal: 'login', opened: false }));
+  }, [dispatch]);
+  const closeSignUpModal = useCallback(() => {
+    dispatch(setModalOpened({ modal: 'register', opened: false }));
+  }, [dispatch]);
 
   return (
     <>
-      <div className={styles.authBar}>
-        <Button
-          kind="ghost"
-          type="button"
-          size="small"
-          clickHandler={() => setIsSignInOpen(true)}
-        >
-          Sign in
-        </Button>
-        <Button
-          kind="primary"
-          type="button"
-          size="small"
-          clickHandler={() => setIsSignUpOpen(true)}
-        >
-          Sign up
-        </Button>
-      </div>
+      {!userSignedIn && (
+        <div className={styles.authBar}>
+          <Button
+            kind="ghost"
+            type="button"
+            size="small"
+            clickHandler={openSignInModal}
+          >
+            Sign in
+          </Button>
+          <Button
+            kind="primary"
+            type="button"
+            size="small"
+            clickHandler={openSignUpModal}
+          >
+            Sign up
+          </Button>
+        </div>
+      )}
 
       <SignInModal
-        isOpen={isSignInOpen}
-        onRedirectToSignUp={onRedirectToSignUp}
-        onClose={() => setIsSignInOpen(false)}
+        isOpen={isLoginOpened}
+        onRedirectToSignUp={openSignUpModal}
+        onClose={closeSignInModal}
       ></SignInModal>
 
       <SignUpModal
-        isOpen={isSignUpOpen}
-        onRedirectToSignIn={onRedirectToSignIn}
-        onClose={() => setIsSignUpOpen(false)}
+        isOpen={isRegisterOpened}
+        onRedirectToSignIn={openSignInModal}
+        onClose={closeSignUpModal}
       ></SignUpModal>
     </>
   );

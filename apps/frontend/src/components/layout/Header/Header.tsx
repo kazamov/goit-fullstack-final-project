@@ -29,9 +29,10 @@ const Header = () => {
           <Logo isInversed={isInversed} />
           {currentUser && !isMobile && <Navigation isInversed={isInversed} />}
 
-          {!currentUser && <AuthBar />}
+          <AuthBar userSignedIn={Boolean(currentUser)} />
+
           <div className={styles.menuContainer}>
-            {currentUser && <UserBar />}
+            <UserBar currentUser={currentUser} />
             {currentUser && isMobile && <BurgerMenu isInversed={isInversed} />}
           </div>
         </div>
