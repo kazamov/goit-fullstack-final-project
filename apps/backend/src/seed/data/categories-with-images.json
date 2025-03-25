@@ -1,0 +1,197 @@
+[
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f8a"
+    },
+    "name": "Seafood",
+    "description": "Dive into the rich world of ocean flavors with seafood dishes from every corner of the globe. From grilled shrimp to spicy fish stews, these recipes celebrate the bounty of the sea.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917945/categories/Seafood.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917947/categories/Seafood_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917949/categories/Seafood_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917950/categories/Seafood_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f8b"
+    },
+    "name": "Lamb",
+    "description": "Explore tender, flavorful lamb recipes that bring together traditional spices and cooking methods from diverse cultures. Whether roasted, stewed, or grilled, lamb is a global favorite.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917952/categories/Lamb.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917952/categories/Lamb_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917953/categories/Lamb_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917955/categories/Lamb_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f8c"
+    },
+    "name": "Starter",
+    "description": "Start your meal right with inspiring appetizers and small plates. These recipes are perfect for setting the tone—from light bites to bold, flavor-packed creations.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917956/categories/Starter.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917957/categories/Starter_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917959/categories/Starter_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917960/categories/Starter_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f8d"
+    },
+    "name": "Chicken",
+    "description": "Discover the most versatile protein with chicken recipes that span cultures and cuisines. Whether fried, roasted, or curried, there's a delicious dish for every taste.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917961/categories/Chicken.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917962/categories/Chicken_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917963/categories/Chicken_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917964/categories/Chicken_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f8e"
+    },
+    "name": "Beef",
+    "description": "Hearty and satisfying, beef recipes offer something for every craving. Enjoy international classics like stews, stir-fries, and grilled specialties.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917965/categories/Beef.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917966/categories/Beef_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917967/categories/Beef_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917968/categories/Beef_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f8f"
+    },
+    "name": "Desserts",
+    "description": "Indulge in sweet creations from around the world. From delicate pastries to rich puddings, this category is your go-to for satisfying your sweet tooth.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917969/categories/Desserts.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917970/categories/Desserts_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917971/categories/Desserts_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917972/categories/Desserts_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f90"
+    },
+    "name": "Vegan",
+    "description": "Full of color, flavor, and creativity, vegan recipes showcase plant-based cooking at its finest. Discover dishes that are both healthy and delicious.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917973/categories/Vegan.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917974/categories/Vegan_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917975/categories/Vegan_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917976/categories/Vegan_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f91"
+    },
+    "name": "Pork",
+    "description": "Pork brings bold flavors and tender textures to your table. Enjoy global recipes—from smoky barbecue to aromatic stir-fries and hearty roasts.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917977/categories/Pork.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917978/categories/Pork_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917979/categories/Pork_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917980/categories/Pork_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f92"
+    },
+    "name": "Vegetarian",
+    "description": "Savor meat-free dishes that don't compromise on taste. These vegetarian recipes offer a delightful mix of vegetables, grains, and spices from all cuisines.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917982/categories/Vegetarian.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917983/categories/Vegetarian_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917984/categories/Vegetarian_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917986/categories/Vegetarian_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f93"
+    },
+    "name": "Miscellaneous",
+    "description": "A space for all things delicious that defy categorization. Unique, experimental, or fusion recipes live here—perfect for the culinary curious.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917987/categories/Miscellaneous.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917987/categories/Miscellaneous_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917989/categories/Miscellaneous_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917990/categories/Miscellaneous_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f94"
+    },
+    "name": "Pasta",
+    "description": "Celebrate pasta in all its forms, from classic Italian favorites to international twists. Comforting, quick, and endlessly customizable.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917991/categories/Pasta.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917992/categories/Pasta_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917993/categories/Pasta_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917994/categories/Pasta_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f95"
+    },
+    "name": "Breakfast",
+    "description": "Start your day the flavorful way with breakfast recipes from around the world. Whether sweet or savory, there's a perfect morning bite for everyone.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917995/categories/Breakfast.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917996/categories/Breakfast_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917997/categories/Breakfast_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742917998/categories/Breakfast_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f96"
+    },
+    "name": "Side",
+    "description": "Complement your main dish with the perfect side. These recipes add flavor, texture, and variety to every meal.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918000/categories/Side.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918001/categories/Side_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918002/categories/Side_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918003/categories/Side_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f97"
+    },
+    "name": "Goat",
+    "description": "Rich and savory, goat meat is a delicacy in many cultures. Explore traditional dishes that highlight this unique and flavorful ingredient.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918004/categories/Goat.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918005/categories/Goat_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918006/categories/Goat_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918008/categories/Goat_4x.webp"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6462a6cd4c3d0ddd28897f98"
+    },
+    "name": "Soup",
+    "description": "Warm, comforting, and full of character—soups bring people together. Discover broths, purees, and hearty bowls from kitchens across the globe.",
+    "images": {
+      "small": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918009/categories/Soup.webp",
+      "medium": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918010/categories/Soup_2x.webp",
+      "large": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918010/categories/Soup_3x.webp",
+      "xlarge": "https://res.cloudinary.com/dxwvxfmnl/image/upload/v1742918012/categories/Soup_4x.webp"
+    }
+  }
+]

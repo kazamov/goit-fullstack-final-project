@@ -35,6 +35,17 @@ export class CategoryDTO extends Model {
   })
   declare description: string;
 
+  @Column({
+    type: DataType.JSONB,
+    allowNull: true,
+  })
+  declare images?: {
+    small?: string;
+    medium?: string;
+    large?: string;
+    xlarge?: string;
+  };
+
   @HasMany(() => RecipeDTO)
   declare recipes?: RecipeDTO[];
 }

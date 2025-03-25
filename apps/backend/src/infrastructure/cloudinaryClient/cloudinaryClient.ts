@@ -21,21 +21,26 @@ export interface FileStorage {
   }): Promise<{ url: string; publicId: string }>;
 }
 
-const {
-  cloudinary: { cloudName: name, apiKey: key, apiSecret: secret },
-} = getConfig();
+export class CloudinaryClient implements FileStorage {
+  private static instance: CloudinaryClient;
 
-class CloudinaryClient implements FileStorage {
-  constructor(
-    cloudName: string = name,
-    apiKey: string = key,
-    apiSecret: string = secret,
-  ) {
+  private constructor() {
+    const {
+      cloudinary: { cloudName: name, apiKey: key, apiSecret: secret },
+    } = getConfig();
+
     cloudinary.config({
-      cloud_name: cloudName,
-      api_key: apiKey,
-      api_secret: apiSecret,
+      cloud_name: name,
+      api_key: key,
+      api_secret: secret,
     });
+  }
+
+  static getInstance(): CloudinaryClient {
+    if (!CloudinaryClient.instance) {
+      CloudinaryClient.instance = new CloudinaryClient();
+    }
+    return CloudinaryClient.instance;
   }
 
   async uploadFile({
@@ -73,5 +78,3 @@ class CloudinaryClient implements FileStorage {
     }
   }
 }
-
-export const cloudinaryClient = new CloudinaryClient();

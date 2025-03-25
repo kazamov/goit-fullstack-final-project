@@ -4,6 +4,14 @@ export const CategorySchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
+  images: z
+    .object({
+      small: z.string().url().optional(),
+      medium: z.string().url().optional(),
+      large: z.string().url().optional(),
+      xlarge: z.string().url().optional(),
+    })
+    .optional(),
   recipes: z.array(z.number().int()),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -16,6 +24,7 @@ export const GetCategoryResponseSchema = z.array(
     id: true,
     name: true,
     description: true,
+    images: true,
   }),
 );
 
