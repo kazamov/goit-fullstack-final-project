@@ -1,0 +1,111 @@
+.recipeMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recipeMainInfoTitle {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeMainInfoTitle {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+}
+
+.recipeMainInfoDescription {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--dark-gray);
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeMainInfoDescription {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--gray);
+  }
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--border-radius);
+  object-fit: cover;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.ownerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .ownerInfo {
+    gap: 0px;
+  }
+}
+
+.createdBy {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: var(--gray);
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .createdBy {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+.ownerName {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--dark-gray);
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .ownerName {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--gray);
+  }
+}

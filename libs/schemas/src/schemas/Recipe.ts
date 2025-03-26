@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { GetIngredientResponseSchema, IngredientSchema } from './Ingredient.js';
+import { IngredientCardObjectSchema, IngredientSchema } from './Ingredient.js';
 
 export const RecipeSchema = z.object({
   id: z.string(),
@@ -96,7 +96,7 @@ export const GetRecipeDetailedResponseSchema = RecipeSchema.omit({
     areaId: z.string(),
     areaName: z.string(),
   }),
-  ingredients: GetIngredientResponseSchema,
+  ingredients: IngredientCardObjectSchema.array(),
 });
 
 export type GetRecipeDetailedResponse = z.infer<

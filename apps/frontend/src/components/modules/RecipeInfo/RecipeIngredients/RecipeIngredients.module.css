@@ -1,0 +1,36 @@
+.recipeIngredients {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recipeIngredientsTitle {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeIngredientsTitle {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.recipeIngredientsList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeIngredientsList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
