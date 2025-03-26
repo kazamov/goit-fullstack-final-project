@@ -1,0 +1,19 @@
+.badge {
+  display: inline-block;
+  border: 1px solid var(--gray);
+  border-radius: 20px;
+  padding: 10px;
+  color: var(--gray);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+}
+
+/* laptop */
+@media (max-width: 1439px) {
+  .badge {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

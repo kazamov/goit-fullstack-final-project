@@ -157,7 +157,9 @@ export async function getRecipe(
       {
         model: IngredientDTO,
         as: 'ingredients',
-        through: { attributes: [] },
+        through: {
+          attributes: ['measure'],
+        },
         required: false,
       },
     ],
@@ -168,6 +170,14 @@ export async function getRecipe(
   }
 
   const recipeJson = recipe.toJSON();
+
+  const newIngredients = (recipeJson.ingredients || []).map((ing: any) => ({
+    id: ing.id,
+    name: ing.name,
+    imageUrl: ing.imageUrl,
+    amount: ing.RecipeIngredientDTO?.measure || '',
+  }));
+
   const transformedRecipe = {
     ...recipeJson,
     owner: {
@@ -183,8 +193,11 @@ export async function getRecipe(
       areaId: recipeJson.area?.id || '',
       areaName: recipeJson.area?.name || '',
     },
+    // Replace `ingredients` with `newIngredients`
+    ingredients: newIngredients,
   };
 
+  // Parse the transformed recipe using GetRecipeDetailedResponseSchema
   return GetRecipeDetailedResponseSchema.parse(transformedRecipe);
 }
 

@@ -47,6 +47,7 @@
 
 .ingredientTitle {
   color: var(--black);
+  word-break: break-word;
 }
 
 .ingredientAmount {

@@ -11,6 +11,7 @@ interface ButtonProps {
   clickHandler?: () => void;
   disabled?: boolean;
   busy?: boolean;
+  className?: string;
 }
 
 export function SvgSpinners180RingWithBg(props: SVGProps<SVGSVGElement>) {
@@ -44,6 +45,7 @@ const Button: FC<ButtonProps> = ({
   clickHandler,
   disabled = false,
   busy = false,
+  className = '',
 }) => {
   return (
     <button
@@ -53,6 +55,7 @@ const Button: FC<ButtonProps> = ({
         styles[kind],
         kind === 'text' ? styles.text : styles.button,
         styles[size],
+        styles[className],
       ])}
       onClick={clickHandler}
     >
