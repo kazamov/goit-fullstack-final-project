@@ -23,3 +23,10 @@
   border-radius: var(--border-radius);
   animation: global(pulse) 1.5s infinite ease-in-out;
 }
+
+@media (max-width: 767px) {
+  .skeleton {
+    width: 120px;
+    height: 32px;
+  }
+}
