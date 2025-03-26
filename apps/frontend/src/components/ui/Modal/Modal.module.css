@@ -97,6 +97,26 @@
   }
 }
 
+@keyframes slideLeft {
+  from {
+    transform: translateX(20%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(20%);
+  }
+}
+
 @media (max-width: 767px) {
   .modal {
     width: min(100%, 343px);
@@ -115,10 +135,14 @@
     min-width: 100vw;
     min-height: 100dvh;
     padding: 60px 24px;
-    animation: fadeOut 0.3s;
+    animation:
+      fadeOut 0.3s,
+      slideRight 0.3s;
 
     &[open] {
-      animation: fadeIn 0.3s;
+      animation:
+        fadeIn 0.3s,
+        slideLeft 0.3s;
     }
 
     & .closeButton {

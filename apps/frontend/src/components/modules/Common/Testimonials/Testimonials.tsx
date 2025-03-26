@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import clsx from 'clsx';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay, Mousewheel, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { GetTestimonialResponse } from '@goit-fullstack-final-project/schemas';
@@ -33,7 +33,8 @@ const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
           </svg>
           <Swiper
             spaceBetween={30}
-            centeredSlides={true}
+            centeredSlides
+            loop
             autoplay={{
               delay: 8000,
               disableOnInteraction: false,
@@ -42,8 +43,9 @@ const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
               clickable: true,
               dynamicBullets: true,
             }}
-            navigation={true}
-            modules={[Autoplay, Pagination]}
+            mousewheel
+            navigation
+            modules={[Autoplay, Pagination, Mousewheel]}
             className={clsx(styles.swiper)}
           >
             {testimonials.map((testimonial, index) => (
