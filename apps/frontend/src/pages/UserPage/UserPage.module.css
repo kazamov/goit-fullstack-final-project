@@ -1,0 +1,83 @@
+.userProfileBlock {
+  display: flex;
+  gap: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .userProfileBlock {
+    flex-direction: column;
+    gap: 80px;
+    align-items: center;
+  }
+}
+
+.userCardBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 394px;
+}
+
+.userCard {
+  width: 394px;
+  height: 408px;
+  display: flex;
+}
+
+.userTabsSection {
+  display: flex;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.tabList {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 40px;
+  position: relative;
+}
+
+.tabList::before {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--gray);
+}
+
+.tabTitle {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.activeTabTitle {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+  position: relative;
+}
+
+.activeTabTitle::before {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--black);
+}
+
+/* selectedClassName={css.activeTabTitle} */
