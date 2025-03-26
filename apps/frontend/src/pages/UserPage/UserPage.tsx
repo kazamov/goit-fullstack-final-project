@@ -67,20 +67,30 @@ const UserPage = () => {
 
   return (
     <Container>
-      <div>
-        <div>
-          <NavLink to="/">Home / </NavLink>
-          Profile
+      <div className={styles.userProfile}>
+        <div className={styles.userProfileHeaderWrapper}>
+          <div className={styles.navigate}>
+            <NavLink to="/">Home /</NavLink>
+            <p className={styles.navigateStaticText}> Profile</p>
+          </div>
+          <h1 className={styles.title}>Profile</h1>
+          <p>
+            Reveal your culinary art, share your favorite recipe and create
+            gastronomic masterpieces with us.
+          </p>
         </div>
-        <br />
-        <h1>Profile</h1>
-        <p>
-          Reveal your culinary art, share your favorite recipe and create
-          gastronomic masterpieces with us.
-        </p>
         <div className={styles.userProfileBlock}>
           <div className={styles.userCardBlock}>
-            <div className={styles.userCard}>
+            <div
+              className={styles.userCard}
+              style={{
+                border: '1px solid #BFBEBE',
+                borderRadius: '30px',
+                padding: '40px 80px',
+                width: '394px',
+                height: '348px',
+              }}
+            >
               <p>Replace this div with component</p>
             </div>
             <Button

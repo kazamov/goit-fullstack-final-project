@@ -1,14 +1,61 @@
+.userProfile {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 40px;
+  margin-bottom: 120px;
+}
+
 .userProfileBlock {
   display: flex;
   gap: 40px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1439px) {
   .userProfileBlock {
     flex-direction: column;
     gap: 80px;
     align-items: center;
+    width: 100%;
   }
+  .userProfile {
+    margin-bottom: 100px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .userProfile {
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+  .tabList {
+    gap: 30px;
+  }
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+.navigate {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 8px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.navigateStaticText {
+  color: var(--black);
 }
 
 .userCardBlock {
@@ -16,6 +63,15 @@
   flex-direction: column;
   gap: 20px;
   width: 394px;
+}
+
+.userProfileHeaderWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 443px;
 }
 
 .userCard {
@@ -59,6 +115,7 @@
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--gray);
+  flex-shrink: 0;
 }
 
 .activeTabTitle {
