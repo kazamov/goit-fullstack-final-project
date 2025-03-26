@@ -4,10 +4,12 @@ import clsx from 'clsx';
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
 import Button from '../../components/ui/Button/Button';
 import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
+import ButtonWithNumber from '../../components/ui/ButtonWithNumber/ButtonWithNumber';
 import IngredientCard from '../../components/ui/IngredientCard/IngredientCard';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
+import Paging from '../../components/ui/Paging/Paging';
 import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import RecipeCard from '../../components/ui/RecipeCard/RecipeCard';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
@@ -115,6 +117,18 @@ const UIKitPage = () => {
             iconType="icon-trash"
             disabled={true}
           />
+          <ButtonWithNumber
+            kind="inactive"
+            size="large"
+            type="button"
+            number="1"
+          />
+          <ButtonWithNumber
+            kind="active"
+            size="large"
+            type="button"
+            number="2"
+          />
         </div>
         <div className={styles.kitCard}>
           <ButtonWithIcon kind="primary" type="submit" iconType="icon-heart" />
@@ -128,6 +142,12 @@ const UIKitPage = () => {
             type="submit"
             disabled={true}
             iconType="icon-plus"
+          />
+          <ButtonWithNumber
+            kind="active"
+            size="medium"
+            type="button"
+            number="1"
           />
         </div>
         <div className={styles.kitCard}>
@@ -149,6 +169,12 @@ const UIKitPage = () => {
             type="submit"
             iconType="icon-heart"
             disabled={true}
+          />
+          <ButtonWithNumber
+            kind="active"
+            size="small"
+            type="button"
+            number="1"
           />
         </div>
         <div className={clsx(styles.kitCard, styles.kitCardDark)}>
@@ -333,6 +359,15 @@ const UIKitPage = () => {
           {ingredientsProps.map((props) => (
             <IngredientCard key={props.ingredient.id} {...props} />
           ))}
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Paging</h2>
+        <div className={styles.kitCard}>
+          <Paging
+            totalPages={5}
+            onPageChange={(page) => console.log('Selected page:', page)}
+          />
         </div>
       </div>
     </div>
