@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -13,6 +13,8 @@ import { GetPaginatedRecipeShortSchema } from '@goit-fullstack-final-project/sch
 
 import { tryCatch } from '../../../helpers/catchError';
 import { del, get, post } from '../../../helpers/http';
+import type { AppDispatch } from '../../../redux/store';
+import { setModalOpened } from '../../../redux/ui/slice';
 import { selectCurrentUser } from '../../../redux/users/selectors';
 import Container from '../../layout/Container/Container';
 import RecipeCard from '../../ui/RecipeCard/RecipeCard';
@@ -24,9 +26,14 @@ interface PopularRecipesProps {
 }
 
 const PopularRecipes: FC<PopularRecipesProps> = ({ recipes }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
   const isUserLoggedIn = Boolean(currentUser);
+
+  const openSignInModal = useCallback(() => {
+    dispatch(setModalOpened({ modal: 'login', opened: true }));
+  }, [dispatch]);
 
   const [favorites, setFavorites] = useState<GetPaginatedRecipeShort>({
     items: [],
@@ -59,18 +66,17 @@ const PopularRecipes: FC<PopularRecipesProps> = ({ recipes }) => {
   }, [isUserLoggedIn]);
 
   const handleOpenProfile = (userId: string) => {
-    if (isUserLoggedIn) {
-      navigate(`/user/${userId}`);
+    if (!isUserLoggedIn) {
+      openSignInModal();
+      return;
     } else {
-      console.log('You need to login first!');
-      // TODO: Відкриття модального вікна login
+      navigate(`/user/${userId}`);
     }
   };
 
   const handleToggleFavorite = async (recipeId: string, newState: boolean) => {
     if (!isUserLoggedIn) {
-      console.log('You need to login first!');
-      // TODO: Відкрити модальне вікно логіну
+      openSignInModal();
       return;
     }
 
