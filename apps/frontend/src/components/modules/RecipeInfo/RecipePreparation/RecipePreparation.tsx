@@ -9,13 +9,18 @@ import styles from './RecipePreparation.module.css';
 
 interface RecipePreparationProps {
   instructions: GetRecipeDetailedResponse['instructions'];
+  recipeId: string;
+  isFavorite: boolean;
+  onToggleFavorite: (recipeId: string, newState: boolean) => void;
 }
 
 export const RecipePreparation: FC<RecipePreparationProps> = ({
   instructions,
+  recipeId,
+  isFavorite,
+  onToggleFavorite,
 }) => {
   const instructionList = instructions.split('\r\n');
-  const isFavorite = false;
   return (
     <div className={clsx(styles.wrapper)}>
       <h3 className={clsx(styles.title)}>Recipe Preparation</h3>
@@ -29,9 +34,7 @@ export const RecipePreparation: FC<RecipePreparationProps> = ({
       <Button
         kind={isFavorite ? 'primary' : 'secondary'}
         type="submit"
-        clickHandler={() => {
-          console.log('Add to Fav');
-        }}
+        clickHandler={() => onToggleFavorite(recipeId, !isFavorite)}
         className="addToFavoritesButton"
       >
         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}

@@ -67,7 +67,7 @@ const RecipeCard: FC<RecipeCardProps> = ({
             alt={recipe.owner.name}
             className={clsx(styles.avatar)}
           />
-          <span className={clsx(styles.ownerName)}>{recipe.owner.name}</span>
+          <p className={clsx(styles.ownerName)}>{recipe.owner.name}</p>
         </div>
 
         {/* Buttons (heart, arrow) */}

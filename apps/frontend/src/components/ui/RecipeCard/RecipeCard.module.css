@@ -28,7 +28,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  overflow-wrap: break-word;
+  word-break: break-all;
   white-space: normal;
 }
 
@@ -46,6 +46,7 @@
   letter-spacing: -0.02em;
   color: var(--dark-gray);
   margin-bottom: 8px;
+  min-height: 48px;
   /* makes the text overflow wrap with "…" at the end */
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -61,6 +62,7 @@
   .description {
     font-size: 14px;
     line-height: 20px;
+    min-height: 40px;
   }
 }
 

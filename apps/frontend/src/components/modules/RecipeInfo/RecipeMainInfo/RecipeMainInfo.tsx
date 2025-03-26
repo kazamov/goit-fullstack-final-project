@@ -9,9 +9,13 @@ import styles from './RecipeMainInfo.module.css';
 
 interface RecipeMainInfoProps {
   recipe: GetRecipeDetailedResponse;
+  onOpenProfile: (userId: string) => void;
 }
 
-export const RecipeMainInfo: FC<RecipeMainInfoProps> = ({ recipe }) => {
+export const RecipeMainInfo: FC<RecipeMainInfoProps> = ({
+  recipe,
+  onOpenProfile,
+}) => {
   const { title, area, category, time, description, owner } = recipe;
   return (
     <div className={clsx(styles.recipeMainInfo)}>
@@ -22,7 +26,10 @@ export const RecipeMainInfo: FC<RecipeMainInfoProps> = ({ recipe }) => {
         <Badge text={`${time.toString()} min`} />
       </div>
       <p className={clsx(styles.recipeMainInfoDescription)}>{description}</p>
-      <div className={clsx(styles.owner)}>
+      <div
+        className={clsx(styles.owner)}
+        onClick={() => onOpenProfile(owner.userId)}
+      >
         <img
           src={owner.avatarUrl}
           alt={owner.name}
