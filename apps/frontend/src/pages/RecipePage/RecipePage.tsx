@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import RecipeInfo from '../../components/modules/RecipeInfo/RecipeInfo';
 import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import { tryCatch } from '../../helpers/catchError';
 import { del, get, post } from '../../helpers/http';
+import { scrollToTop } from '../../helpers/scrollToTop';
 import { setModalOpened } from '../../redux/ui/slice';
 import { selectCurrentUser } from '../../redux/users/selectors';
 
@@ -49,7 +51,7 @@ const RecipePage = () => {
         }),
       );
       if (error) {
-        console.error('Error fetching favorites:', error);
+        toast.error(`Error fetching favorites\n${error.message}`);
         return;
       }
       setFavorites(data);
@@ -70,7 +72,7 @@ const RecipePage = () => {
       );
 
       if (error) {
-        console.error('Error fetching recipe details:', error);
+        toast.error(`Error fetching recipe details\n${error.message}`);
         return;
       }
 
@@ -90,7 +92,7 @@ const RecipePage = () => {
       );
 
       if (error) {
-        console.error('Error fetching popular recipes:', error);
+        toast.error(`Error fetching popular recipes\n${error.message}`);
         return;
       }
 
@@ -108,6 +110,7 @@ const RecipePage = () => {
         return;
       }
       navigate(`/user/${userId}`);
+      scrollToTop();
     },
     [isUserLoggedIn, dispatch, navigate],
   );
@@ -125,7 +128,7 @@ const RecipePage = () => {
           : del(`/api/recipes/${recipeId}/favorite`),
       );
       if (error) {
-        console.error('Error updating favorites:', error);
+        toast.error(`Error updating favorites\n${error.message}`);
         return;
       }
       // Update local state of favorites
@@ -156,6 +159,7 @@ const RecipePage = () => {
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
       navigate(`/recipe/${recipeId}`);
+      scrollToTop();
     },
     [navigate],
   );

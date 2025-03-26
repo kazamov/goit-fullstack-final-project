@@ -83,7 +83,6 @@
 @media (max-width: 767px) {
   .addToFavoritesButton {
     padding: 14px 20px;
-    color: var(--gray);
     font-size: 14px;
   }
 }
