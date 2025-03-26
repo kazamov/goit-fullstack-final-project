@@ -24,7 +24,7 @@ const buildLinkClass = ({
 
 const Navigation: FC<NavProps> = ({ isInversed }) => {
   return (
-    <nav className={clsx(isInversed && styles.navInversed)}>
+    <nav className={clsx(styles.nav, { [styles.navInversed]: isInversed })}>
       <ul className={styles.navLinks}>
         <li>
           <NavLink

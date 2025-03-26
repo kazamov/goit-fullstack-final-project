@@ -12,7 +12,6 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
-import { delay } from '../../../../helpers/delay';
 import { post } from '../../../../helpers/http';
 import { setModalOpened } from '../../../../redux/ui/slice';
 import { setCurrentUser } from '../../../../redux/users/slice';
@@ -44,8 +43,6 @@ const SignInForm = () => {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
-      await delay(300);
-
       const [error, user] = await tryCatch(
         post<LoginUserResponse>('/api/users/login', data, {
           schema: LoginUserResponseSchema,

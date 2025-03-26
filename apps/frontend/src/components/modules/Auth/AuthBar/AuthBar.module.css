@@ -2,4 +2,6 @@
   border-radius: var(--border-radius);
   background-color: var(--white);
   padding: 1px;
+  margin-left: auto;
+  animation: global(fadeIn) 0.3s ease-in-out;
 }

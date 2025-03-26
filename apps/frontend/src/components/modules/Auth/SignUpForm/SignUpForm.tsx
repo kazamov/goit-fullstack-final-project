@@ -12,7 +12,6 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
-import { delay } from '../../../../helpers/delay';
 import { post } from '../../../../helpers/http';
 import type { AppDispatch } from '../../../../redux/store';
 import { setModalOpened } from '../../../../redux/ui/slice';
@@ -45,8 +44,6 @@ const SignUpForm = () => {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
-      await delay(300);
-
       const [error, user] = await tryCatch(
         post<CreateUserResponse>('/api/users/register', data, {
           schema: CreateUserResponseSchema,

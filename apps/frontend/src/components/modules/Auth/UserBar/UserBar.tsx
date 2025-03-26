@@ -40,11 +40,11 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
   }, [dispatch]);
 
   const onConfirm = useCallback(async () => {
-    await tryCatch(post('/api/users/logout', {}));
-
     dispatch(setCurrentUser(null));
     dispatch(setModalOpened({ modal: 'logout', opened: false }));
     navigate('/');
+
+    await tryCatch(post('/api/users/logout', {}));
   }, [dispatch, navigate]);
 
   useEffect(() => {

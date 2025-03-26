@@ -1,8 +1,8 @@
 .modal {
   display: none;
   animation:
-    fadeOut 0.3s,
-    slideUp 0.3s;
+    global(fadeOut) 0.3s,
+    global(slideUp) 0.3s;
   width: 560px;
   padding: 80px;
   border: 1px solid var(--black);
@@ -12,8 +12,8 @@
   &[open] {
     display: block;
     animation:
-      fadeIn 0.3s,
-      slideDown 0.3s;
+      global(fadeIn) 0.3s,
+      global(slideDown) 0.3s;
   }
 
   &::backdrop {
@@ -55,68 +55,6 @@
   background-color: var(--black);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    display: block;
-    opacity: 1;
-  }
-
-  to {
-    display: none;
-    opacity: 0;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-20%) scale(0.8);
-  }
-
-  to {
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(0) scale(1);
-  }
-
-  to {
-    transform: translateY(-20%) scale(0.8);
-  }
-}
-
-@keyframes slideLeft {
-  from {
-    transform: translateX(20%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideRight {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(20%);
-  }
-}
-
 @media (max-width: 767px) {
   .modal {
     width: min(100%, 343px);
@@ -136,13 +74,13 @@
     min-height: 100dvh;
     padding: 60px 24px;
     animation:
-      fadeOut 0.3s,
-      slideRight 0.3s;
+      global(fadeOut) 0.3s,
+      global(slideRight) 0.3s;
 
     &[open] {
       animation:
-        fadeIn 0.3s,
-        slideLeft 0.3s;
+        global(fadeIn) 0.3s,
+        global(slideLeft) 0.3s;
     }
 
     & .closeButton {

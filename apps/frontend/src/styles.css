@@ -1,1 +1,83 @@
-/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/modern-normalize/modern-normalize.css';
+
+@import './styles/animations.css';
+@import './styles/colors.css';
+@import './styles/typography.css';
+@import './styles/layout.css';
+@import './styles/inputs.css';
+
+:root {
+  font-family: var(--base-font);
+  font-size: var(--base-font-size);
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  font-family: var(--base-font);
+  font-size: var(--base-font-size);
+}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+body {
+  min-height: 100dvh;
+  line-height: 1.5;
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button {
+  font-family: var(--base-font);
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}

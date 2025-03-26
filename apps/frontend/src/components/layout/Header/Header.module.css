@@ -15,3 +15,11 @@
   gap: 12px;
   align-items: center;
 }
+
+.skeleton {
+  width: 138px;
+  height: 50px;
+  background-color: hsl(200, 20%, 80%);
+  border-radius: var(--border-radius);
+  animation: global(pulse) 1.5s infinite ease-in-out;
+}

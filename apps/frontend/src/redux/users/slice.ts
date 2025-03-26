@@ -11,13 +11,13 @@ import { tryCatch } from '../../helpers/catchError';
 import { get } from '../../helpers/http';
 
 export interface UsersState {
-  currentUser: UserShortDetails | null;
+  currentUser: UserShortDetails | null | undefined;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: UsersState = {
-  currentUser: null,
+  currentUser: undefined,
   loading: false,
   error: null,
 };

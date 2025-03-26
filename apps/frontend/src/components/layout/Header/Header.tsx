@@ -29,12 +29,20 @@ const Header = () => {
           <Logo isInversed={isInversed} />
           {currentUser && !isMobile && <Navigation isInversed={isInversed} />}
 
-          <AuthBar userSignedIn={Boolean(currentUser)} />
+          {currentUser === null || currentUser ? (
+            <>
+              <AuthBar userSignedIn={Boolean(currentUser)} />
 
-          <div className={styles.menuContainer}>
-            <UserBar currentUser={currentUser} />
-            {currentUser && isMobile && <BurgerMenu isInversed={isInversed} />}
-          </div>
+              <div className={styles.menuContainer}>
+                <UserBar currentUser={currentUser} />
+                {currentUser && isMobile && (
+                  <BurgerMenu isInversed={isInversed} />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className={styles.skeleton}></div>
+          )}
         </div>
       </div>
     </Container>
