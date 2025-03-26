@@ -160,3 +160,17 @@
     font-size: 14px;
   }
 }
+
+.inputWrapperTitle {
+  height: 28px;
+  align-self: center; /* delete if required */
+}
+
+.inputWrapperTitle input {
+  /* for recipe title */
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02rem;
+  text-transform: uppercase;
+}
