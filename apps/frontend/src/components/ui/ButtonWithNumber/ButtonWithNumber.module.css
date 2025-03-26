@@ -7,9 +7,10 @@
   border: 1px transparent var(--gray);
 }
 
-button:disabled {
+.disabled {
   opacity: 1;
   cursor: not-allowed;
+  color: var(--black);
 }
 
 .button.active {
@@ -41,9 +42,4 @@ button:disabled {
   line-height: 143%;
   letter-spacing: 0.17px;
   text-align: center;
-}
-
-button:disabled .number {
-  color: var(--black);
-  opacity: 1;
 }

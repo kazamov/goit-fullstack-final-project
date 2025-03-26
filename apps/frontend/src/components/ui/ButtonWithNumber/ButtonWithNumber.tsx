@@ -23,7 +23,12 @@ const ButtonWithNumber = ({
     <button
       disabled={disabled}
       type={type}
-      className={clsx([styles[kind], styles.button, styles[size]])}
+      className={clsx([
+        styles[kind],
+        styles.button,
+        styles[size],
+        disabled && styles.disabled,
+      ])}
       onClick={clickHandler}
     >
       <span className={styles.number}>{number}</span>
