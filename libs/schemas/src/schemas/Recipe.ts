@@ -4,12 +4,12 @@ import { IngredientCardObjectSchema, IngredientSchema } from './Ingredient.js';
 
 export const RecipeSchema = z.object({
   id: z.string(),
-  title: z.string(),
-  categoryId: z.string(),
+  title: z.string().nonempty('Title cannot be empty'),
+  categoryId: z.string().nonempty('Category cannot be empty'),
   userId: z.string(),
-  areaId: z.string(),
-  instructions: z.string(),
-  description: z.string(),
+  areaId: z.string().nonempty('Area cannot be empty'),
+  instructions: z.string().nonempty('Instructions cannot be empty'),
+  description: z.string().nonempty('Description cannot be empty'),
   thumb: z.string(),
   thumbId: z.string().nullable(),
   time: z.number({ coerce: true }),
@@ -105,13 +105,16 @@ export type GetRecipeDetailedResponse = z.infer<
 
 // Create schemas
 
-const RecipeIngredientSchema = IngredientSchema.pick({ id: true }).extend({
+export const RecipeIngredientSchema = IngredientSchema.pick({
+  id: true,
+}).extend({
   measure: z.string(),
 });
 
 export const CreateRecipePayloadSchema = RecipeSchema.omit({
   id: true,
   thumb: true,
+  thumbId: true,
   createdAt: true,
   updatedAt: true,
   userId: true,

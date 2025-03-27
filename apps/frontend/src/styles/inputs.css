@@ -103,7 +103,7 @@
 .textAreaError {
   color: var(--red);
   position: absolute;
-  bottom: -20px;
+  bottom: -25px;
   left: 0;
   font-size: 12px;
 }
@@ -142,6 +142,45 @@
   gap: 40px;
 }
 
+.inputTitleWrapper {
+  height: 28px;
+  align-self: center; /* delete if required */
+  position: relative;
+}
+
+.inputTitleWrapper input {
+  /* for recipe title */
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02rem;
+  text-transform: uppercase;
+}
+
+.inputTitleError {
+  color: var(--red);
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.inputTitleWrapperInvalid input::placeholder {
+  color: var(--red);
+}
+
+.inputLabel {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+  display: block;
+  margin: 0 0 16px 0;
+}
+
 @media (max-width: 767px) {
   .inputWrapper {
     padding: 14px;
@@ -159,18 +198,9 @@
   .textArea {
     font-size: 14px;
   }
-}
 
-.inputWrapperTitle {
-  height: 28px;
-  align-self: center; /* delete if required */
-}
-
-.inputWrapperTitle input {
-  /* for recipe title */
-  font-size: 24px;
-  line-height: 28px;
-  font-weight: 800;
-  letter-spacing: -0.02rem;
-  text-transform: uppercase;
+  .inputLabel {
+    font-size: 18px;
+    line-height: 24px;
+  }
 }

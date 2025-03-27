@@ -9,10 +9,12 @@ import styles from './RecipeIngredients.module.css';
 
 interface RecipeIngredientsProps {
   ingredients: GetRecipeDetailedResponse['ingredients'];
+  onDelete?: (id: string) => void;
 }
 
 export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
   ingredients,
+  onDelete,
 }) => {
   return (
     <div className={clsx(styles.recipeIngredients)}>
@@ -23,7 +25,7 @@ export const RecipeIngredients: FC<RecipeIngredientsProps> = ({
             key={ingredient.id}
             className={clsx(styles.recipeIngredientsItem)}
           >
-            <IngredientCard ingredient={ingredient} />
+            <IngredientCard onDelete={onDelete} ingredient={ingredient} />
           </li>
         ))}
       </ul>

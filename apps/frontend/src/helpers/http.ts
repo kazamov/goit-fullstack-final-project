@@ -63,9 +63,9 @@ export function post<T>(
   options: Omit<RequestOptions, 'method'> = {},
 ): Promise<T> {
   return request(url, {
-    ...options,
+    body: body as BodyInit,
     method: 'POST',
-    body: JSON.stringify(body),
+    ...options,
   });
 }
 

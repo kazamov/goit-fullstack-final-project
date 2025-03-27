@@ -1,9 +1,17 @@
 import type { ChangeEvent } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './UploadRecipePhoto.module.css';
 
-const UploadRecipePhoto = () => {
+type UploadRecipePhotoProps = {
+  onFileSelect: (file: File) => void;
+  resetImage: boolean;
+};
+
+const UploadRecipePhoto = ({
+  onFileSelect,
+  resetImage,
+}: UploadRecipePhotoProps) => {
   // ToDo: dispatch selected image to "recipes" redux store
   // or declare and submit it in the parent component
   const [image, setImage] = useState<File | null>(null);
@@ -14,12 +22,18 @@ const UploadRecipePhoto = () => {
 
     const selectedImage = e.target.files[0];
     setImage(selectedImage);
+    console.log(selectedImage instanceof File);
+    onFileSelect(selectedImage);
 
     const objectUrl = URL.createObjectURL(selectedImage);
     setPreview(objectUrl);
 
     return () => URL.revokeObjectURL(objectUrl);
   };
+
+  useEffect(() => {
+    setPreview(null);
+  }, [resetImage]);
 
   return (
     <div className={styles.uploadRecipePhoto}>

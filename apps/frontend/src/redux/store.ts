@@ -1,6 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import { areasReducer } from './areas/slice';
 import { categoriesReducer } from './categories/slice';
+import { ingredientsReducer } from './ingredients/slice';
 import { testimonialsReducer } from './testimonials/slice';
 import { uiReducer } from './ui/slice';
 import { usersReducer } from './users/slice';
@@ -10,6 +12,8 @@ const rootReducer = combineReducers({
   users: usersReducer,
   categories: categoriesReducer,
   ui: uiReducer,
+  ingredients: ingredientsReducer,
+  areas: areasReducer,
 });
 
 export const store = configureStore({
