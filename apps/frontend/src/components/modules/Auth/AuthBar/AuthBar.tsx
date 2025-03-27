@@ -1,13 +1,9 @@
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import type { AppDispatch } from '../../../../redux/store';
-import {
-  selectIsLoginModalOpened,
-  selectIsRegisterModalOpened,
-  setModalOpened,
-} from '../../../../redux/ui/slice';
+import { setModalOpened } from '../../../../redux/ui/slice';
 import Button from '../../../ui/Button/Button';
 import SignInModal from '../SignInModal/SignInModal';
 import SignUpModal from '../SignUpModal/SignUpModal';
@@ -21,21 +17,11 @@ interface AuthBarProps {
 const AuthBar: FC<AuthBarProps> = ({ userSignedIn }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isLoginOpened = useSelector(selectIsLoginModalOpened);
-  const isRegisterOpened = useSelector(selectIsRegisterModalOpened);
-
   const openSignInModal = useCallback(() => {
     dispatch(setModalOpened({ modal: 'login', opened: true }));
   }, [dispatch]);
   const openSignUpModal = useCallback(() => {
     dispatch(setModalOpened({ modal: 'register', opened: true }));
-  }, [dispatch]);
-
-  const closeSignInModal = useCallback(() => {
-    dispatch(setModalOpened({ modal: 'login', opened: false }));
-  }, [dispatch]);
-  const closeSignUpModal = useCallback(() => {
-    dispatch(setModalOpened({ modal: 'register', opened: false }));
   }, [dispatch]);
 
   return (
@@ -61,17 +47,8 @@ const AuthBar: FC<AuthBarProps> = ({ userSignedIn }) => {
         </div>
       )}
 
-      <SignInModal
-        isOpen={isLoginOpened}
-        onRedirectToSignUp={openSignUpModal}
-        onClose={closeSignInModal}
-      ></SignInModal>
-
-      <SignUpModal
-        isOpen={isRegisterOpened}
-        onRedirectToSignIn={openSignInModal}
-        onClose={closeSignUpModal}
-      ></SignUpModal>
+      <SignInModal onRedirectToSignUp={openSignUpModal}></SignInModal>
+      <SignUpModal onRedirectToSignIn={openSignInModal}></SignUpModal>
     </>
   );
 };
