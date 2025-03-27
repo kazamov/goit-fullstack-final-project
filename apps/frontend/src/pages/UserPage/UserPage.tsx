@@ -26,6 +26,7 @@ const UserPage = () => {
 
   const { id: userId } = useParams<{ id: string }>();
   const [, setUser] = useState<OtherUserDetails | null>(null);
+  const [userRecipesList, setUserRecipesList] = useState<GetRecipeShort[]>([]);
   const [favoriteRecipeList, setFavoriteRecipeList] = useState<
     GetRecipeShort[]
   >([]);
@@ -58,6 +59,31 @@ const UserPage = () => {
 
     fetchFavoriteRecipes();
   }, []);
+
+  useEffect(() => {
+    const fetchUserRecipes = async () => {
+      const [error, result]: [
+        Error | undefined,
+        { items: GetRecipeShort[] } | undefined,
+      ] = await tryCatch(get(`/api/users/${userId}/recipes`));
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      if (result) {
+        setUserRecipesList(result.items);
+      }
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+    };
+
+    fetchUserRecipes();
+  }, [userId]);
 
   useEffect(() => {
     if (userId === currentUser?.id) {
@@ -94,6 +120,17 @@ const UserPage = () => {
 
   const handleOpenRecipe = (recipeId: string) => {
     navigate(`/recipe/${recipeId}`);
+  };
+
+  const handleRemoveRecipe = async (recipeId: string) => {
+    const [error] = await tryCatch(del(`/api/recipes/${recipeId}`));
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setUserRecipesList((prev) =>
+      prev.filter((recipe) => recipe.id !== recipeId),
+    );
   };
 
   const handleRemoveRecipeFromFavorite = async (recipeId: string) => {
@@ -185,7 +222,11 @@ const UserPage = () => {
               {isCurrentUser ? (
                 <>
                   <TabPanel>
-                    <div>Replace with "Recipes" component</div>
+                    <RecipeTab
+                      recipeList={userRecipesList}
+                      handleOpenRecipe={handleOpenRecipe}
+                      handleRemoveRecipe={handleRemoveRecipe}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <RecipeTab

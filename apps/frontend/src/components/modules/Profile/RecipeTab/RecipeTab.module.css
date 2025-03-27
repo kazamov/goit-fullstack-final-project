@@ -45,3 +45,7 @@
   flex-direction: row;
   gap: 4px;
 }
+
+.noRecipes {
+  margin: 140px auto;
+}
