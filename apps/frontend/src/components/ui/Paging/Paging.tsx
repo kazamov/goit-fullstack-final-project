@@ -8,14 +8,12 @@ type PagingProps = {
   totalPages: number;
   maxVisibleButtons?: number;
   onPageChange?: (page: number) => void;
-  size?: 'small' | 'medium' | 'large';
 };
 
 const Paging: React.FC<PagingProps> = ({
   totalPages,
   maxVisibleButtons = 7,
   onPageChange,
-  size = 'medium',
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -81,13 +79,12 @@ const Paging: React.FC<PagingProps> = ({
       {getPageNumbers().map((page, index) => (
         <React.Fragment key={index}>
           {page === '...' ? (
-            <span className={`${styles.ellipsis} ${styles[size]}`}>...</span>
+            <span className={`${styles.ellipsis}`}>...</span>
           ) : (
             <ButtonWithNumber
               key={page}
               kind={page === currentPage ? 'active' : 'inactive'}
               number={Number(page)}
-              size={size}
               clickHandler={() => handlePageClick(Number(page))}
               disabled={page === currentPage}
             />

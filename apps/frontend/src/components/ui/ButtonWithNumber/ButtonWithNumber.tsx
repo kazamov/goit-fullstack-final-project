@@ -5,7 +5,6 @@ import styles from './ButtonWithNumber.module.css';
 type ButtonWithNumberProps = {
   type?: 'button';
   kind: 'inactive' | 'active';
-  size?: 'small' | 'medium' | 'large';
   clickHandler?: () => void;
   disabled?: boolean;
   number: number | string;
@@ -14,7 +13,6 @@ type ButtonWithNumberProps = {
 const ButtonWithNumber = ({
   type = 'button',
   kind = 'inactive',
-  size = 'medium',
   clickHandler,
   disabled = false,
   number,
@@ -26,7 +24,6 @@ const ButtonWithNumber = ({
       className={clsx([
         styles[kind],
         styles.button,
-        styles[size],
         disabled && styles.disabled,
       ])}
       onClick={clickHandler}
