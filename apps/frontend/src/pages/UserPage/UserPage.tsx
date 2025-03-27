@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
+import toast from 'react-hot-toast';
+
 import {
   type OtherUserDetails,
   OtherUserDetailsSchema,
@@ -33,9 +35,6 @@ const UserPage = () => {
       setIsCurrentUser(true);
     } else {
       setIsCurrentUser(false);
-      // dispatch(fetchUserById(id));
-      // user = useSelector(selectUserById(id));
-      // setUser(user);
       const fetchUserDetails = async (userId: string) => {
         const [error, data] = await tryCatch(
           get<OtherUserDetails>(`/api/users/${userId}/details`, {
@@ -44,10 +43,7 @@ const UserPage = () => {
         );
 
         if (error) {
-          console.error(
-            'There has been a problem with your fetch operation:',
-            error,
-          );
+          toast.error(error.message);
           return;
         }
 
@@ -82,14 +78,7 @@ const UserPage = () => {
         <div className={styles.userProfileBlock}>
           <div className={styles.userCardBlock}>
             <div
-              className={styles.userCard}
-              style={{
-                border: '1px solid #BFBEBE',
-                borderRadius: '30px',
-                padding: '40px 80px',
-                width: '394px',
-                height: '348px',
-              }}
+              className={styles.userCardRemoveAfterImplementingComponent}
             >
               <p>Replace this div with component</p>
             </div>

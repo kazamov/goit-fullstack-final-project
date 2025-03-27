@@ -137,4 +137,10 @@
   background-color: var(--black);
 }
 
-/* selectedClassName={css.activeTabTitle} */
+.userCardRemoveAfterImplementingComponent {
+  border: 1px solid #BFBEBE;
+  border-radius: 30px;
+  padding: 40px 80px;
+  width: 394px;
+  height: 348px;
+}
