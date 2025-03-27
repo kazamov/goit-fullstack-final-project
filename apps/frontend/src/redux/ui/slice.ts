@@ -1,7 +1,9 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
-type ModalType = 'login' | 'register' | 'logout';
+import type { RootState } from '../store';
+
+export type ModalType = 'login' | 'register' | 'logout' | 'mobileNavigation';
 
 export interface UIState {
   modals: Record<ModalType, boolean>;
@@ -12,6 +14,7 @@ const initialState: UIState = {
     login: false,
     register: false,
     logout: false,
+    mobileNavigation: false,
   },
 };
 
@@ -34,17 +37,13 @@ const uiSlice = createSlice({
       state.modals[action.payload.modal] = action.payload.opened;
     },
   },
-  selectors: {
-    selectIsLoginModalOpened: (state: UIState) => state.modals.login,
-    selectIsRegisterModalOpened: (state: UIState) => state.modals.register,
-    selectIsLogoutModalOpened: (state: UIState) => state.modals.logout,
-  },
 });
+
+export const createModalStateSelector = (type: ModalType) =>
+  createSelector(
+    [(state: RootState) => state.ui.modals],
+    (modals) => modals[type],
+  );
 
 export const uiReducer = uiSlice.reducer;
 export const { setModalOpened } = uiSlice.actions;
-export const {
-  selectIsLoginModalOpened,
-  selectIsRegisterModalOpened,
-  selectIsLogoutModalOpened,
-} = uiSlice.selectors;

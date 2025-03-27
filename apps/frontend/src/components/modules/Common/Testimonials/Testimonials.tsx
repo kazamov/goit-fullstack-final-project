@@ -34,7 +34,6 @@ const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
           <Swiper
             spaceBetween={30}
             centeredSlides
-            loop
             autoplay={{
               delay: 8000,
               disableOnInteraction: false,
