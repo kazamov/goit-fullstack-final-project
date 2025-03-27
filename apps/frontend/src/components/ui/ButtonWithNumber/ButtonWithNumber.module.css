@@ -11,6 +11,13 @@
   outline: 1px transparent var(--gray);
 }
 
+@media (max-width: 374px) {
+  .button {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 .disabled {
   opacity: 1;
   cursor: not-allowed;

@@ -19,6 +19,12 @@
   }
 }
 
+@media (max-width: 374px) {
+  .pagingContainer {
+    max-width: 320px;
+  }
+}
+
 .ellipsis {
   display: flex;
   flex: 0 1 40px;
@@ -34,4 +40,11 @@
   text-align: center;
   color: var(--gray);
   cursor: not-allowed;
+}
+
+@media (max-width: 374px) {
+  .ellipsis {
+    width: 36px;
+    height: 36px;
+  }
 }
