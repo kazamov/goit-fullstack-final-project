@@ -23,40 +23,42 @@ const UserPage = () => {
   const navigate = useNavigate();
 
   const { id: userId } = useParams<{ id: string }>();
-
-  const [isCurrentUser, setIsCurrentUser] = useState(false);
-  const [user, setUser] = useState<OtherUserDetails | null>(null);
+  const [, setUser] = useState<OtherUserDetails | null>(null);
 
   const currentUser = useSelector(selectCurrentUser);
 
+  const isCurrentUser = userId === currentUser?.id;
+
   useEffect(() => {
     if (userId === currentUser?.id) {
-      setIsCurrentUser(true);
-    } else {
-      setIsCurrentUser(false);
-      const fetchUserDetails = async (userId: string) => {
-        const [error, data] = await tryCatch(
-          get<OtherUserDetails>(`/api/users/${userId}/details`, {
-            schema: OtherUserDetailsSchema,
-          }),
-        );
+      return;
+    }
 
-        if (error) {
-          toast.error(error.message);
-          return;
-        }
+    const fetchUserDetails = async (userId: string) => {
+      const [error, data] = await tryCatch(
+        get<OtherUserDetails>(`/api/users/${userId}/details`, {
+          schema: OtherUserDetailsSchema,
+        }),
+      );
 
-        setUser(data);
-      };
-      if (userId) {
-        fetchUserDetails(userId);
+      if (error) {
+        toast.error(error.message);
+        return;
       }
+
+      setUser(data);
+    };
+
+    if (userId) {
+      fetchUserDetails(userId);
     }
   }, [userId, currentUser]);
 
   const logoutHandler = async () => {
     dispatch(setCurrentUser(null));
-    await tryCatch(post('/api/users/logout', {}));
+
+    await tryCatch(post('/api/users/logout', null));
+
     navigate('/');
   };
 
