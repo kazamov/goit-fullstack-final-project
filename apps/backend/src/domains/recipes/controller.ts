@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 
 import type {
   CreateRecipePayload,
+  RecipeQuery,
   UpdateRecipePayload,
   UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
@@ -12,7 +13,6 @@ import {
   UserFavoriteRecipesDTO,
 } from '../../infrastructure/db/index.js';
 
-import type { RecipeQuery } from './service.js';
 import * as service from './service.js';
 
 export async function getRecipes(req: Request, res: Response) {

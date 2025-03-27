@@ -181,3 +181,11 @@ export const ShortRecipeDetailsSchema = RecipeSchema.pick({
 });
 
 export type ShortRecipeDetails = z.infer<typeof ShortRecipeDetailsSchema>;
+
+export type RecipeQuery = {
+  categoryId?: string;
+  areaId?: string;
+  ingredientId?: string;
+  page?: string | number;
+  perPage?: string | number;
+};
