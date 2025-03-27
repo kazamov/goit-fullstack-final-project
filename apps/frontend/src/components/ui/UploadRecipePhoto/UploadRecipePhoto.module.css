@@ -21,7 +21,7 @@
   margin: 0;
   border-radius: var(--border-radius);
   width: 100%;
-  max-height: 400px;
+  height: 402px;
   border: 1px dashed var(--gray);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -56,7 +56,10 @@
 
 @media (max-width: 767px) {
   .uploadRecipePhoto {
-    height: 318px;
     gap: 16px;
+  }
+
+  .uploadLabel {
+    height: 318px;
   }
 }
