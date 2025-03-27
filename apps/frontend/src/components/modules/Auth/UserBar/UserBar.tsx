@@ -35,7 +35,7 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
     dispatch(setModalOpened({ modal: 'logout', opened: false }));
     navigate('/');
 
-    await tryCatch(post('/api/users/logout', {}));
+    await tryCatch(post('/api/users/logout', null));
   }, [dispatch, navigate]);
 
   useEffect(() => {

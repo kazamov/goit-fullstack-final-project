@@ -45,7 +45,7 @@ const SignUpForm = () => {
   const onSubmit = useCallback(
     async (data: FormData) => {
       const [error, user] = await tryCatch(
-        post<CreateUserResponse>('/api/users/register', data, {
+        post<CreateUserResponse>('/api/users/register', JSON.stringify(data), {
           schema: CreateUserResponseSchema,
         }),
       );

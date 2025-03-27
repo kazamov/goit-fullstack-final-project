@@ -124,7 +124,7 @@ const RecipePage = () => {
       }
       const [error] = await tryCatch(
         newState
-          ? post(`/api/recipes/${recipeId}/favorite`, {})
+          ? post(`/api/recipes/${recipeId}/favorite`, null)
           : del(`/api/recipes/${recipeId}/favorite`),
       );
       if (error) {

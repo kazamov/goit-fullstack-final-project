@@ -59,25 +59,25 @@ export function get<T>(
 
 export function post<T>(
   url: string,
-  body: unknown,
+  body: BodyInit | null,
   options: Omit<RequestOptions, 'method'> = {},
 ): Promise<T> {
   return request(url, {
     ...options,
     method: 'POST',
-    body: JSON.stringify(body),
+    body,
   });
 }
 
 export function put<T>(
   url: string,
-  body: unknown,
+  body: BodyInit | null,
   options: Omit<RequestOptions, 'method'> = {},
 ): Promise<T> {
   return request(url, {
     ...options,
     method: 'PUT',
-    body: JSON.stringify(body),
+    body,
   });
 }
 
@@ -90,12 +90,12 @@ export function del(url: string, options: Omit<RequestInit, 'method'> = {}) {
 
 export function patch<T>(
   url: string,
-  body: unknown,
+  body: BodyInit | null,
   options: Omit<RequestInit, 'method'> = {},
 ): Promise<T> {
   return request(url, {
     ...options,
     method: 'PATCH',
-    body: JSON.stringify(body),
+    body,
   });
 }
