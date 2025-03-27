@@ -1,7 +1,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import type { GetAreaResponse } from '@goit-fullstack-final-project/schemas';
+import {
+  type GetAreaResponse,
+  GetAreaResponseSchema,
+} from '@goit-fullstack-final-project/schemas';
+
+import { tryCatch } from '../../helpers/catchError';
+import { get } from '../../helpers/http';
 
 export interface Areas {
   items: GetAreaResponse;
@@ -18,14 +24,17 @@ const initialState: Areas = {
 export const fetchAreas = createAsyncThunk(
   'areas/fetchAreas',
   async (_, thunkAPI) => {
-    try {
-      const response = await fetch('/api/areas');
-      if (!response.ok) throw new Error('Failed to fetch areas');
-      const data = await response.json();
-      return data;
-    } catch (error: any) {
+    const [error, areas] = await tryCatch(
+      get<GetAreaResponse | null>('/api/areas', {
+        schema: GetAreaResponseSchema,
+      }),
+    );
+
+    if (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
+
+    return areas ?? [];
   },
 );
 

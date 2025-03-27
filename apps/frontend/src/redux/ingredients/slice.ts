@@ -1,7 +1,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import type { GetIngredientResponse } from '@goit-fullstack-final-project/schemas';
+import {
+  type GetIngredientResponse,
+  GetIngredientResponseSchema,
+} from '@goit-fullstack-final-project/schemas';
+
+import { tryCatch } from '../../helpers/catchError';
+import { get } from '../../helpers/http';
 
 export interface Ingredients {
   items: GetIngredientResponse;
@@ -18,14 +24,17 @@ const initialState: Ingredients = {
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
   async (_, thunkAPI) => {
-    try {
-      const response = await fetch('/api/ingredients');
-      if (!response.ok) throw new Error('Failed to fetch ingredients');
-      const data = await response.json();
-      return data;
-    } catch (error: any) {
+    const [error, ingredients] = await tryCatch(
+      get<GetIngredientResponse | null>('/api/ingredients', {
+        schema: GetIngredientResponseSchema,
+      }),
+    );
+
+    if (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
+
+    return ingredients ?? [];
   },
 );
 
