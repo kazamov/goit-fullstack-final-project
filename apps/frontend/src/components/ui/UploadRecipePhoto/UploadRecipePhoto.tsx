@@ -1,16 +1,19 @@
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 import styles from './UploadRecipePhoto.module.css';
 
 type UploadRecipePhotoProps = {
   onFileSelect: (file: File) => void;
   resetImage: boolean;
+  className?: string;
 };
 
 const UploadRecipePhoto = ({
   onFileSelect,
   resetImage,
+  className,
 }: UploadRecipePhotoProps) => {
   // ToDo: dispatch selected image to "recipes" redux store
   // or declare and submit it in the parent component
@@ -36,7 +39,7 @@ const UploadRecipePhoto = ({
   }, [resetImage]);
 
   return (
-    <div className={styles.uploadRecipePhoto}>
+    <div className={clsx(styles.uploadRecipePhoto, styles[className])}>
       <label className={styles.uploadLabel}>
         {preview ? (
           <img className={styles.previewImage} src={preview} alt="Preview" />

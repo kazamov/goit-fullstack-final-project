@@ -10,6 +10,10 @@
   overflow: clip;
 }
 
+.invalidUpload {
+  border: 1px dashed var(--red);
+}
+
 .uploadLabel {
   display: flex;
   flex-direction: column;

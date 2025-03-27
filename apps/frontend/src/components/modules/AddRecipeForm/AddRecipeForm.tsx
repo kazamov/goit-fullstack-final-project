@@ -264,6 +264,7 @@ const AddRecipeForm = () => {
           <div className={clsx(styles.column)}>
             <div className={clsx(styles.file)}>
               <UploadRecipePhoto
+                className={errors.thumb ? 'invalidUpload' : ''}
                 resetImage={resetImage}
                 onFileSelect={selectFile}
               />
@@ -594,7 +595,12 @@ const AddRecipeForm = () => {
                 iconType="icon-trash"
                 clickHandler={resetForm}
               />
-              <Button kind="primary" type="submit" busy={isSubmitting}>
+              <Button
+                kind="primary"
+                type="submit"
+                busy={isSubmitting}
+                disabled={isSubmitting}
+              >
                 Publish
               </Button>
             </div>
