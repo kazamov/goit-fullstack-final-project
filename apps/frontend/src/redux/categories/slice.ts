@@ -1,7 +1,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import type { GetCategoryResponse } from '@goit-fullstack-final-project/schemas';
+import {
+  type GetCategoryResponse,
+  GetCategoryResponseSchema,
+} from '@goit-fullstack-final-project/schemas';
+
+import { tryCatch } from '../../helpers/catchError';
+import { get } from '../../helpers/http';
 
 export interface SelectedCategory {
   id: string;
@@ -26,14 +32,17 @@ const initialState: Categories = {
 export const fetchCategories = createAsyncThunk(
   'categories/fetchCategories',
   async (_, thunkAPI) => {
-    try {
-      const response = await fetch('/api/categories');
-      if (!response.ok) throw new Error('Failed to fetch categories');
-      const data = await response.json();
-      return data;
-    } catch (error: any) {
+    const [error, categories] = await tryCatch(
+      get<GetCategoryResponse | null>('/api/categories', {
+        schema: GetCategoryResponseSchema,
+      }),
+    );
+
+    if (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
+
+    return categories ?? [];
   },
 );
 

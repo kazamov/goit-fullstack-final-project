@@ -215,12 +215,18 @@ const UIKitPage = () => {
             <input className="input" type="text" placeholder="Name*" />
             <span className="inputError">Name is required</span>
           </div>
-          <div className="inputWrapperTitle">
-            <input
-              className="input"
-              type="text"
-              placeholder="The name of the recipe"
-            />
+        </div>
+
+        <div>
+          <h2 className={styles.kitTitle}>Input</h2>
+          <div className={clsx(styles.kitCard)}>
+            <div className="inputTitleWrapper">
+              <input
+                className="input"
+                type="text"
+                placeholder="The name of the recipe"
+              />
+            </div>
           </div>
         </div>
       </div>

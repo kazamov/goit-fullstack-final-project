@@ -1,0 +1,104 @@
+.content {
+  display: grid;
+  grid-template-columns: 551px auto;
+  gap: 80px;
+  margin-top: 40px;
+}
+
+.formRow {
+  margin: 0 0 54px 0;
+}
+
+.formRowCol {
+  display: flex;
+  gap: 20px;
+}
+
+.file {
+  position: relative;
+}
+
+.icon {
+  height: 22px;
+  width: 22px;
+  stroke: var(--black);
+  fill: none;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ingredients {
+  display: flex;
+  gap: 35px;
+  flex-direction: column;
+  align-items: start;
+  position: relative;
+  padding: 0 0 16px 0;
+}
+
+.ingredientsInputs {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.cookingTime {
+  display: flex;
+  gap: 16px;
+}
+
+.cookingTimeCount {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--gray);
+}
+
+.recipeTitle {
+  margin: 0 0 50px 0;
+  display: block;
+}
+
+.button {
+  display: flex;
+  gap: 16px;
+}
+
+.textAreaWrapper {
+  flex-grow: 1;
+}
+
+.selectWrapper {
+  width: 315px;
+}
+
+@media (max-width: 1439px) {
+  .content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .content {
+    margin-top: 32px;
+    gap: 32px;
+  }
+
+  .formRowCol {
+    flex-direction: column;
+  }
+
+  .ingredientsInputs {
+    flex-direction: column;
+  }
+}

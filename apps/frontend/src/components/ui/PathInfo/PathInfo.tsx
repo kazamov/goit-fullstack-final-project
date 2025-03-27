@@ -8,7 +8,7 @@ type PathInfoProps = {
 
 const PathInfo = ({ pages }: PathInfoProps) => {
   return (
-    <nav>
+    <nav className={styles.pathContainer}>
       <ul className={styles.pathInfoList}>
         {pages.map((page, index) => (
           <li key={page.path}>

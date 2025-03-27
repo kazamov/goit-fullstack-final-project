@@ -11,14 +11,14 @@ export const IngredientSchema = z.object({
 
 export type Ingredient = z.infer<typeof IngredientSchema>;
 
-export const GetIngredientResponseSchema = z.array(
-  IngredientSchema.pick({
-    id: true,
-    name: true,
-    description: true,
-    imageUrl: true,
-  }),
-);
+export const GetIngredient = IngredientSchema.pick({
+  id: true,
+  name: true,
+  description: true,
+  imageUrl: true,
+});
+
+export const GetIngredientResponseSchema = z.array(GetIngredient);
 
 export type GetIngredientResponse = z.infer<typeof GetIngredientResponseSchema>;
 

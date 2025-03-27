@@ -3,6 +3,10 @@
   gap: 8px;
 }
 
+.pathContainer {
+  margin: 0 0 40px 0;
+}
+
 .pathInfoSeparator {
   font-weight: 700;
   font-size: 12px;
