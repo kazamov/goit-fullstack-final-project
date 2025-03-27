@@ -1,14 +1,14 @@
 import type { FC } from 'react';
 import clsx from 'clsx';
 
-import type { GetRecipeDetailedResponse } from '@goit-fullstack-final-project/schemas';
+import type { IngredientCardObject } from '@goit-fullstack-final-project/schemas';
 
 import IngredientCard from '../../../ui/IngredientCard/IngredientCard';
 
 import styles from './RecipeIngredients.module.css';
 
 interface RecipeIngredientsProps {
-  ingredients: GetRecipeDetailedResponse['ingredients'];
+  ingredients: IngredientCardObject[];
   onDelete?: (id: string) => void;
 }
 

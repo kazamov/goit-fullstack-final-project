@@ -8,8 +8,8 @@ import clsx from 'clsx';
 import { z } from 'zod';
 
 import type {
-  GetIngredientResponse,
   GetRecipeResponse,
+  IngredientCardObject,
 } from '@goit-fullstack-final-project/schemas';
 import {
   CreateRecipePayloadSchema,
@@ -43,7 +43,9 @@ const ExtendedRecipePayloadSchema = CreateRecipePayloadSchema.omit({
     .refine((file) => file instanceof File && file.size > 0, {
       message: 'File is required and cannot be empty',
     }),
-  ingredients: z.array(RecipeIngredientSchema),
+  ingredients: z
+    .array(RecipeIngredientSchema)
+    .min(1, 'At least one ingredient is required'),
 });
 
 export type FormData = z.infer<typeof ExtendedRecipePayloadSchema>;
@@ -81,8 +83,9 @@ const AddRecipeForm = () => {
     dispatch(fetchAreas());
   }, [dispatch]);
 
-  const [displayedIngredients, setDisplayedIngredients] =
-    useState<GetIngredientResponse>([]);
+  const [displayedIngredients, setDisplayedIngredients] = useState<
+    IngredientCardObject[]
+  >([]);
   const [selectedIngredient, setSelectedIngredient] = useState('');
   const [measure, setMeasure] = useState('');
   const [resetImage, setResetImage] = useState(false);
@@ -183,20 +186,28 @@ const AddRecipeForm = () => {
       (ingredient) => ingredient.id === id,
     );
     if (index !== -1) {
+      toggleIngredient(ingredientsValue[index], false);
       remove(index);
     }
-    toggleIngredient({ id }, false);
   };
 
   const toggleIngredient = (
-    { id, measure }: { id: string; measure?: string },
+    { id, measure }: { id: string; measure: string },
     toAdd = true,
   ) => {
     if (toAdd) {
       const ingredient = ingredients.find((item) => item.id === id);
       setDisplayedIngredients(
         ingredient
-          ? [...displayedIngredients, { ...ingredient, ...{ measure } }]
+          ? [
+              ...displayedIngredients,
+              {
+                id,
+                measure: measure,
+                imageUrl: ingredient.imageUrl,
+                name: ingredient.name,
+              },
+            ]
           : displayedIngredients,
       );
 
@@ -315,16 +326,23 @@ const AddRecipeForm = () => {
             <div className={clsx(styles.formRow, styles.formRowCol)}>
               <div>
                 <label className={clsx('inputLabel')}>Category</label>
-                <select {...register('categoryId')}>
-                  <option value="" disabled selected>
-                    Select an option
-                  </option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
+                <div className="inputWrapper">
+                  <select {...register('categoryId')}>
+                    <option value="" disabled selected>
+                      Select an option
                     </option>
-                  ))}
-                </select>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  {!!errors.categoryId && (
+                    <span className="inputError">
+                      {errors.categoryId.message}
+                    </span>
+                  )}
+                </div>
               </div>
               <div>
                 <label className={clsx('inputLabel')}>Cooking Time</label>
@@ -417,16 +435,18 @@ const AddRecipeForm = () => {
 
             <div className={clsx(styles.formRow)}>
               <label className={clsx('inputLabel')}>Area</label>
-              <select {...register('areaId')}>
-                <option value="" disabled selected>
-                  Select an option
-                </option>
-                {areas.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <div className="inputWrapper">
+                <select {...register('areaId')} defaultValue="">
+                  {areas.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                {!!errors.areaId && (
+                  <span className="inputError">{errors.areaId.message}</span>
+                )}
+              </div>
             </div>
 
             <label className={clsx('inputLabel', styles.recipeTitle)}>

@@ -4,12 +4,12 @@ import { IngredientCardObjectSchema, IngredientSchema } from './Ingredient.js';
 
 export const RecipeSchema = z.object({
   id: z.string(),
-  title: z.string().nonempty('Title cannot be empty'),
-  categoryId: z.string().nonempty('Category cannot be empty'),
+  title: z.string().min(1, 'Title cannot be empty'),
+  categoryId: z.string().min(1, 'Category cannot be empty'),
   userId: z.string(),
-  areaId: z.string().nonempty('Area cannot be empty'),
-  instructions: z.string().nonempty('Instructions cannot be empty'),
-  description: z.string().nonempty('Description cannot be empty'),
+  areaId: z.string().min(1, 'Area cannot be empty'),
+  instructions: z.string().min(1, 'Instructions cannot be empty'),
+  description: z.string().min(1, 'Description cannot be empty'),
   thumb: z.string(),
   thumbId: z.string().nullable(),
   time: z.number({ coerce: true }),
