@@ -22,39 +22,46 @@ const RecipeTab: FC<RecipeCardProps> = ({
 
   return (
     <div className={styles.recipeTab}>
-      {recipeList.map((recipe) => (
-        <div key={recipe.id} className={styles.recipeItem}>
-          <img
-            src={recipe.thumb}
-            alt={recipe.title}
-            className={styles.recipeImage}
-          />
-          <div className={styles.recipeWrapper}>
-            <div className={styles.recipeDetails}>
-              <h3>{recipe.title}</h3>
-              <p>{recipe.description}</p>
-            </div>
-            <div className={styles.recipeActions}>
-              <ButtonWithIcon
-                kind="secondary"
-                type="submit"
-                iconType="icon-arrow-up-right"
-                size={isMobile ? 'small' : 'medium'}
-                aria-label="Open recipe"
-                clickHandler={() => handleOpenRecipe?.(recipe.id)}
-              />
-              <ButtonWithIcon
-                kind="secondary"
-                type="submit"
-                iconType="icon-trash"
-                size={isMobile ? 'small' : 'medium'}
-                aria-label="Remove from favorites"
-                clickHandler={() => handleRemoveRecipe?.(recipe.id)}
-              />
+      {recipeList.length > 0 ? (
+        recipeList.map((recipe) => (
+          <div key={recipe.id} className={styles.recipeItem}>
+            <img
+              src={recipe.thumb}
+              alt={recipe.title}
+              className={styles.recipeImage}
+            />
+            <div className={styles.recipeWrapper}>
+              <div className={styles.recipeDetails}>
+                <h3>{recipe.title}</h3>
+                <p>{recipe.description}</p>
+              </div>
+              <div className={styles.recipeActions}>
+                <ButtonWithIcon
+                  kind="secondary"
+                  type="submit"
+                  iconType="icon-arrow-up-right"
+                  size={isMobile ? 'small' : 'medium'}
+                  aria-label="Open recipe"
+                  clickHandler={() => handleOpenRecipe?.(recipe.id)}
+                />
+                <ButtonWithIcon
+                  kind="secondary"
+                  type="submit"
+                  iconType="icon-trash"
+                  size={isMobile ? 'small' : 'medium'}
+                  aria-label="Remove from favorites"
+                  clickHandler={() => handleRemoveRecipe?.(recipe.id)}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p className={styles.noRecipes}>
+          Nothing has been added to your recipes list yet. Please browse our
+          recipes and add your favorites for easy access in the future.
+        </p>
+      )}
     </div>
   );
 };

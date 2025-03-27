@@ -97,6 +97,7 @@
   flex-direction: row;
   gap: 40px;
   position: relative;
+  margin: 0 auto;
 }
 
 .tabList::before {
@@ -125,6 +126,7 @@
   text-transform: uppercase;
   color: var(--black);
   position: relative;
+  outline: none;
 }
 
 .activeTabTitle::before {
@@ -138,7 +140,7 @@
 }
 
 .userCardRemoveAfterImplementingComponent {
-  border: 1px solid #BFBEBE;
+  border: 1px solid #bfbebe;
   border-radius: 30px;
   padding: 40px 80px;
   width: 394px;
