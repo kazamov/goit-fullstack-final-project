@@ -21,6 +21,7 @@ import { del, get, post } from '../../../helpers/http';
 import { scrollToTop } from '../../../helpers/scrollToTop';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { SelectedCategory } from '../../../redux/categories/slice';
+import { resetCategory } from '../../../redux/categories/slice';
 import { setModalOpened } from '../../../redux/ui/slice';
 import { selectCurrentUser } from '../../../redux/users/selectors';
 import Container from '../../layout/Container/Container';
@@ -59,6 +60,11 @@ const Recipes = ({ category }: CategoriesProps) => {
     areaId: undefined,
     ingredientId: undefined,
   });
+
+  // Scroll to top on component load
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   // Get favorites from API
   useEffect(() => {
@@ -166,6 +172,18 @@ const Recipes = ({ category }: CategoriesProps) => {
   return (
     <section id="recipes">
       <Container>
+        <button
+          className={clsx(styles.backButton)}
+          onClick={() => {
+            dispatch(resetCategory());
+            scrollToTop();
+          }}
+        >
+          <svg className={clsx(styles.backButtonIcon)}>
+            <use href={`/images/icons.svg#icon-arrow-left`} />
+          </svg>
+          <span className={clsx(styles.backButtonText)}>Back</span>
+        </button>
         <MainTitle title={category.name} />
         <SubTitle title={category.description} />
         <div className={clsx(styles.recipesWrapper)}>

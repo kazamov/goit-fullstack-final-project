@@ -35,6 +35,7 @@ const HomePage = () => {
     dispatch(fetchTestimonials());
     dispatch(fetchCategories());
   }, [dispatch]);
+
   return (
     <>
       <Hero />
