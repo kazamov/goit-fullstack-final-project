@@ -13,10 +13,6 @@ interface RequestOptions extends RequestInit {
 }
 
 async function request<T>(url: string, options: RequestInit): Promise<T> {
-  options.headers = {
-    ...HEADERS,
-    ...options.headers,
-  };
   options.credentials = 'same-origin';
 
   const [responseError, responseData] = await tryCatch<T>(
@@ -62,9 +58,26 @@ export function post<T>(
   body: BodyInit | null,
   options: Omit<RequestOptions, 'method'> = {},
 ): Promise<T> {
+  options.headers = {
+    ...HEADERS,
+    ...options.headers,
+  };
+
   return request(url, {
     ...options,
     body: body as BodyInit,
+    method: 'POST',
+  });
+}
+
+export function postFormData<T>(
+  url: string,
+  formData: FormData,
+  options: Omit<RequestOptions, 'method'> = {},
+): Promise<T> {
+  return request(url, {
+    ...options,
+    body: formData,
     method: 'POST',
   });
 }
@@ -74,6 +87,11 @@ export function put<T>(
   body: BodyInit | null,
   options: Omit<RequestOptions, 'method'> = {},
 ): Promise<T> {
+  options.headers = {
+    ...HEADERS,
+    ...options.headers,
+  };
+
   return request(url, {
     ...options,
     method: 'PUT',
@@ -93,6 +111,11 @@ export function patch<T>(
   body: BodyInit | null,
   options: Omit<RequestInit, 'method'> = {},
 ): Promise<T> {
+  options.headers = {
+    ...HEADERS,
+    ...options.headers,
+  };
+
   return request(url, {
     ...options,
     method: 'PATCH',

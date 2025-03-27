@@ -13,7 +13,7 @@ import {
 } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../helpers/catchError';
-import { post } from '../../../helpers/http';
+import { postFormData } from '../../../helpers/http';
 import { selectAreas } from '../../../redux/areas/selectors';
 import { fetchAreas } from '../../../redux/areas/slice';
 import { selectCategories } from '../../../redux/categories/selectors';
@@ -115,16 +115,17 @@ const AddRecipeForm = () => {
 
     Object.entries(data).forEach(([key, value]) => {
       if (!(value instanceof File)) {
-        formData.append(key, JSON.stringify(value));
+        formData.append(
+          key,
+          typeof value === 'object' ? JSON.stringify(value) : String(value),
+        );
       } else {
         formData.append(key, value);
       }
     });
 
     const [error, recipe] = await tryCatch(
-      post('/api/recipes', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }),
+      postFormData('/api/recipes', formData),
     );
 
     if (error) {
