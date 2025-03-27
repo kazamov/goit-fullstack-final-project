@@ -40,6 +40,7 @@ const RecipePage = () => {
     page: 1,
     totalPages: 1,
   });
+  const [isFavorite, setIsFavorite] = useState(false);
 
   // Get favorites from API
   useEffect(() => {
@@ -55,9 +56,10 @@ const RecipePage = () => {
         return;
       }
       setFavorites(data);
+      setIsFavorite(data.items.some((item) => item.id === id));
     };
     fetchFavorites();
-  }, [isUserLoggedIn]);
+  }, [isUserLoggedIn, id]);
 
   // Get recipe details from API
   useEffect(() => {
@@ -122,6 +124,7 @@ const RecipePage = () => {
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
+
       const [error] = await tryCatch(
         newState
           ? post(`/api/recipes/${recipeId}/favorite`, null)
@@ -151,6 +154,7 @@ const RecipePage = () => {
           items: prev.items.filter((item) => item.id !== recipeId),
         };
       });
+      setIsFavorite(newState);
     },
     [isUserLoggedIn, dispatch, popularRecipes],
   );
@@ -178,9 +182,7 @@ const RecipePage = () => {
             recipe={recipeDetails}
             onOpenProfile={handleOpenProfile}
             onToggleFavorite={handleToggleFavorite}
-            isFavorite={favorites.items.some(
-              (item) => item.id === recipeDetails.id,
-            )}
+            isFavorite={isFavorite}
           />
         </Container>
       )}
