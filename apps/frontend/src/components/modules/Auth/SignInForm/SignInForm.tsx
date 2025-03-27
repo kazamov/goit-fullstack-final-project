@@ -44,7 +44,7 @@ const SignInForm = () => {
   const onSubmit = useCallback(
     async (data: FormData) => {
       const [error, user] = await tryCatch(
-        post<LoginUserResponse>('/api/users/login', data, {
+        post<LoginUserResponse>('/api/users/login', JSON.stringify(data), {
           schema: LoginUserResponseSchema,
         }),
       );
