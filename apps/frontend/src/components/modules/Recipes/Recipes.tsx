@@ -64,7 +64,7 @@ const Recipes = ({ category }: CategoriesProps) => {
   // Scroll to top on component load
   useEffect(() => {
     scrollToTop();
-  }, []);
+  }, [query]);
 
   // Get favorites from API
   useEffect(() => {
@@ -169,6 +169,13 @@ const Recipes = ({ category }: CategoriesProps) => {
     [navigate],
   );
 
+  const handleOnPageChange = useCallback(
+    (page: number) => {
+      setQuery((prev) => ({ ...prev, page: String(page) }));
+    },
+    [setQuery],
+  );
+
   return (
     <section id="recipes">
       <Container>
@@ -191,13 +198,21 @@ const Recipes = ({ category }: CategoriesProps) => {
             {/* <RecipeFilters /> */}
             RecipeFilters
           </div>
-          <RecipeList
-            recipes={recipes.items}
-            favorites={favorites}
-            onOpenProfile={handleOpenProfile}
-            onToggleFavorite={handleToggleFavorite}
-            onOpenRecipe={handleOpenRecipe}
-          />
+          {recipes.items.length > 0 ? (
+            <RecipeList
+              recipes={recipes}
+              favorites={favorites}
+              onOpenProfile={handleOpenProfile}
+              onToggleFavorite={handleToggleFavorite}
+              onOpenRecipe={handleOpenRecipe}
+              onPageChange={handleOnPageChange}
+            />
+          ) : (
+            <p className={clsx(styles.noRecipes)}>
+              No recipes found by your filters. Please change filters or try
+              again.
+            </p>
+          )}
         </div>
       </Container>
     </section>
