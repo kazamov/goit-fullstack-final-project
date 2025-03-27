@@ -2,11 +2,15 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { z } from 'zod';
 
-import type { GetIngredientResponse } from '@goit-fullstack-final-project/schemas';
+import type {
+  GetIngredientResponse,
+  GetRecipeResponse,
+} from '@goit-fullstack-final-project/schemas';
 import {
   CreateRecipePayloadSchema,
   RecipeIngredientSchema,
@@ -64,6 +68,7 @@ const buildInputClass = ({
 };
 
 const AddRecipeForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const categories = useSelector(selectCategories);
@@ -90,7 +95,7 @@ const AddRecipeForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     watch,
     setValue,
     reset,
@@ -125,8 +130,13 @@ const AddRecipeForm = () => {
     });
 
     const [error, recipe] = await tryCatch(
-      postFormData('/api/recipes', formData),
+      postFormData<GetRecipeResponse>('/api/recipes', formData),
     );
+
+    if (recipe) {
+      navigate(`/recipe/${recipe.id}`);
+      return;
+    }
 
     if (error) {
       toast.error(error.message);
@@ -155,13 +165,12 @@ const AddRecipeForm = () => {
   const increaseTime = () => setValue('time', timeValue + 1);
   const decreaseTime = () => setValue('time', Math.max(1, timeValue - 1));
 
-  // Handle adding/removing an ingredient
   const handleAddIngredient = () => {
     if (!measure) return;
     const ingredient = ingredients.find((ing) => ing.id === selectedIngredient);
     if (ingredient) {
       append({ id: ingredient.id, measure });
-      toggleIngredient(ingredient.id);
+      toggleIngredient({ id: ingredient.id, measure });
       setMeasure('');
       setSelectedIngredient('');
     }
@@ -176,28 +185,28 @@ const AddRecipeForm = () => {
     if (index !== -1) {
       remove(index);
     }
-    toggleIngredient(id, false);
+    toggleIngredient({ id }, false);
   };
 
-  //Toggle ingredient in the selected list
-  const toggleIngredient = (ingredientId: string, toAdd = true) => {
+  const toggleIngredient = (
+    { id, measure }: { id: string; measure?: string },
+    toAdd = true,
+  ) => {
     if (toAdd) {
-      const ingredient = ingredients.find((item) => item.id === ingredientId);
+      const ingredient = ingredients.find((item) => item.id === id);
       setDisplayedIngredients(
         ingredient
-          ? [...displayedIngredients, ingredient]
+          ? [...displayedIngredients, { ...ingredient, ...{ measure } }]
           : displayedIngredients,
       );
 
       return;
     }
-    const exists = displayedIngredients.some(
-      (item) => item.id === ingredientId,
-    );
+    const exists = displayedIngredients.some((item) => item.id === id);
 
     if (exists) {
       setDisplayedIngredients(
-        displayedIngredients.filter((item) => item.id !== ingredientId),
+        displayedIngredients.filter((item) => item.id !== id),
       );
     }
   };
