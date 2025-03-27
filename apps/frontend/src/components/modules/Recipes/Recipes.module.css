@@ -1,0 +1,21 @@
+.recipesWrapper {
+  display: grid;
+  grid-template-columns: 330px auto;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+/* laptop */
+@media (max-width: 1439px) {
+  .recipesWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipesWrapper {
+    margin-top: 32px;
+    gap: 32px;
+  }
+}

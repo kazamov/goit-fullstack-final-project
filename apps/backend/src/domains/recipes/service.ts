@@ -10,6 +10,7 @@ import type {
   GetRecipeDetailedResponse,
   GetRecipeResponse,
   Recipe,
+  RecipeQuery,
   UpdateRecipePayload,
   UpdateRecipeResponse,
 } from '@goit-fullstack-final-project/schemas';
@@ -34,14 +35,6 @@ import {
 } from '../../infrastructure/db/index.js';
 
 const cloudinaryClient = CloudinaryClient.getInstance();
-
-export type RecipeQuery = {
-  categoryId?: string;
-  areaId?: string;
-  ingredientId?: string;
-  page?: string | number;
-  perPage?: string | number;
-};
 
 export async function getRecipes(
   query: RecipeQuery,

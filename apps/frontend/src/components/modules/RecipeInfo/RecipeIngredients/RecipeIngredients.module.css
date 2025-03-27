@@ -34,3 +34,9 @@
     gap: 16px;
   }
 }
+
+@media (max-width: 374px) {
+  .recipeIngredientsList {
+    grid-template-columns: 1fr;
+  }
+}

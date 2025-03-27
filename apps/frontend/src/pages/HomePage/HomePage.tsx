@@ -26,12 +26,6 @@ const HomePage = () => {
   const categories = useSelector(selectCategories);
   const onCategorySelect = (category: SelectedCategory) => {
     dispatch(selectCategory(category));
-
-    if (category.id === '') {
-      // it means selected 'all' so fetch all recipes, maybe there can be any other solution
-    } else {
-      // fetch by currently selected category
-    }
   };
 
   const selectedCategory = useSelector(selectCurrentCategory);
