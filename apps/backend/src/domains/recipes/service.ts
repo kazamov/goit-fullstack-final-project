@@ -175,7 +175,7 @@ export async function getRecipe(
     id: ing.id,
     name: ing.name,
     imageUrl: ing.imageUrl,
-    amount: ing.RecipeIngredientDTO?.measure || '',
+    measure: ing.RecipeIngredientDTO?.measure || '',
   }));
 
   const transformedRecipe = {

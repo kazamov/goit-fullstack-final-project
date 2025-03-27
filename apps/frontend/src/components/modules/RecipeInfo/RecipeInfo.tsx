@@ -11,17 +11,30 @@ import styles from './RecipeInfo.module.css';
 
 interface RecipeInfoProps {
   recipe: GetRecipeDetailedResponse;
+  onOpenProfile: (userId: string) => void;
+  onToggleFavorite: (recipeId: string, newState: boolean) => void;
+  isFavorite: boolean;
 }
 
-export const RecipeInfo: FC<RecipeInfoProps> = ({ recipe }) => {
+export const RecipeInfo: FC<RecipeInfoProps> = ({
+  recipe,
+  onOpenProfile,
+  onToggleFavorite,
+  isFavorite,
+}) => {
   const { thumb, title } = recipe;
   return (
     <section id="recipeInfo" className={clsx(styles.recipeInfo)}>
       <img src={thumb} alt={title} className={clsx(styles.recipeImage)} />
       <div className={clsx(styles.recipeInfoDescription)}>
-        <RecipeMainInfo recipe={recipe} />
+        <RecipeMainInfo recipe={recipe} onOpenProfile={onOpenProfile} />
         <RecipeIngredients ingredients={recipe.ingredients} />
-        <RecipePreparation instructions={recipe.instructions} />
+        <RecipePreparation
+          instructions={recipe.instructions}
+          recipeId={recipe.id}
+          isFavorite={isFavorite}
+          onToggleFavorite={onToggleFavorite}
+        />
       </div>
     </section>
   );

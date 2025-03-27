@@ -39,7 +39,6 @@
   .recipeMainInfoDescription {
     font-size: 14px;
     line-height: 20px;
-    color: var(--gray);
   }
 }
 
@@ -47,6 +46,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  cursor: pointer;
 }
 
 .avatar {
@@ -106,6 +106,5 @@
   .ownerName {
     font-size: 14px;
     line-height: 20px;
-    color: var(--gray);
   }
 }
