@@ -15,8 +15,6 @@ const UploadRecipePhoto = ({
   resetImage,
   className,
 }: UploadRecipePhotoProps) => {
-  // ToDo: dispatch selected image to "recipes" redux store
-  // or declare and submit it in the parent component
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -38,23 +36,20 @@ const UploadRecipePhoto = ({
     setPreview(null);
   }, [resetImage]);
 
+  const fileClickHandler = () => {
+    (
+      document.querySelector(`.${styles.uploadInput}`) as HTMLInputElement
+    )?.click();
+  };
+
   return (
-    <div className={clsx(styles.uploadRecipePhoto, styles[className])}>
+    <div className={clsx(styles.uploadRecipePhoto)}>
       <label className={styles.uploadLabel}>
         {preview ? (
           <img className={styles.previewImage} src={preview} alt="Preview" />
         ) : (
           <>
-            <svg
-              className={styles.uploadIcon}
-              onClick={() =>
-                (
-                  document.querySelector(
-                    `.${styles.uploadInput}`,
-                  ) as HTMLInputElement
-                )?.click()
-              }
-            >
+            <svg className={styles.uploadIcon} onClick={fileClickHandler}>
               <use href={`/images/icons.svg#icon-camera`}></use>
             </svg>
             <p className={styles.noFileSelectedText}>Upload a photo</p>
@@ -67,6 +62,11 @@ const UploadRecipePhoto = ({
           onChange={handleImageChange}
         />
       </label>
+      {preview && (
+        <p className={styles.noFileSelectedText} onClick={fileClickHandler}>
+          Upload another photo
+        </p>
+      )}
     </div>
   );
 };
