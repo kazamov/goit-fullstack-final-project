@@ -1,28 +1,8 @@
 .pagingContainer {
-  max-width: 910px;
-  height: 40px;
   display: flex;
   flex-direction: row;
   gap: 6px;
   align-items: center;
-}
-
-@media (max-width: 1439px) {
-  .pagingContainer {
-    max-width: 704px;
-  }
-}
-
-@media (max-width: 767px) {
-  .pagingContainer {
-    max-width: 343px;
-  }
-}
-
-@media (max-width: 374px) {
-  .pagingContainer {
-    max-width: 320px;
-  }
 }
 
 .ellipsis {
