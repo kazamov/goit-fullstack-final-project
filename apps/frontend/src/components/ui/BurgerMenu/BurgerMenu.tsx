@@ -1,8 +1,10 @@
 import type { FC } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 
+import { setModalOpened } from '../../../redux/ui/slice';
 import Logo from '../Logo/Logo';
 import MenuIcon from '../MenuIcon/MenuIcon';
 import Modal from '../Modal/Modal';
@@ -14,15 +16,15 @@ interface BurgerMenuProps {
 }
 
 const BurgerMenu: FC<BurgerMenuProps> = ({ isInversed }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const handleClick = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+    dispatch(setModalOpened({ modal: 'mobileNavigation', opened: true }));
+  }, [dispatch]);
 
   const handleClose = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    dispatch(setModalOpened({ modal: 'mobileNavigation', opened: false }));
+  }, [dispatch]);
 
   return (
     <>
@@ -34,9 +36,8 @@ const BurgerMenu: FC<BurgerMenuProps> = ({ isInversed }) => {
         </svg>
       </MenuIcon>
       <Modal
-        isOpen={isOpen}
+        type="mobileNavigation"
         headerContent={() => <Logo isInversed className={styles.logo} />}
-        onClose={handleClose}
         fullScreen
       >
         <nav className={styles.nav}>

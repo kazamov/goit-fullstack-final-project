@@ -6,14 +6,12 @@ import SignInForm from '../SignInForm/SignInForm';
 import styles from './SignInModal.module.css';
 
 interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   onRedirectToSignUp: () => void;
 }
 
-const SignInModal = ({ isOpen, onClose, onRedirectToSignUp }: ModalProps) => {
+const SignInModal = ({ onRedirectToSignUp }: ModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal type="login">
       <div className={styles.titleContainer}>
         <ModalTitle title="Sign in" />
       </div>

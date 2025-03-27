@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -8,10 +8,7 @@ import type { UserShortDetails } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { post } from '../../../../helpers/http';
-import {
-  selectIsLogoutModalOpened,
-  setModalOpened,
-} from '../../../../redux/ui/slice';
+import { setModalOpened } from '../../../../redux/ui/slice';
 import { setCurrentUser } from '../../../../redux/users/slice';
 import LogOutModal from '../LogOutModal/LogOutModal';
 
@@ -25,18 +22,12 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLogoutModalOpen = useSelector(selectIsLogoutModalOpened);
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleLogoutClick = useCallback(() => {
     setIsMenuOpen(false);
     dispatch(setModalOpened({ modal: 'logout', opened: true }));
-  }, [dispatch]);
-
-  const handleLogoutClose = useCallback(() => {
-    dispatch(setModalOpened({ modal: 'logout', opened: false }));
   }, [dispatch]);
 
   const onConfirm = useCallback(async () => {
@@ -121,11 +112,7 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
           </ul>
         </div>
       )}
-      <LogOutModal
-        isOpen={isLogoutModalOpen}
-        onConfirm={onConfirm}
-        onClose={handleLogoutClose}
-      />
+      <LogOutModal onConfirm={onConfirm} />
     </>
   );
 };
