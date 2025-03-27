@@ -1,10 +1,21 @@
 .button {
+  flex: 0 1 40px;
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   cursor: pointer;
-  border: 1px transparent var(--gray);
+  outline: 1px transparent var(--gray);
+}
+
+@media (max-width: 374px) {
+  .button {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .disabled {
@@ -14,26 +25,11 @@
 }
 
 .button.active {
-  border: 1px solid var(--gray);
+  outline: 1px solid var(--gray);
 }
 
 .button.inactive {
-  border: 1px transparent;
-}
-
-.button.large {
-  width: 56px;
-  height: 56px;
-}
-
-.button.medium {
-  width: 42px;
-  height: 42px;
-}
-
-.button.small {
-  height: 36px;
-  width: 36px;
+  outline: 1px transparent;
 }
 
 .number {

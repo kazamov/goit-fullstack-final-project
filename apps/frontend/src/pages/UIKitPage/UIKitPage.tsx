@@ -117,18 +117,8 @@ const UIKitPage = () => {
             iconType="icon-trash"
             disabled={true}
           />
-          <ButtonWithNumber
-            kind="inactive"
-            size="large"
-            type="button"
-            number="1"
-          />
-          <ButtonWithNumber
-            kind="active"
-            size="large"
-            type="button"
-            number="2"
-          />
+          <ButtonWithNumber kind="inactive" type="button" number="1" />
+          <ButtonWithNumber kind="active" type="button" number="2" />
         </div>
         <div className={styles.kitCard}>
           <ButtonWithIcon kind="primary" type="submit" iconType="icon-heart" />
@@ -143,12 +133,7 @@ const UIKitPage = () => {
             disabled={true}
             iconType="icon-plus"
           />
-          <ButtonWithNumber
-            kind="active"
-            size="medium"
-            type="button"
-            number="1"
-          />
+          <ButtonWithNumber kind="active" type="button" number="1" />
         </div>
         <div className={styles.kitCard}>
           <ButtonWithIcon
@@ -170,12 +155,7 @@ const UIKitPage = () => {
             iconType="icon-heart"
             disabled={true}
           />
-          <ButtonWithNumber
-            kind="active"
-            size="small"
-            type="button"
-            number="1"
-          />
+          <ButtonWithNumber kind="active" type="button" number="1" />
         </div>
         <div className={clsx(styles.kitCard, styles.kitCardDark)}>
           <ButtonWithIcon
@@ -365,7 +345,7 @@ const UIKitPage = () => {
         <h2 className={styles.kitTitle}>Paging</h2>
         <div className={styles.kitCard}>
           <Paging
-            totalPages={5}
+            totalPages={20}
             onPageChange={(page) => console.log('Selected page:', page)}
           />
         </div>
