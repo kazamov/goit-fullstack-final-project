@@ -1,0 +1,50 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  font-size: 14px;
+  height: 44px;
+}
+
+.primary {
+  background: var(--black);
+  color: var(--white);
+  border: 1px solid #fff;
+}
+
+@media screen and (min-width: 768px) {
+  .button {
+    width: 159px;
+    height: 56px;
+    font-size: 16px;
+  }
+}
+
+.ghost {
+  background: transparent;
+  color: var(--black);
+}
+
+.button:disabled {
+  background: var(--gray);
+  border: 1px solid var(--gray);
+  color: var(--white);
+  cursor: not-allowed;
+}
+
+.text {
+  font-weight: 700;
+
+  line-height: 1.42857;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
