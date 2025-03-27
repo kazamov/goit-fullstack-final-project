@@ -6,14 +6,12 @@ import SignUpForm from '../SignUpForm/SignUpForm';
 import styles from './SignUpModal.module.css';
 
 interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   onRedirectToSignIn: () => void;
 }
 
-const SignUpModal = ({ isOpen, onClose, onRedirectToSignIn }: ModalProps) => {
+const SignUpModal = ({ onRedirectToSignIn }: ModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal type="register">
       <div className={styles.titleContainer}>
         <ModalTitle title="Sign Up" />
       </div>
