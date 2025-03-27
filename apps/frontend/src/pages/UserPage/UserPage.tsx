@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
-
-import toast from 'react-hot-toast';
 
 import {
   type OtherUserDetails,
@@ -77,9 +76,7 @@ const UserPage = () => {
         </div>
         <div className={styles.userProfileBlock}>
           <div className={styles.userCardBlock}>
-            <div
-              className={styles.userCardRemoveAfterImplementingComponent}
-            >
+            <div className={styles.userCardRemoveAfterImplementingComponent}>
               <p>Replace this div with component</p>
             </div>
             <Button
