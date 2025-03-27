@@ -74,7 +74,11 @@
 }
 
 .textAreaWrapper {
-  width: 100%;
+  flex-grow: 1;
+}
+
+.selectWrapper {
+  width: 315px;
 }
 
 @media (max-width: 1439px) {

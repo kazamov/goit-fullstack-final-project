@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import type { SingleValue } from 'react-select';
+import Select from 'react-select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { z } from 'zod';
@@ -31,6 +33,14 @@ import UploadRecipePhoto from '../../ui/UploadRecipePhoto/UploadRecipePhoto';
 import RecipeIngredients from '../RecipeInfo/RecipeIngredients/RecipeIngredients';
 
 import styles from './AddRecipeForm.module.css';
+
+type OptionType = { value: string; label: string };
+
+const mapToOptions = (items: { id: string; name: string }[]): OptionType[] =>
+  items.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
 
 const ExtendedRecipePayloadSchema = CreateRecipePayloadSchema.omit({
   ingredients: true,
@@ -77,6 +87,10 @@ const AddRecipeForm = () => {
   const ingredients = useSelector(selectIngredients);
   const areas = useSelector(selectAreas);
 
+  const areaOptions = mapToOptions(areas);
+  const ingredientsOptions = mapToOptions(ingredients);
+  const categoriesOptions = mapToOptions(categories);
+
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchIngredients());
@@ -98,7 +112,7 @@ const AddRecipeForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     setValue,
     reset,
@@ -118,34 +132,37 @@ const AddRecipeForm = () => {
     mode: 'onSubmit',
   });
 
-  const onSubmit = useCallback(async (data: FormData) => {
-    const formData = new FormData();
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      const formData = new FormData();
 
-    Object.entries(data).forEach(([key, value]) => {
-      if (!(value instanceof File)) {
-        formData.append(
-          key,
-          typeof value === 'object' ? JSON.stringify(value) : String(value),
-        );
-      } else {
-        formData.append(key, value);
+      Object.entries(data).forEach(([key, value]) => {
+        if (!(value instanceof File)) {
+          formData.append(
+            key,
+            typeof value === 'object' ? JSON.stringify(value) : String(value),
+          );
+        } else {
+          formData.append(key, value);
+        }
+      });
+
+      const [error, recipe] = await tryCatch(
+        postFormData<GetRecipeResponse>('/api/recipes', formData),
+      );
+
+      if (recipe) {
+        navigate(`/recipe/${recipe.id}`);
+        return;
       }
-    });
 
-    const [error, recipe] = await tryCatch(
-      postFormData<GetRecipeResponse>('/api/recipes', formData),
-    );
-
-    if (recipe) {
-      navigate(`/recipe/${recipe.id}`);
-      return;
-    }
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-  }, []);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+    },
+    [navigate],
+  );
 
   const resetForm = () => {
     reset();
@@ -155,15 +172,13 @@ const AddRecipeForm = () => {
     setDisplayedIngredients([]);
   };
 
-  // VALUES
   const titleValue = watch('title');
   const descriptionValue = watch('description');
   const instructionsValue = watch('instructions');
   const ingredientsValue = watch('ingredients');
+  const areasValue = watch('areaId');
+  const categoriesValue = watch('categoryId');
   const timeValue = watch('time');
-
-  // TO DO: remove
-  const formValues = watch();
 
   const increaseTime = () => setValue('time', timeValue + 1);
   const decreaseTime = () => setValue('time', Math.max(1, timeValue - 1));
@@ -180,8 +195,6 @@ const AddRecipeForm = () => {
   };
 
   const handleRemoveIngredient = (id: string) => {
-    console.log(ingredientsValue);
-
     const index = ingredientsValue.findIndex(
       (ingredient) => ingredient.id === id,
     );
@@ -246,9 +259,6 @@ const AddRecipeForm = () => {
 
   return (
     <section id="recipeForm" className={clsx(styles.recipeForm)}>
-      <pre>{JSON.stringify(formValues, null, 2)}</pre>
-      {/* <pre>{JSON.stringify(errors)}</pre> */}
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={clsx(styles.content)}>
           <div className={clsx(styles.column)}>
@@ -326,19 +336,50 @@ const AddRecipeForm = () => {
             <div className={clsx(styles.formRow, styles.formRowCol)}>
               <div>
                 <label className={clsx('inputLabel')}>Category</label>
-                <div className="inputWrapper">
-                  <select {...register('categoryId')}>
-                    <option value="" disabled selected>
-                      Select an option
-                    </option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                <div className={clsx('selectWrapper', styles.selectWrapper)}>
+                  <Controller
+                    name="categoryId"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        placeholder="Select a category"
+                        {...field}
+                        onChange={(selected: SingleValue<OptionType>) =>
+                          field.onChange(selected?.value)
+                        }
+                        value={
+                          categoriesOptions.find(
+                            (opt) => opt.value === field.value,
+                          ) ?? null
+                        }
+                        options={categoriesOptions}
+                        classNames={{
+                          placeholder: () =>
+                            clsx([
+                              'selectPlaceholder',
+                              !!errors.categoryId && 'selectPlaceholderInvalid',
+                            ]),
+                          dropdownIndicator: () => 'selectDropdownIndicator',
+                          indicatorSeparator: () =>
+                            clsx(['selectIndicatorSeparator']),
+                          control: () =>
+                            clsx([
+                              'select',
+                              !!errors.categoryId && 'selectInvalid',
+                              categoriesValue && 'selectFilled',
+                            ]),
+                          menu: () => 'selectMenu',
+                          option: ({ isSelected }) =>
+                            clsx([
+                              'selectOption',
+                              isSelected && 'selectOptionSelected',
+                            ]),
+                        }}
+                      />
+                    )}
+                  />
                   {!!errors.categoryId && (
-                    <span className="inputError">
+                    <span className="selectError">
                       {errors.categoryId.message}
                     </span>
                   )}
@@ -372,20 +413,47 @@ const AddRecipeForm = () => {
             <div className={clsx(styles.formRow, styles.ingredients)}>
               <label className={clsx('inputLabel')}>Ingredients</label>
               <div className={styles.ingredientsInputs}>
-                <select
-                  value={selectedIngredient}
-                  onChange={(e) => setSelectedIngredient(e.target.value)}
-                >
-                  <option value="" disabled selected>
-                    Select an option
-                  </option>
-                  {ingredients.map((ingredient) => (
-                    <option key={ingredient.id} value={ingredient.id}>
-                      {ingredient.name}
-                    </option>
-                  ))}
-                </select>
-
+                <div className={clsx('selectWrapper', styles.selectWrapper)}>
+                  <Select
+                    placeholder="Select an ingredient"
+                    onChange={(selected: SingleValue<OptionType>) =>
+                      setSelectedIngredient(selected?.value ?? '')
+                    }
+                    value={
+                      ingredientsOptions.find(
+                        (opt) => opt.value === selectedIngredient,
+                      ) ?? null
+                    }
+                    options={ingredientsOptions}
+                    classNames={{
+                      placeholder: () =>
+                        clsx([
+                          'selectPlaceholder',
+                          !!errors.ingredients && 'selectPlaceholderInvalid',
+                        ]),
+                      dropdownIndicator: () => 'selectDropdownIndicator',
+                      indicatorSeparator: () =>
+                        clsx(['selectIndicatorSeparator']),
+                      control: () =>
+                        clsx([
+                          'select',
+                          selectedIngredient && 'selectFilled',
+                          !!errors.ingredients && 'selectInvalid',
+                        ]),
+                      menu: () => 'selectMenu',
+                      option: ({ isSelected }) =>
+                        clsx([
+                          'selectOption',
+                          isSelected && 'selectOptionSelected',
+                        ]),
+                    }}
+                  />
+                  {!!errors.ingredients && (
+                    <span className="selectError">
+                      {errors.ingredients.message}
+                    </span>
+                  )}
+                </div>
                 <div
                   className={buildInputClass({
                     isInvalid: false,
@@ -419,12 +487,6 @@ const AddRecipeForm = () => {
                 </div>
               </Button>
 
-              {!!errors.ingredients && (
-                <span className="textAreaError">
-                  {errors.ingredients.message}
-                </span>
-              )}
-
               {displayedIngredients.length ? (
                 <RecipeIngredients
                   onDelete={handleRemoveIngredient}
@@ -435,16 +497,49 @@ const AddRecipeForm = () => {
 
             <div className={clsx(styles.formRow)}>
               <label className={clsx('inputLabel')}>Area</label>
-              <div className="inputWrapper">
-                <select {...register('areaId')} defaultValue="">
-                  {areas.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+              <div className={clsx('selectWrapper', styles.selectWrapper)}>
+                <Controller
+                  name="areaId"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      placeholder="Select an area"
+                      {...field}
+                      onChange={(selected: SingleValue<OptionType>) =>
+                        field.onChange(selected?.value)
+                      }
+                      value={
+                        areaOptions.find((opt) => opt.value === field.value) ??
+                        null
+                      }
+                      options={areaOptions}
+                      classNames={{
+                        placeholder: () =>
+                          clsx([
+                            'selectPlaceholder',
+                            !!errors.areaId && 'selectPlaceholderInvalid',
+                          ]),
+                        dropdownIndicator: () => 'selectDropdownIndicator',
+                        indicatorSeparator: () =>
+                          clsx(['selectIndicatorSeparator']),
+                        control: () =>
+                          clsx([
+                            'select',
+                            !!errors.areaId && 'selectInvalid',
+                            areasValue && 'selectFilled',
+                          ]),
+                        menu: () => 'selectMenu',
+                        option: ({ isSelected }) =>
+                          clsx([
+                            'selectOption',
+                            isSelected && 'selectOptionSelected',
+                          ]),
+                      }}
+                    />
+                  )}
+                />
                 {!!errors.areaId && (
-                  <span className="inputError">{errors.areaId.message}</span>
+                  <span className="selectError">{errors.areaId.message}</span>
                 )}
               </div>
             </div>
@@ -467,7 +562,7 @@ const AddRecipeForm = () => {
               <textarea
                 {...register('instructions')}
                 className="textArea"
-                maxLength={200}
+                maxLength={1000}
                 rows={1}
                 placeholder="Enter recipe"
                 ref={(e) => {
@@ -483,7 +578,7 @@ const AddRecipeForm = () => {
                 >
                   {instructionsValue.length}
                 </span>
-                <span>/200</span>
+                <span>/1000</span>
               </div>
               {!!errors.instructions && (
                 <span className="textAreaError">
@@ -499,7 +594,7 @@ const AddRecipeForm = () => {
                 iconType="icon-trash"
                 clickHandler={resetForm}
               />
-              <Button kind="primary" type="submit">
+              <Button kind="primary" type="submit" busy={isSubmitting}>
                 Publish
               </Button>
             </div>

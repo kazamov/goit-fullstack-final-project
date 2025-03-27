@@ -144,12 +144,11 @@
 
 .inputTitleWrapper {
   height: 28px;
-  align-self: center; /* delete if required */
+  align-self: center;
   position: relative;
 }
 
 .inputTitleWrapper input {
-  /* for recipe title */
   font-size: 24px;
   line-height: 28px;
   font-weight: 800;
@@ -179,6 +178,75 @@
   color: var(--black);
   display: block;
   margin: 0 0 16px 0;
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.selectError {
+  color: var(--red);
+  position: absolute;
+  bottom: -20px;
+  left: 16px;
+  font-size: 12px;
+}
+
+.select {
+  padding: 0 16px;
+  background-color: var(--white) !important;
+  border: 1px solid var(--gray) !important;
+  border-radius: var(--border-radius) !important;
+  height: 56px !important;
+  position: relative;
+  box-shadow: none !important;
+}
+
+.select:hover {
+  border-color: inherit !important;
+}
+
+.selectIndicatorSeparator {
+  display: none;
+}
+
+.selectPlaceholder {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--gray) !important;
+}
+
+.selectInvalid {
+  border: 1px solid var(--red) !important;
+}
+
+.selectPlaceholderInvalid {
+  color: var(--red) !important;
+}
+
+.selectFilled {
+  border: 1px solid var(--black) !important;
+}
+
+.selectMenu {
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+}
+
+.selectOption:hover {
+  background-color: var(--black) !important;
+  color: var(--white) !important;
+  cursor: pointer !important;
+}
+
+.selectOptionSelected {
+  background-color: var(--black) !important;
+  color: var(--white) !important;
+}
+
+.selectDropdownIndicator {
+  color: var(--black) !important;
 }
 
 @media (max-width: 767px) {
