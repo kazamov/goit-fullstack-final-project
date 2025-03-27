@@ -26,7 +26,7 @@ const IngredientCard = ({
       </div>
       <div className={styles.ingredientInfoWrapper}>
         <p className={styles.ingredientTitle}>{ingredient.name}</p>
-        <p className={styles.ingredientAmount}>{ingredient.amount}</p>
+        <p className={styles.ingredientAmount}>{ingredient.measure}</p>
       </div>
       {onDelete && (
         <button

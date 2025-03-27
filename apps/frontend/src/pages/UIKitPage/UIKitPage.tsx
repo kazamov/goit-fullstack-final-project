@@ -46,7 +46,7 @@ const UIKitPage = () => {
         name: 'Gruyère',
         imageUrl:
           'https://ftp.goit.study/img/so-yummy/ingredients/640c2dd963a319ea671e36f9.png',
-        amount: '3',
+        measure: '3',
       },
       onDelete: () =>
         console.log(`Delete ingredient with id: ${'640c2dd963a319ea671e36f9'}`),
@@ -57,7 +57,7 @@ const UIKitPage = () => {
         name: 'Cabbage',
         imageUrl:
           'https://ftp.goit.study/img/so-yummy/ingredients/640c2dd963a319ea671e37f5.png',
-        amount: '400 g',
+        measure: '400 g',
       },
     },
   ];

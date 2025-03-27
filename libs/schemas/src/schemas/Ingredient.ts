@@ -27,7 +27,7 @@ export const IngredientCardObjectSchema = IngredientSchema.pick({
   name: true,
   imageUrl: true,
 }).extend({
-  amount: z.string(),
+  measure: z.string(),
 });
 
 export type IngredientCardObject = z.infer<typeof IngredientCardObjectSchema>;
