@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
-import {
-  type OtherUserDetails,
-  OtherUserDetailsSchema,
+import type {
+  GetRecipeShort,
+  OtherUserDetails,
 } from '@goit-fullstack-final-project/schemas';
+import { OtherUserDetailsSchema } from '@goit-fullstack-final-project/schemas';
 
 import Container from '../../components/layout/Container/Container';
+import RecipeTab from '../../components/modules/Profile/RecipeTab/RecipeTab';
 import Button from '../../components/ui/Button/Button';
 import { tryCatch } from '../../helpers/catchError';
-import { get, post } from '../../helpers/http';
+import { del, get, post } from '../../helpers/http';
 import { selectCurrentUser } from '../../redux/users/selectors';
 import { setCurrentUser } from '../../redux/users/slice';
 
@@ -24,10 +26,38 @@ const UserPage = () => {
 
   const { id: userId } = useParams<{ id: string }>();
   const [, setUser] = useState<OtherUserDetails | null>(null);
+  const [favoriteRecipeList, setFavoriteRecipeList] = useState<
+    GetRecipeShort[]
+  >([]);
 
   const currentUser = useSelector(selectCurrentUser);
 
   const isCurrentUser = userId === currentUser?.id;
+
+  useEffect(() => {
+    const fetchFavoriteRecipes = async () => {
+      const [error, result]: [
+        Error | undefined,
+        { items: GetRecipeShort[] } | undefined,
+      ] = await tryCatch(get(`/api/users/favorites`));
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      if (result) {
+        setFavoriteRecipeList(result.items);
+      }
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+    };
+
+    fetchFavoriteRecipes();
+  }, []);
 
   useEffect(() => {
     if (userId === currentUser?.id) {
@@ -60,6 +90,21 @@ const UserPage = () => {
     await tryCatch(post('/api/users/logout', null));
 
     navigate('/');
+  };
+
+  const handleOpenRecipe = (recipeId: string) => {
+    navigate(`/recipe/${recipeId}`);
+  };
+
+  const handleRemoveRecipeFromFavorite = async (recipeId: string) => {
+    const [error] = await tryCatch(del(`/api/recipes/${recipeId}/favorite`));
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setFavoriteRecipeList((prev) =>
+      prev.filter((recipe) => recipe.id !== recipeId),
+    );
   };
 
   return (
@@ -143,9 +188,11 @@ const UserPage = () => {
                     <div>Replace with "Recipes" component</div>
                   </TabPanel>
                   <TabPanel>
-                    <div>
-                      Replace with "Recipes" component, but pass favorites list
-                    </div>
+                    <RecipeTab
+                      recipeList={favoriteRecipeList}
+                      handleOpenRecipe={handleOpenRecipe}
+                      handleRemoveRecipe={handleRemoveRecipeFromFavorite}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <div>Replace with "Followers" component</div>
