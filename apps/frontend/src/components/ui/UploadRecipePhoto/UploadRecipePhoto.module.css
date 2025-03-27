@@ -24,7 +24,7 @@
   max-height: 400px;
   border: 1px dashed var(--gray);
   border-radius: var(--border-radius);
-  overflow: clip;
+  overflow: hidden;
 }
 
 .uploadInput {
