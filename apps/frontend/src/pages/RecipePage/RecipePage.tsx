@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import type {
   GetPaginatedRecipeShort,
@@ -31,6 +31,7 @@ const RecipePage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const isUserLoggedIn = Boolean(currentUser);
+  const [, setSearchParams] = useSearchParams();
 
   const [recipeDetails, setRecipeDetails] =
     useState<GetRecipeDetailedResponse>();
@@ -107,14 +108,25 @@ const RecipePage = () => {
   // Handle open profile
   const handleOpenProfile = useCallback(
     (userId: string) => {
+      const redirectUrl = `/user/${userId}`;
+
       if (!isUserLoggedIn) {
+        setSearchParams(
+          {
+            redirect_url: redirectUrl,
+          },
+          {
+            replace: true,
+          },
+        );
+
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
-      navigate(`/user/${userId}`);
+      navigate(redirectUrl);
       scrollToTop();
     },
-    [isUserLoggedIn, dispatch, navigate],
+    [isUserLoggedIn, navigate, setSearchParams, dispatch],
   );
 
   // handle toggle favorite
