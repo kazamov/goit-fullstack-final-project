@@ -221,7 +221,10 @@ const UserPage = () => {
               </TabList>
               {isCurrentUser ? (
                 <>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <RecipeTab
                       recipeList={userRecipesList}
                       handleOpenRecipe={handleOpenRecipe}
@@ -229,7 +232,10 @@ const UserPage = () => {
                       isCurrentUser={isCurrentUser}
                     />
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <RecipeTab
                       recipeList={favoriteRecipeList}
                       handleOpenRecipe={handleOpenRecipe}
@@ -237,16 +243,25 @@ const UserPage = () => {
                       isCurrentUser={isCurrentUser}
                     />
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <div>Replace with "Followers" component</div>
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <div>Replace with "Followers" component</div>
                   </TabPanel>
                 </>
               ) : (
                 <>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <RecipeTab
                       recipeList={userRecipesList}
                       handleOpenRecipe={handleOpenRecipe}
@@ -254,7 +269,10 @@ const UserPage = () => {
                       isCurrentUser={isCurrentUser}
                     />
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <div>Replace with "Followers" component</div>
                   </TabPanel>
                 </>
