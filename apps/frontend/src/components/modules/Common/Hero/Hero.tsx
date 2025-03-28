@@ -23,7 +23,7 @@ const Hero = () => {
   }, [dispatch]);
 
   const handleAddRecipeClick = () => {
-    const redirectUrl = '/recipe/add';
+    const redirectUrl = '/recipes/add';
     if (currentUser) {
       navigate(redirectUrl);
     } else {
