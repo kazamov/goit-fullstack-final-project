@@ -21,7 +21,7 @@ const HomePage = () => {
   const onCategorySelect = useCallback(
     (category: SelectedCategory) => {
       const searchParams = new URLSearchParams({
-        category: category.name,
+        categoryId: category.id,
       });
       navigate(`/recipes/?${searchParams.toString()}`);
     },
@@ -29,9 +29,13 @@ const HomePage = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchTestimonials());
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (testimonials.length === 0) {
+      dispatch(fetchTestimonials());
+    }
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, testimonials, categories]);
 
   return (
     <>

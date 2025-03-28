@@ -20,13 +20,17 @@ const RecipesPage: FC = () => {
   const testimonials = useSelector(selectTestimonials);
   const [searchParams] = useSearchParams();
 
-  const categoryName = searchParams.get('category');
-  const selectedCategory = useSelector(createCategorySelector(categoryName));
+  const categoryId = searchParams.get('categoryId');
+  const selectedCategory = useSelector(createCategorySelector(categoryId));
 
   useEffect(() => {
-    dispatch(fetchTestimonials());
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (!categories.length) {
+      dispatch(fetchCategories());
+    }
+    if (!testimonials.length) {
+      dispatch(fetchTestimonials());
+    }
+  }, [categories.length, dispatch, testimonials.length]);
 
   return (
     <>

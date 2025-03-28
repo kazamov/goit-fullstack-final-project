@@ -12,10 +12,8 @@ const ALL_CATEGORIES: SelectedCategory = {
   description: 'Recipes by All Categories',
 };
 
-export const createCategorySelector = (name: string | null) => {
+export const createCategorySelector = (id: string | null) => {
   return createSelector([selectCategories], (categories) => {
-    return (
-      categories.find((category) => category.name === name) ?? ALL_CATEGORIES
-    );
+    return categories.find((category) => category.id === id) ?? ALL_CATEGORIES;
   });
 };
