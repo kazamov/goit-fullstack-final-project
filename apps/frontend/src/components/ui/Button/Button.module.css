@@ -95,3 +95,15 @@
 .primary.addToFavoritesButton:disabled {
   border-color: var(--gray);
 }
+
+/* Hero Button */
+.buttonHero {
+  border: 1px solid #fff;
+}
+
+@media (max-width: 767px) {
+  .primary.buttonHero {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+}
