@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { AppDispatch } from '../../../../redux/store';
 import { setModalOpened } from '../../../../redux/ui/slice';
 import { selectCurrentUser } from '../../../../redux/users/selectors';
-import ButtonHero from '../../../ui/ButtonHero/ButtonHero';
+import Button from '../../../ui/Button/Button';
 
 import HeroImages from './HeroImages';
 
@@ -37,14 +37,14 @@ const Hero = () => {
           Amazing recipes for beginners in the world of cooking, enveloping you
           in the aromas and tastes of various cuisines.
         </p>
-        <ButtonHero
+        <Button
           kind="primary"
           type="button"
           clickHandler={handleAddRecipeClick}
+          className="buttonHero"
         >
-          Add recipe
-        </ButtonHero>
-
+          Add Recipe
+        </Button>
         <HeroImages />
       </div>
     </div>
