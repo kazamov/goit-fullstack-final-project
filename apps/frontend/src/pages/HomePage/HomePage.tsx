@@ -32,9 +32,13 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(resetCategory());
-    dispatch(fetchTestimonials());
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (testimonials.length === 0) {
+      dispatch(fetchTestimonials());
+    }
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, testimonials, categories]);
 
   return (
     <>

@@ -28,6 +28,7 @@ import Container from '../../layout/Container/Container';
 import MainTitle from '../../ui/MainTitle/MainTitle';
 import SubTitle from '../../ui/SubTitle/SubTitle';
 
+import RecipeFilters from './RecipeFilters/RecipeFilters';
 import RecipeList from './RecipeList/RecipeList';
 
 import styles from './Recipes.module.css';
@@ -188,6 +189,28 @@ const Recipes = ({ category }: CategoriesProps) => {
     [setQuery],
   );
 
+  const handleIngredientChange = useCallback(
+    (ingredientId?: string) => {
+      setQuery((prev) => ({
+        ...prev,
+        page: '1',
+        ingredientId: ingredientId,
+      }));
+    },
+    [setQuery],
+  );
+
+  const handleAreaChange = useCallback(
+    (areaId?: string) => {
+      setQuery((prev) => ({
+        ...prev,
+        page: '1',
+        areaId: areaId,
+      }));
+    },
+    [setQuery],
+  );
+
   return (
     <section id="recipes">
       <Container>
@@ -206,10 +229,10 @@ const Recipes = ({ category }: CategoriesProps) => {
         <MainTitle title={category.name} />
         <SubTitle title={category.description} />
         <div className={clsx(styles.recipesWrapper)}>
-          <div>
-            {/* <RecipeFilters /> */}
-            RecipeFilters
-          </div>
+          <RecipeFilters
+            onChangeIngredient={handleIngredientChange}
+            onChangeArea={handleAreaChange}
+          />
           {recipes.items.length > 0 ? (
             <RecipeList
               recipes={recipes}
