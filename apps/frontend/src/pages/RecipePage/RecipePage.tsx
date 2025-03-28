@@ -174,7 +174,7 @@ const RecipePage = () => {
   // handle open recipe
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
-      navigate(`/recipe/${recipeId}`);
+      navigate(`/recipes/${recipeId}`);
       scrollToTop();
     },
     [navigate],
@@ -187,7 +187,7 @@ const RecipePage = () => {
           <PathInfo
             pages={[
               { name: 'Home', path: '/' },
-              { name: recipeDetails.title, path: `/recipe/${id}` },
+              { name: recipeDetails.title, path: `/recipes/${id}` },
             ]}
           />
           <RecipeInfo

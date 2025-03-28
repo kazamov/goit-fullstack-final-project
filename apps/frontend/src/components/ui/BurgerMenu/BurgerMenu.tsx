@@ -48,7 +48,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({ isInversed }) => {
               </NavLink>
             </li>
             <li>
-              <NavLink className={styles.navLink} to="/recipe/add">
+              <NavLink className={styles.navLink} to="/recipes/add">
                 Add recipe
               </NavLink>
             </li>
