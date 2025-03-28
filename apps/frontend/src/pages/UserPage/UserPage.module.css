@@ -31,6 +31,7 @@
   }
   .tabList {
     gap: 30px;
+    flex-wrap: wrap;
   }
 }
 
@@ -97,7 +98,6 @@
   flex-direction: row;
   gap: 40px;
   position: relative;
-  margin: 0 auto;
 }
 
 .tabList::before {

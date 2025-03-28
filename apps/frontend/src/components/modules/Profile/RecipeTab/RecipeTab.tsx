@@ -11,12 +11,14 @@ interface RecipeCardProps {
   recipeList: GetRecipeShort[];
   handleOpenRecipe?: (recipeId: string) => void;
   handleRemoveRecipe?: (recipeId: string) => void;
+  isCurrentUser: boolean;
 }
 
 const RecipeTab: FC<RecipeCardProps> = ({
   recipeList,
   handleOpenRecipe,
   handleRemoveRecipe,
+  isCurrentUser,
 }) => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -44,14 +46,16 @@ const RecipeTab: FC<RecipeCardProps> = ({
                   aria-label="Open recipe"
                   clickHandler={() => handleOpenRecipe?.(recipe.id)}
                 />
-                <ButtonWithIcon
-                  kind="secondary"
-                  type="submit"
-                  iconType="icon-trash"
-                  size={isMobile ? 'small' : 'medium'}
-                  aria-label="Remove from favorites"
-                  clickHandler={() => handleRemoveRecipe?.(recipe.id)}
-                />
+                {isCurrentUser && (
+                  <ButtonWithIcon
+                    kind="secondary"
+                    type="submit"
+                    iconType="icon-trash"
+                    size={isMobile ? 'small' : 'medium'}
+                    aria-label="Remove from favorites"
+                    clickHandler={() => handleRemoveRecipe?.(recipe.id)}
+                  />
+                )}
               </div>
             </div>
           </div>

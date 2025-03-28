@@ -226,6 +226,7 @@ const UserPage = () => {
                       recipeList={userRecipesList}
                       handleOpenRecipe={handleOpenRecipe}
                       handleRemoveRecipe={handleRemoveRecipe}
+                      isCurrentUser={isCurrentUser}
                     />
                   </TabPanel>
                   <TabPanel>
@@ -233,6 +234,7 @@ const UserPage = () => {
                       recipeList={favoriteRecipeList}
                       handleOpenRecipe={handleOpenRecipe}
                       handleRemoveRecipe={handleRemoveRecipeFromFavorite}
+                      isCurrentUser={isCurrentUser}
                     />
                   </TabPanel>
                   <TabPanel>
@@ -245,7 +247,12 @@ const UserPage = () => {
               ) : (
                 <>
                   <TabPanel>
-                    <div>Replace with "Recipes" component</div>
+                    <RecipeTab
+                      recipeList={userRecipesList}
+                      handleOpenRecipe={handleOpenRecipe}
+                      handleRemoveRecipe={handleRemoveRecipe}
+                      isCurrentUser={isCurrentUser}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <div>Replace with "Followers" component</div>
