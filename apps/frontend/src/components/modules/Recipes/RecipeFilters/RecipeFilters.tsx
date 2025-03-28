@@ -54,6 +54,8 @@ export const RecipeFilters: FC = () => {
   const handleIngredientChange = useCallback(
     (option: SingleValue<OptionType>) => {
       setSearchParams((prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+
         const value = option?.value ?? '';
         if (value === '') {
           prevParams.delete('ingredientId');
@@ -72,16 +74,18 @@ export const RecipeFilters: FC = () => {
   const handleAreaChange = useCallback(
     (option: SingleValue<OptionType>) => {
       setSearchParams((prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+
         const value = option?.value ?? '';
         if (value === '') {
-          prevParams.delete('areaId');
+          newParams.delete('areaId');
         } else {
-          prevParams.set('areaId', value);
+          newParams.set('areaId', value);
         }
 
-        prevParams.set('page', '1');
+        newParams.set('page', '1');
 
-        return prevParams;
+        return newParams;
       });
     },
     [setSearchParams],

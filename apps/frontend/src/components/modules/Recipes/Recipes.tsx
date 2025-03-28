@@ -56,13 +56,15 @@ const Recipes = ({ category }: CategoriesProps) => {
   useEffect(() => {
     setSearchParams(
       (prevParams) => {
-        if (!prevParams.has('page')) {
-          prevParams.set('page', '1');
+        const newParams = new URLSearchParams(prevParams);
+
+        if (!newParams.has('page')) {
+          newParams.set('page', '1');
         }
-        if (!prevParams.has('perPage')) {
-          prevParams.set('perPage', isMobile ? '8' : '12');
+        if (!newParams.has('perPage')) {
+          newParams.set('perPage', isMobile ? '8' : '12');
         }
-        return prevParams;
+        return newParams;
       },
       { replace: true },
     );
@@ -182,16 +184,6 @@ const Recipes = ({ category }: CategoriesProps) => {
     [navigate],
   );
 
-  const handleOnPageChange = useCallback(
-    (page: number) => {
-      setSearchParams((prevParams) => {
-        prevParams.set('page', String(page));
-        return prevParams;
-      });
-    },
-    [setSearchParams],
-  );
-
   return (
     <section id="recipes">
       <Container>
@@ -222,7 +214,6 @@ const Recipes = ({ category }: CategoriesProps) => {
               onOpenProfile={handleOpenProfile}
               onToggleFavorite={handleToggleFavorite}
               onOpenRecipe={handleOpenRecipe}
-              onPageChange={handleOnPageChange}
             />
           ) : (
             <p className={clsx(styles.noRecipes)}>
