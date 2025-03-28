@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import ButtonWithNumber from '../ButtonWithNumber/ButtonWithNumber';
 
@@ -16,6 +17,15 @@ const Paging: React.FC<PagingProps> = ({
   onPageChange,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const pageParam = searchParams.get('page');
+    if (pageParam) {
+      setCurrentPage(Number(pageParam));
+    }
+  }, [searchParams]);
 
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
