@@ -91,3 +91,7 @@
   border: 1px solid var(--black);
   color: var(--white);
 }
+
+.primary.addToFavoritesButton:disabled {
+  border-color: var(--gray);
+}
