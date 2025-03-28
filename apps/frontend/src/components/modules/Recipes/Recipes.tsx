@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import clsx from 'clsx';
 
 import type {
@@ -42,6 +42,7 @@ const Recipes = ({ category }: CategoriesProps) => {
   const currentUser = useSelector(selectCurrentUser);
   const isUserLoggedIn = Boolean(currentUser);
   const isMobile = useMediaQuery('(max-width: 767px)');
+  const [, setSearchParams] = useSearchParams();
 
   const [recipes, setRecipes] = useState<GetPaginatedRecipeResponse>({
     items: [],
@@ -110,14 +111,25 @@ const Recipes = ({ category }: CategoriesProps) => {
   // Handle open profile
   const handleOpenProfile = useCallback(
     (userId: string) => {
+      const redirectUrl = `/user/${userId}`;
+
       if (!isUserLoggedIn) {
+        setSearchParams(
+          {
+            redirect_url: redirectUrl,
+          },
+          {
+            replace: true,
+          },
+        );
+
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
-      navigate(`/user/${userId}`);
+      navigate(redirectUrl);
       scrollToTop();
     },
-    [isUserLoggedIn, dispatch, navigate],
+    [isUserLoggedIn, navigate, setSearchParams, dispatch],
   );
 
   // handle toggle favorite
