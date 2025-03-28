@@ -166,9 +166,11 @@ const RecipePage = () => {
           items: prev.items.filter((item) => item.id !== recipeId),
         };
       });
-      setIsFavorite(newState);
+      if (id === recipeId) {
+        setIsFavorite(newState);
+      }
     },
-    [isUserLoggedIn, dispatch, popularRecipes],
+    [isUserLoggedIn, dispatch, popularRecipes, id],
   );
 
   // handle open recipe
