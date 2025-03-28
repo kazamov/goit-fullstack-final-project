@@ -39,27 +39,6 @@
   color: var(--white);
 }
 
-.imageWrapper {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  align-items: baseline;
-}
-
-.secondImage img {
-  border-radius: 30px;
-  width: 190px;
-  height: 172px;
-  transform: rotate(-12deg);
-}
-
-.firstImage img {
-  border-radius: 15px;
-  width: 77px;
-  height: 70px;
-  transform: rotate(11deg);
-}
-
 @media screen and (min-width: 768px) {
   .heroHeader {
     font-size: 70px;
@@ -68,23 +47,12 @@
     font-size: 16px;
     margin: 0 80px;
   }
-  .firstImage img {
-    width: 128px;
-    height: 116px;
-  }
-  .secondImage img {
-    width: 302px;
-    height: 273px;
-  }
   .heroSection {
     height: 992px;
     gap: 40px;
   }
   .heroContainer {
     padding: 0 16px;
-  }
-  .imageWrapper {
-    gap: 28px;
   }
 }
 
