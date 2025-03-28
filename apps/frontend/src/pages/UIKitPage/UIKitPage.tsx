@@ -5,6 +5,7 @@ import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
 import Button from '../../components/ui/Button/Button';
 import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
 import ButtonWithNumber from '../../components/ui/ButtonWithNumber/ButtonWithNumber';
+import ConnectionsUserCard from '../../components/ui/ConnectionsUserCard/ConnectionsUserCard';
 import IngredientCard from '../../components/ui/IngredientCard/IngredientCard';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
@@ -353,6 +354,35 @@ const UIKitPage = () => {
           <Paging
             totalPages={20}
             onPageChange={(page) => console.log('Selected page:', page)}
+          />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Connection user card</h2>
+        <div className={styles.kitCard}>
+          <ConnectionsUserCard
+            user={{
+              id: '1',
+              name: 'John Doe',
+              email: 'jane@example.com',
+              avatarUrl:
+                'https://images.pexels.com/photos/4253298/pexels-photo-4253298.jpeg?auto=compress&cs=tinysrgb&w=300',
+              recipesCount: 5,
+              recipes: [],
+              following: false,
+            }}
+          />
+          <ConnectionsUserCard
+            user={{
+              id: '1',
+              name: 'Jane Doe',
+              email: 'jane@example.com',
+              avatarUrl:
+                'https://images.pexels.com/photos/3785708/pexels-photo-3785708.jpeg?auto=compress&cs=tinysrgb&w=600',
+              recipesCount: 10,
+              recipes: [],
+              following: true,
+            }}
           />
         </div>
       </div>
