@@ -160,6 +160,20 @@ const UserPage = () => {
     }
   }, [userId, currentUser]);
 
+  useEffect(() => {
+    const pageFromParams = Number(searchParams.get('page') || '1');
+
+    setFavoritePagination((prev) => ({
+      ...prev,
+      page: pageFromParams,
+    }));
+
+    setRecipePagination((prev) => ({
+      ...prev,
+      page: pageFromParams,
+    }));
+  }, [searchParams]);
+
   const logoutHandler = async () => {
     dispatch(setCurrentUser(null));
 
