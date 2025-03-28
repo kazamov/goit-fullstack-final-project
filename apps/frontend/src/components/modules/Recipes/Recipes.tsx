@@ -8,14 +8,12 @@ import type {
   GetPaginatedRecipeResponse,
   GetPaginatedRecipeShort,
   GetRecipeShort,
-  RecipeQuery,
 } from '@goit-fullstack-final-project/schemas';
 import {
   GetPaginatedRecipeResponseSchema,
   GetPaginatedRecipeShortSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { buildQueryString } from '../../../helpers/buildQueryString';
 import { tryCatch } from '../../../helpers/catchError';
 import { del, get, post } from '../../../helpers/http';
 import { scrollToElement, scrollToTop } from '../../../helpers/scrollToTop';
@@ -42,7 +40,6 @@ const Recipes = ({ category }: CategoriesProps) => {
   const currentUser = useSelector(selectCurrentUser);
   const isUserLoggedIn = Boolean(currentUser);
   const isMobile = useMediaQuery('(max-width: 767px)');
-  const [, setSearchParams] = useSearchParams();
 
   const [recipes, setRecipes] = useState<GetPaginatedRecipeResponse>({
     items: [],
@@ -54,18 +51,22 @@ const Recipes = ({ category }: CategoriesProps) => {
     page: 1,
     totalPages: 1,
   });
-  const [query, setQuery] = useState<RecipeQuery>({
-    page: '1',
-    perPage: isMobile ? '8' : '12',
-    categoryId: category?.id,
-    areaId: undefined,
-    ingredientId: undefined,
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Scroll to top on component load
   useEffect(() => {
-    scrollToTop();
-  }, [query]);
+    setSearchParams(
+      (prevParams) => {
+        if (!prevParams.has('page')) {
+          prevParams.set('page', '1');
+        }
+        if (!prevParams.has('perPage')) {
+          prevParams.set('perPage', isMobile ? '8' : '12');
+        }
+        return prevParams;
+      },
+      { replace: true },
+    );
+  }, [isMobile, setSearchParams]);
 
   // Get favorites from API
   useEffect(() => {
@@ -89,7 +90,7 @@ const Recipes = ({ category }: CategoriesProps) => {
   // Get recipes from API
   useEffect(() => {
     const fetchRecipes = async () => {
-      const queryString = buildQueryString(query);
+      const queryString = searchParams.toString();
 
       const [error, data] = await tryCatch(
         get<GetPaginatedRecipeResponse>(`/api/recipes?${queryString}`, {
@@ -106,7 +107,7 @@ const Recipes = ({ category }: CategoriesProps) => {
     };
 
     fetchRecipes();
-  }, [query]);
+  }, [searchParams]);
 
   // Handle open profile
   const handleOpenProfile = useCallback(
@@ -183,31 +184,12 @@ const Recipes = ({ category }: CategoriesProps) => {
 
   const handleOnPageChange = useCallback(
     (page: number) => {
-      setQuery((prev) => ({ ...prev, page: String(page) }));
+      setSearchParams((prevParams) => {
+        prevParams.set('page', String(page));
+        return prevParams;
+      });
     },
-    [setQuery],
-  );
-
-  const handleIngredientChange = useCallback(
-    (ingredientId?: string) => {
-      setQuery((prev) => ({
-        ...prev,
-        page: '1',
-        ingredientId: ingredientId,
-      }));
-    },
-    [setQuery],
-  );
-
-  const handleAreaChange = useCallback(
-    (areaId?: string) => {
-      setQuery((prev) => ({
-        ...prev,
-        page: '1',
-        areaId: areaId,
-      }));
-    },
-    [setQuery],
+    [setSearchParams],
   );
 
   return (
@@ -232,10 +214,7 @@ const Recipes = ({ category }: CategoriesProps) => {
         <MainTitle title={category.name} />
         <SubTitle title={category.description} />
         <div className={clsx(styles.recipesWrapper)}>
-          <RecipeFilters
-            onChangeIngredient={handleIngredientChange}
-            onChangeArea={handleAreaChange}
-          />
+          <RecipeFilters />
           {recipes.items.length > 0 ? (
             <RecipeList
               recipes={recipes}

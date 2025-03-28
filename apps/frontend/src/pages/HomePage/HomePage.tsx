@@ -21,7 +21,7 @@ const HomePage = () => {
   const onCategorySelect = useCallback(
     (category: SelectedCategory) => {
       const searchParams = new URLSearchParams({
-        category: category.name,
+        categoryId: category.id,
       });
       navigate(`/recipes/?${searchParams.toString()}`);
     },

@@ -1,5 +1,7 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import type { SingleValue } from 'react-select';
 import Select from 'react-select';
 import clsx from 'clsx';
 
@@ -24,37 +26,66 @@ const mapToOptions = (
   return [{ value: '', label: `All ${suffix}` }, ...selectItems];
 };
 
-interface FiltersProps {
-  onChangeIngredient: (ingredientId: string | undefined) => void;
-  onChangeArea: (areaId: string | undefined) => void;
-}
-
-export const RecipeFilters: FC<FiltersProps> = ({
-  onChangeIngredient,
-  onChangeArea,
-}) => {
+export const RecipeFilters: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const ingredients = useSelector(selectIngredients);
   const areas = useSelector(selectAreas);
 
-  const [selectedIngredient, setSelectedIngredient] =
-    useState<OptionType | null>(null);
-  const [selectedArea, setSelectedArea] = useState<OptionType | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    if (ingredients.length === 0) {
-      dispatch(fetchIngredients());
-    }
-    if (areas.length === 0) {
-      dispatch(fetchAreas());
-    }
-  }, [dispatch, ingredients, areas]);
+  const ingredientId = searchParams.get('ingredientId');
+  const areaId = searchParams.get('areaId');
 
   const ingredientsOptions: OptionType[] = mapToOptions(
     ingredients,
     'Ingredients',
   );
+  const selectedIngredient = useMemo(
+    () => ingredientsOptions.find((ing) => ing.value === ingredientId) ?? null,
+    [ingredientId, ingredientsOptions],
+  );
+
   const areasOptions: OptionType[] = mapToOptions(areas, 'Areas');
+  const selectedArea = useMemo(
+    () => areasOptions.find((area) => area.value === areaId) ?? null,
+    [areaId, areasOptions],
+  );
+
+  const handleIngredientChange = useCallback(
+    (option: SingleValue<OptionType>) => {
+      setSearchParams((prevParams) => {
+        const value = option?.value ?? '';
+        if (value === '') {
+          prevParams.delete('ingredientId');
+        } else {
+          prevParams.set('ingredientId', value);
+        }
+
+        prevParams.set('page', '1');
+
+        return prevParams;
+      });
+    },
+    [setSearchParams],
+  );
+
+  const handleAreaChange = useCallback(
+    (option: SingleValue<OptionType>) => {
+      setSearchParams((prevParams) => {
+        const value = option?.value ?? '';
+        if (value === '') {
+          prevParams.delete('areaId');
+        } else {
+          prevParams.set('areaId', value);
+        }
+
+        prevParams.set('page', '1');
+
+        return prevParams;
+      });
+    },
+    [setSearchParams],
+  );
 
   const classNames = {
     placeholder: () => clsx(['selectPlaceholder']),
@@ -66,6 +97,15 @@ export const RecipeFilters: FC<FiltersProps> = ({
       clsx(['selectOption', isSelected && 'selectOptionSelected']),
   };
 
+  useEffect(() => {
+    if (ingredients.length === 0) {
+      dispatch(fetchIngredients());
+    }
+    if (areas.length === 0) {
+      dispatch(fetchAreas());
+    }
+  }, [dispatch, ingredients, areas]);
+
   return (
     <div className={clsx(styles.filtersWrapper)}>
       <Select
@@ -74,10 +114,7 @@ export const RecipeFilters: FC<FiltersProps> = ({
         options={ingredientsOptions}
         value={selectedIngredient}
         placeholder="Ingredients"
-        onChange={(option) => {
-          onChangeIngredient(option?.value === '' ? undefined : option?.value);
-          setSelectedIngredient(option);
-        }}
+        onChange={handleIngredientChange}
       />
       <Select
         classNames={classNames}
@@ -85,10 +122,7 @@ export const RecipeFilters: FC<FiltersProps> = ({
         options={areasOptions}
         value={selectedArea}
         placeholder="Area"
-        onChange={(option) => {
-          onChangeArea(option?.value === '' ? undefined : option?.value);
-          setSelectedArea(option);
-        }}
+        onChange={handleAreaChange}
       />
     </div>
   );
