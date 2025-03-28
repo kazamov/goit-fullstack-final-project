@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 
@@ -28,6 +29,8 @@ type FormData = {
 
 const SignUpForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -59,8 +62,13 @@ const SignUpForm = () => {
       dispatch(setCurrentUser(user));
       dispatch(setModalOpened({ modal: 'register', opened: false }));
       reset();
+
+      const redirectUrl = searchParams.get('redirect_url');
+      if (redirectUrl) {
+        navigate(redirectUrl, { replace: true });
+      }
     },
-    [dispatch, reset, setFocus],
+    [dispatch, navigate, reset, searchParams, setFocus],
   );
 
   const nameValue = watch('name');

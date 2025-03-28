@@ -119,7 +119,7 @@ const UserPage = () => {
   };
 
   const handleOpenRecipe = (recipeId: string) => {
-    navigate(`/recipe/${recipeId}`);
+    navigate(`/recipes/${recipeId}`);
   };
 
   const handleRemoveRecipe = async (recipeId: string) => {

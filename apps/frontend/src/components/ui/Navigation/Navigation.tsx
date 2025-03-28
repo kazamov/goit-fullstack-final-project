@@ -36,7 +36,7 @@ const Navigation: FC<NavProps> = ({ isInversed }) => {
         </li>
         <li>
           <NavLink
-            to="/recipe/add"
+            to="/recipes/add"
             className={(navData) => buildLinkClass({ ...navData, isInversed })}
           >
             Add recipe

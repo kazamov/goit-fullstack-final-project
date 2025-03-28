@@ -1,33 +1,31 @@
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import clsx from 'clsx';
 
 import type {
   GetPaginatedRecipeResponse,
   GetPaginatedRecipeShort,
   GetRecipeShort,
-  RecipeQuery,
 } from '@goit-fullstack-final-project/schemas';
 import {
   GetPaginatedRecipeResponseSchema,
   GetPaginatedRecipeShortSchema,
 } from '@goit-fullstack-final-project/schemas';
 
-import { buildQueryString } from '../../../helpers/buildQueryString';
 import { tryCatch } from '../../../helpers/catchError';
 import { del, get, post } from '../../../helpers/http';
-import { scrollToTop } from '../../../helpers/scrollToTop';
+import { scrollToElement, scrollToTop } from '../../../helpers/scrollToTop';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { SelectedCategory } from '../../../redux/categories/slice';
-import { resetCategory } from '../../../redux/categories/slice';
 import { setModalOpened } from '../../../redux/ui/slice';
 import { selectCurrentUser } from '../../../redux/users/selectors';
 import Container from '../../layout/Container/Container';
 import MainTitle from '../../ui/MainTitle/MainTitle';
 import SubTitle from '../../ui/SubTitle/SubTitle';
 
+import RecipeFilters from './RecipeFilters/RecipeFilters';
 import RecipeList from './RecipeList/RecipeList';
 
 import styles from './Recipes.module.css';
@@ -53,18 +51,24 @@ const Recipes = ({ category }: CategoriesProps) => {
     page: 1,
     totalPages: 1,
   });
-  const [query, setQuery] = useState<RecipeQuery>({
-    page: '1',
-    perPage: isMobile ? '8' : '12',
-    categoryId: category?.id,
-    areaId: undefined,
-    ingredientId: undefined,
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Scroll to top on component load
   useEffect(() => {
-    scrollToTop();
-  }, [query]);
+    setSearchParams(
+      (prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+
+        if (!newParams.has('page')) {
+          newParams.set('page', '1');
+        }
+        if (!newParams.has('perPage')) {
+          newParams.set('perPage', isMobile ? '8' : '12');
+        }
+        return newParams;
+      },
+      { replace: true },
+    );
+  }, [isMobile, setSearchParams]);
 
   // Get favorites from API
   useEffect(() => {
@@ -88,7 +92,7 @@ const Recipes = ({ category }: CategoriesProps) => {
   // Get recipes from API
   useEffect(() => {
     const fetchRecipes = async () => {
-      const queryString = buildQueryString(query);
+      const queryString = searchParams.toString();
 
       const [error, data] = await tryCatch(
         get<GetPaginatedRecipeResponse>(`/api/recipes?${queryString}`, {
@@ -105,19 +109,30 @@ const Recipes = ({ category }: CategoriesProps) => {
     };
 
     fetchRecipes();
-  }, [query]);
+  }, [searchParams]);
 
   // Handle open profile
   const handleOpenProfile = useCallback(
     (userId: string) => {
+      const redirectUrl = `/user/${userId}`;
+
       if (!isUserLoggedIn) {
+        setSearchParams(
+          {
+            redirect_url: redirectUrl,
+          },
+          {
+            replace: true,
+          },
+        );
+
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
-      navigate(`/user/${userId}`);
+      navigate(redirectUrl);
       scrollToTop();
     },
-    [isUserLoggedIn, dispatch, navigate],
+    [isUserLoggedIn, navigate, setSearchParams, dispatch],
   );
 
   // handle toggle favorite
@@ -163,27 +178,24 @@ const Recipes = ({ category }: CategoriesProps) => {
   // handle open recipe
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
-      navigate(`/recipe/${recipeId}`);
+      navigate(`/recipes/${recipeId}`);
       scrollToTop();
     },
     [navigate],
-  );
-
-  const handleOnPageChange = useCallback(
-    (page: number) => {
-      setQuery((prev) => ({ ...prev, page: String(page) }));
-    },
-    [setQuery],
   );
 
   return (
     <section id="recipes">
       <Container>
         <button
+          ref={(element) => {
+            if (element) {
+              scrollToElement(element);
+            }
+          }}
           className={clsx(styles.backButton)}
           onClick={() => {
-            dispatch(resetCategory());
-            scrollToTop();
+            navigate('/');
           }}
         >
           <svg className={clsx(styles.backButtonIcon)}>
@@ -194,10 +206,7 @@ const Recipes = ({ category }: CategoriesProps) => {
         <MainTitle title={category.name} />
         <SubTitle title={category.description} />
         <div className={clsx(styles.recipesWrapper)}>
-          <div>
-            {/* <RecipeFilters /> */}
-            RecipeFilters
-          </div>
+          <RecipeFilters />
           {recipes.items.length > 0 ? (
             <RecipeList
               recipes={recipes}
@@ -205,7 +214,6 @@ const Recipes = ({ category }: CategoriesProps) => {
               onOpenProfile={handleOpenProfile}
               onToggleFavorite={handleToggleFavorite}
               onOpenRecipe={handleOpenRecipe}
-              onPageChange={handleOnPageChange}
             />
           ) : (
             <p className={clsx(styles.noRecipes)}>

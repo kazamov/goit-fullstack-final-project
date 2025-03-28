@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import AuthBar from '../../components/modules/Auth/AuthBar/AuthBar';
+import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
 import ButtonWithNumber from '../../components/ui/ButtonWithNumber/ButtonWithNumber';
@@ -385,6 +386,18 @@ const UIKitPage = () => {
             }}
           />
         </div>
+      </div>
+
+      <div className={styles.kitCard}>
+        <UserCard
+          name="Victoria"
+          email="victoria28682@gmail.com"
+          avatar={undefined}
+          recipesCount={9}
+          favoritesCount={9}
+          followersCount={5}
+          followingCount={5}
+        />
       </div>
     </div>
   );

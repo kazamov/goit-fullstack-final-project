@@ -31,9 +31,9 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
   }, [dispatch]);
 
   const onConfirm = useCallback(async () => {
+    navigate('/', { flushSync: true });
     dispatch(setCurrentUser(null));
     dispatch(setModalOpened({ modal: 'logout', opened: false }));
-    navigate('/');
 
     await tryCatch(post('/api/users/logout', null));
   }, [dispatch, navigate]);

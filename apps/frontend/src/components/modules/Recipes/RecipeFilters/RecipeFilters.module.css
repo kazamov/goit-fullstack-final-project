@@ -1,0 +1,20 @@
+.filtersWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  height: fit-content;
+}
+
+/* tablet */
+@media (max-width: 1439px) {
+  .filtersWrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .filtersWrapper {
+    grid-template-columns: 1fr;
+  }
+}
