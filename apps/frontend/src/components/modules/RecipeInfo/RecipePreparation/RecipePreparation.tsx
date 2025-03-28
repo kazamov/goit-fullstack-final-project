@@ -11,6 +11,7 @@ interface RecipePreparationProps {
   instructions: GetRecipeDetailedResponse['instructions'];
   recipeId: string;
   isFavorite: boolean;
+  isBusy: boolean;
   onToggleFavorite: (recipeId: string, newState: boolean) => void;
 }
 
@@ -18,6 +19,7 @@ export const RecipePreparation: FC<RecipePreparationProps> = ({
   instructions,
   recipeId,
   isFavorite,
+  isBusy,
   onToggleFavorite,
 }) => {
   const instructionList = instructions.split('\r\n');
@@ -36,6 +38,8 @@ export const RecipePreparation: FC<RecipePreparationProps> = ({
         type="submit"
         clickHandler={() => onToggleFavorite(recipeId, !isFavorite)}
         className="addToFavoritesButton"
+        busy={isBusy}
+        disabled={isBusy}
       >
         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
       </Button>

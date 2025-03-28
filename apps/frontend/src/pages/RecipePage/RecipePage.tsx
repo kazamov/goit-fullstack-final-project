@@ -42,6 +42,7 @@ const RecipePage = () => {
     totalPages: 1,
   });
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isBusy, setIsBusy] = useState(false);
 
   // Get favorites from API
   useEffect(() => {
@@ -137,6 +138,11 @@ const RecipePage = () => {
         return;
       }
 
+      // set button loader ON
+      if (id === recipeId) {
+        setIsBusy(true);
+      }
+
       const [error] = await tryCatch(
         newState
           ? post(`/api/recipes/${recipeId}/favorite`, null)
@@ -146,6 +152,7 @@ const RecipePage = () => {
         toast.error(`Error updating favorites\n${error.message}`);
         return;
       }
+
       // Update local state of favorites
       setFavorites((prev) => {
         if (newState) {
@@ -168,6 +175,7 @@ const RecipePage = () => {
       });
       if (id === recipeId) {
         setIsFavorite(newState);
+        setIsBusy(false);
       }
     },
     [isUserLoggedIn, dispatch, popularRecipes, id],
@@ -197,6 +205,7 @@ const RecipePage = () => {
             onOpenProfile={handleOpenProfile}
             onToggleFavorite={handleToggleFavorite}
             isFavorite={isFavorite}
+            isBusy={isBusy}
           />
         </Container>
       )}
