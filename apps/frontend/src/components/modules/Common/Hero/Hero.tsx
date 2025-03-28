@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import type { AppDispatch } from '../../../../redux/store';
 import { setModalOpened } from '../../../../redux/ui/slice';
@@ -14,6 +14,7 @@ import styles from './Hero.module.css';
 const Hero = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const [, setSearchParams] = useSearchParams();
 
   const currentUser = useSelector(selectCurrentUser);
 
@@ -22,9 +23,19 @@ const Hero = () => {
   }, [dispatch]);
 
   const handleAddRecipeClick = () => {
+    const redirectUrl = '/recipe/add';
     if (currentUser) {
-      navigate('/recipe/add');
+      navigate(redirectUrl);
     } else {
+      setSearchParams(
+        {
+          redirect_url: redirectUrl,
+        },
+        {
+          replace: true,
+        },
+      );
+
       openSignInModal();
     }
   };
