@@ -7,7 +7,7 @@ interface ButtonProps {
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
   kind: 'primary' | 'secondary' | 'ghost' | 'text';
-  size?: 'small' | 'medium';
+  size?: 'xsmall' | 'small' | 'medium';
   clickHandler?: () => void;
   disabled?: boolean;
   busy?: boolean;

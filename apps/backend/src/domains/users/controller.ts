@@ -77,8 +77,9 @@ export async function getUserFavorites(req: Request, res: Response) {
 
 export async function getUserFollowers(req: Request, res: Response) {
   const { userId } = req.params;
+  const { id: currentUserId } = req.user as UserSchemaAttributes;
 
-  const followers = await service.getUserFollowers(userId);
+  const followers = await service.getUserFollowers(userId, currentUserId);
 
   if (!followers) {
     throw new HttpError(`User with id '${userId}' not found`, 404);
@@ -110,8 +111,9 @@ export async function updateAvatar(req: Request, res: Response) {
 
 export async function getUserFollowings(req: Request, res: Response) {
   const { userId } = req.params;
+  const { id: currentUserId } = req.user as UserSchemaAttributes;
 
-  const followings = await service.getUserFollowings(userId);
+  const followings = await service.getUserFollowings(userId, currentUserId);
 
   if (!followings) {
     throw new HttpError(`User with id '${userId}' not found`, 404);

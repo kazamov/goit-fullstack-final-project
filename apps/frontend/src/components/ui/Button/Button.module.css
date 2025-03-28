@@ -33,6 +33,12 @@
   cursor: not-allowed;
 }
 
+.button.xsmall {
+  font-size: 12px;
+  line-height: 18px;
+  padding: 12px 28px;
+}
+
 .button.small {
   font-size: 12px;
   line-height: 18px;

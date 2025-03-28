@@ -27,7 +27,7 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({ user }) => {
           type="button"
           clickHandler={() => console.log(`Follow user ${id}`)}
           className={styles.button}
-          size="small"
+          size="xsmall"
         >
           {user.following ? 'Following' : 'Follow'}
         </Button>

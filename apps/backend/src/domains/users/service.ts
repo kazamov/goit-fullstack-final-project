@@ -222,6 +222,7 @@ export async function getUserFavorites(
 
 export async function getUserFollowers(
   userId: string,
+  currentUserId: string,
 ): Promise<UserFollowers | null> {
   const userWithFollowers = await UserDTO.findByPk(userId, {
     attributes: ['id'],
@@ -254,6 +255,21 @@ export async function getUserFollowers(
     (follower) => follower.id,
   );
 
+  const followingIds = await UserFollowersDTO.findAll({
+    attributes: ['followingId'],
+    where: {
+      followerId: currentUserId,
+      followingId: {
+        [Op.in]: followerIds,
+      },
+    },
+    raw: true,
+  });
+
+  const followingSet = new Set(
+    followingIds.map((follow) => follow.followingId),
+  );
+
   const recipesCounts = (await RecipeDTO.findAll({
     attributes: [
       'userId',
@@ -278,6 +294,7 @@ export async function getUserFollowers(
 
   userWithFollowers.followers.forEach((follower) => {
     follower.setDataValue('recipesCount', countsMap[follower.id] || 0);
+    follower.setDataValue('following', followingSet.has(follower.id));
   });
 
   return UserFollowersSchema.parse(
@@ -301,6 +318,7 @@ export async function updateAvatar(userId: string, file: Express.Multer.File) {
 
 export async function getUserFollowings(
   userId: string,
+  currentUserId: string,
 ): Promise<UserFollowings | null> {
   const userWithFollowings = await UserDTO.findByPk(userId, {
     attributes: ['id'],
@@ -333,6 +351,21 @@ export async function getUserFollowings(
     (following) => following.id,
   );
 
+  const followingIdsSet = new Set(
+    (
+      await UserFollowersDTO.findAll({
+        attributes: ['followingId'],
+        where: {
+          followerId: currentUserId,
+          followingId: {
+            [Op.in]: followingIds,
+          },
+        },
+        raw: true,
+      })
+    ).map((follow) => follow.followingId),
+  );
+
   const recipesCounts = (await RecipeDTO.findAll({
     attributes: [
       'userId',
@@ -355,12 +388,13 @@ export async function getUserFollowings(
     {},
   );
 
-  userWithFollowings.following.forEach((follower) => {
-    follower.setDataValue('recipesCount', countsMap[follower.id] || 0);
+  userWithFollowings.following.forEach((following) => {
+    following.setDataValue('recipesCount', countsMap[following.id] || 0);
+    following.setDataValue('following', followingIdsSet.has(following.id));
   });
 
   return UserFollowingsSchema.parse(
-    userWithFollowings.following.map((follower) => follower.toJSON()),
+    userWithFollowings.following.map((following) => following.toJSON()),
   );
 }
 
