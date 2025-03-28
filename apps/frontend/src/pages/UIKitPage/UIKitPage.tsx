@@ -351,10 +351,7 @@ const UIKitPage = () => {
       <div>
         <h2 className={styles.kitTitle}>Paging</h2>
         <div className={styles.kitCard}>
-          <Paging
-            totalPages={20}
-            onPageChange={(page) => console.log('Selected page:', page)}
-          />
+          <Paging totalPages={20} />
         </div>
       </div>
 

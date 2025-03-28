@@ -18,7 +18,6 @@ interface RecipeListProps {
   onOpenProfile: (userId: string) => void;
   onToggleFavorite: (recipeId: string, newState: boolean) => void;
   onOpenRecipe: (recipeId: string) => void;
-  onPageChange?: (page: number) => void;
 }
 
 export const RecipeList: FC<RecipeListProps> = ({
@@ -27,7 +26,6 @@ export const RecipeList: FC<RecipeListProps> = ({
   onOpenProfile,
   onToggleFavorite,
   onOpenRecipe,
-  onPageChange,
 }) => {
   return (
     <div className={clsx(styles.recipeListContainer)} id="recipeListContainer">
@@ -44,10 +42,7 @@ export const RecipeList: FC<RecipeListProps> = ({
           </li>
         ))}
       </ul>
-      <RecipePagination
-        totalPages={recipes.totalPages}
-        onPageChange={onPageChange}
-      />
+      <RecipePagination totalPages={recipes.totalPages} />
     </div>
   );
 };

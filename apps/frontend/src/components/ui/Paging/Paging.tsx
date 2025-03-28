@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import ButtonWithNumber from '../ButtonWithNumber/ButtonWithNumber';
@@ -8,31 +9,24 @@ import styles from './Paging.module.css';
 type PagingProps = {
   totalPages: number;
   maxVisibleButtons?: number;
-  onPageChange?: (page: number) => void;
 };
 
-const Paging: React.FC<PagingProps> = ({
-  totalPages,
-  maxVisibleButtons = 7,
-  onPageChange,
-}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Paging: FC<PagingProps> = ({ totalPages, maxVisibleButtons = 7 }) => {
+  const [searchParams, setSearchParams] = useSearchParams({ page: '1' });
+  const currentPage = Number(searchParams.get('page'));
 
-  const [searchParams] = useSearchParams();
+  const handlePageClick = useCallback(
+    (page: number) => {
+      setSearchParams((prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+        newParams.set('page', String(page));
+        return newParams;
+      });
+    },
+    [setSearchParams],
+  );
 
-  useEffect(() => {
-    const pageParam = searchParams.get('page');
-    if (pageParam) {
-      setCurrentPage(Number(pageParam));
-    }
-  }, [searchParams]);
-
-  const handlePageClick = (page: number) => {
-    setCurrentPage(page);
-    onPageChange?.(page);
-  };
-
-  const getPageNumbers = () => {
+  const pageNumbers = useMemo(() => {
     const pageNumbers: (number | string)[] = [];
     const numSideButtons = Math.floor((maxVisibleButtons - 4) / 2);
 
@@ -82,12 +76,12 @@ const Paging: React.FC<PagingProps> = ({
     }
 
     return pageNumbers;
-  };
+  }, [currentPage, maxVisibleButtons, totalPages]);
 
   return (
     <div className={styles.pagingContainer}>
-      {getPageNumbers().map((page, index) => (
-        <React.Fragment key={index}>
+      {pageNumbers.map((page, index) => (
+        <Fragment key={index}>
           {page === '...' ? (
             <span className={`${styles.ellipsis}`}>...</span>
           ) : (
@@ -99,7 +93,7 @@ const Paging: React.FC<PagingProps> = ({
               disabled={page === currentPage}
             />
           )}
-        </React.Fragment>
+        </Fragment>
       ))}
     </div>
   );
