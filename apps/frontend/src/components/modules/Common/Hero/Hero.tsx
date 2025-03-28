@@ -6,8 +6,6 @@ import type { AppDispatch } from '../../../../redux/store';
 import { setModalOpened } from '../../../../redux/ui/slice';
 import { selectCurrentUser } from '../../../../redux/users/selectors';
 import ButtonHero from '../../../ui/ButtonHero/ButtonHero';
-import SignInModal from '../../Auth/SignInModal/SignInModal';
-import SignUpModal from '../../Auth/SignUpModal/SignUpModal';
 
 import HeroImages from './HeroImages';
 
@@ -21,10 +19,6 @@ const Hero = () => {
 
   const openSignInModal = useCallback(() => {
     dispatch(setModalOpened({ modal: 'login', opened: true }));
-  }, [dispatch]);
-
-  const openSignUpModal = useCallback(() => {
-    dispatch(setModalOpened({ modal: 'register', opened: true }));
   }, [dispatch]);
 
   const handleAddRecipeClick = () => {
@@ -53,10 +47,6 @@ const Hero = () => {
 
         <HeroImages />
       </div>
-
-      {/* Modals are always mounted and controlled via Redux */}
-      <SignInModal onRedirectToSignUp={openSignUpModal} />
-      <SignUpModal onRedirectToSignIn={openSignInModal} />
     </div>
   );
 };
