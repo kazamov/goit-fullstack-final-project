@@ -7,19 +7,15 @@ import styles from './RecipePagination.module.css';
 
 interface RecipePaginationProps {
   totalPages: number;
-  onPageChange?: (page: number) => void;
 }
 
-export const RecipePagination: FC<RecipePaginationProps> = ({
-  totalPages,
-  onPageChange,
-}) => {
+export const RecipePagination: FC<RecipePaginationProps> = ({ totalPages }) => {
   return (
     <div
       className={clsx(styles.paginationContainer)}
       id="recipePaginationContainer"
     >
-      <Paging totalPages={totalPages} onPageChange={onPageChange} />
+      <Paging totalPages={totalPages} />
     </div>
   );
 };

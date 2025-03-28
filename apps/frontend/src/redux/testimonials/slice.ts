@@ -3,6 +3,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import type { GetTestimonialResponse } from '@goit-fullstack-final-project/schemas';
 
+import { tryCatch } from '../../helpers/catchError';
+import { get } from '../../helpers/http';
+
 export interface Testimonials {
   items: GetTestimonialResponse;
   loading: boolean;
@@ -18,14 +21,15 @@ const initialState: Testimonials = {
 export const fetchTestimonials = createAsyncThunk(
   'testimonials/fetchTestimonials',
   async (_, thunkAPI) => {
-    try {
-      const response = await fetch('/api/testimonials');
-      if (!response.ok) throw new Error('Failed to fetch testimonials');
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue((error as Error).message);
+    const [error, data] = await tryCatch(
+      get<GetTestimonialResponse | null>('/api/testimonials'),
+    );
+
+    if (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
+
+    return data ?? [];
   },
 );
 

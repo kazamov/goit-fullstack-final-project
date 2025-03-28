@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
@@ -16,8 +16,10 @@ import styles from './Header.module.css';
 const Header = () => {
   const currentUser = useSelector(selectCurrentUser);
 
-  const location = useLocation();
-  const isInversed = location.pathname === '/';
+  const rootPath = useMatch('/');
+  const recipesPath = useMatch('/recipes');
+
+  const isInversed = Boolean(rootPath || recipesPath);
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import type {
   GetPaginatedRecipeShort,
@@ -31,6 +31,7 @@ const RecipePage = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const isUserLoggedIn = Boolean(currentUser);
+  const [, setSearchParams] = useSearchParams();
 
   const [recipeDetails, setRecipeDetails] =
     useState<GetRecipeDetailedResponse>();
@@ -41,6 +42,7 @@ const RecipePage = () => {
     totalPages: 1,
   });
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isBusy, setIsBusy] = useState(false);
 
   // Get favorites from API
   useEffect(() => {
@@ -107,14 +109,25 @@ const RecipePage = () => {
   // Handle open profile
   const handleOpenProfile = useCallback(
     (userId: string) => {
+      const redirectUrl = `/user/${userId}`;
+
       if (!isUserLoggedIn) {
+        setSearchParams(
+          {
+            redirect_url: redirectUrl,
+          },
+          {
+            replace: true,
+          },
+        );
+
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
-      navigate(`/user/${userId}`);
+      navigate(redirectUrl);
       scrollToTop();
     },
-    [isUserLoggedIn, dispatch, navigate],
+    [isUserLoggedIn, navigate, setSearchParams, dispatch],
   );
 
   // handle toggle favorite
@@ -123,6 +136,11 @@ const RecipePage = () => {
       if (!isUserLoggedIn) {
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
+      }
+
+      // set button loader ON
+      if (id === recipeId) {
+        setIsBusy(true);
       }
 
       const [error] = await tryCatch(
@@ -134,6 +152,7 @@ const RecipePage = () => {
         toast.error(`Error updating favorites\n${error.message}`);
         return;
       }
+
       // Update local state of favorites
       setFavorites((prev) => {
         if (newState) {
@@ -154,15 +173,18 @@ const RecipePage = () => {
           items: prev.items.filter((item) => item.id !== recipeId),
         };
       });
-      setIsFavorite(newState);
+      if (id === recipeId) {
+        setIsFavorite(newState);
+        setIsBusy(false);
+      }
     },
-    [isUserLoggedIn, dispatch, popularRecipes],
+    [isUserLoggedIn, dispatch, popularRecipes, id],
   );
 
   // handle open recipe
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
-      navigate(`/recipe/${recipeId}`);
+      navigate(`/recipes/${recipeId}`);
       scrollToTop();
     },
     [navigate],
@@ -175,7 +197,7 @@ const RecipePage = () => {
           <PathInfo
             pages={[
               { name: 'Home', path: '/' },
-              { name: recipeDetails.title, path: `/recipe/${id}` },
+              { name: recipeDetails.title, path: `/recipes/${id}` },
             ]}
           />
           <RecipeInfo
@@ -183,6 +205,7 @@ const RecipePage = () => {
             onOpenProfile={handleOpenProfile}
             onToggleFavorite={handleToggleFavorite}
             isFavorite={isFavorite}
+            isBusy={isBusy}
           />
         </Container>
       )}

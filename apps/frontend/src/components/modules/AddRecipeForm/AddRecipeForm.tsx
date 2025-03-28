@@ -92,10 +92,16 @@ const AddRecipeForm = () => {
   const categoriesOptions = mapToOptions(categories);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchIngredients());
-    dispatch(fetchAreas());
-  }, [dispatch]);
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+    if (ingredients.length === 0) {
+      dispatch(fetchIngredients());
+    }
+    if (areas.length === 0) {
+      dispatch(fetchAreas());
+    }
+  }, [dispatch, categories, ingredients, areas]);
 
   const [displayedIngredients, setDisplayedIngredients] = useState<
     IngredientCardObject[]
@@ -152,7 +158,7 @@ const AddRecipeForm = () => {
       );
 
       if (recipe) {
-        navigate(`/recipe/${recipe.id}`);
+        navigate(`/recipes/${recipe.id}`);
         return;
       }
 

@@ -92,6 +92,10 @@
   color: var(--white);
 }
 
+.primary.addToFavoritesButton:disabled {
+  border-color: var(--gray);
+}
+
 /* Hero Button */
 .buttonHero {
   border: 1px solid #fff;
