@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { setModalOpened } from '../../../redux/ui/slice';
+import HeroImages from '../../modules/Common/Hero/HeroImages';
 import Logo from '../Logo/Logo';
 import MenuIcon from '../MenuIcon/MenuIcon';
 import Modal from '../Modal/Modal';
@@ -53,6 +54,7 @@ const BurgerMenu: FC<BurgerMenuProps> = ({ isInversed }) => {
               </NavLink>
             </li>
           </ul>
+          <HeroImages className={styles.images} />
         </nav>
       </Modal>
     </>
