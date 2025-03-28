@@ -50,16 +50,6 @@
   color: var(--black);
 }
 
-.email {
-  color: var(--gray);
-}
-
-.email span,
-p span {
-  font-weight: 600;
-  color: var(--dark-gray);
-}
-
 .content {
   width: 100%;
   display: flex;
@@ -75,7 +65,19 @@ p span {
   font-weight: 400;
 }
 
-.emailRow span {
+.emailValue {
+  color: var(--dark-gray);
+  font-weight: 600;
+}
+
+.textRow {
+  color: var(--gray);
+  font-weight: 400;
+  display: flex;
+  gap: 4px;
+}
+
+.value {
   color: var(--dark-gray);
   font-weight: 600;
 }

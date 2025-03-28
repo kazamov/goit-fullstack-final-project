@@ -36,19 +36,19 @@ export const UserCard = ({
 
       <div className={styles.content}>
         <p className={styles.emailRow}>
-          Email: <span>{email}</span>
+          Email: <span className={styles.emailValue}>{email}</span>
         </p>
-        <p>
-          Added recipes: <span>{recipesCount}</span>
+        <p className={styles.textRow}>
+          Added recipes: <span className={styles.value}>{recipesCount}</span>
         </p>
-        <p>
-          Favorites: <span>{favoritesCount}</span>
+        <p className={styles.textRow}>
+          Favorites: <span className={styles.value}>{favoritesCount}</span>
         </p>
-        <p>
-          Followers: <span>{followersCount}</span>
+        <p className={styles.textRow}>
+          Followers: <span className={styles.value}>{followersCount}</span>
         </p>
-        <p>
-          Following: <span>{followingCount}</span>
+        <p className={styles.textRow}>
+          Following: <span className={styles.value}>{followingCount}</span>
         </p>
       </div>
     </div>
