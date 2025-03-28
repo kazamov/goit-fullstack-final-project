@@ -1,8 +1,15 @@
+import type { FC } from 'react';
+import clsx from 'clsx';
+
 import styles from './HeroImages.module.css';
 
-const HeroImages = () => {
+interface HeroImagesProps {
+  className?: string;
+}
+
+const HeroImages: FC<HeroImagesProps> = ({ className }) => {
   return (
-    <div className={styles.imageWrapper}>
+    <div className={clsx(styles.imageWrapper, className)}>
       <picture className={styles.firstImage}>
         <source
           type="image/webp"
