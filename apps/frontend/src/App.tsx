@@ -12,7 +12,18 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       {
-        path: '/recipe/:id',
+        path: '/recipes',
+        lazy: async () => {
+          const { default: Component } = await import(
+            './pages/Recipes/RecipesPage'
+          );
+          return {
+            Component,
+          };
+        },
+      },
+      {
+        path: '/recipes/:id',
         lazy: async () => {
           const { default: Component } = await import(
             './pages/RecipePage/RecipePage'
@@ -23,7 +34,7 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: '/recipe/add',
+        path: '/recipes/add',
         lazy: async () => {
           const { default: AddRecipePage } = await import(
             './pages/AddRecipePage/AddRecipePage'

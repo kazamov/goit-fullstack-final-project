@@ -152,7 +152,7 @@ const AddRecipeForm = () => {
       );
 
       if (recipe) {
-        navigate(`/recipe/${recipe.id}`);
+        navigate(`/recipes/${recipe.id}`);
         return;
       }
 

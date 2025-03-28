@@ -4,3 +4,7 @@ export function scrollToTop() {
     behavior: 'smooth',
   });
 }
+
+export function scrollToElement(element: HTMLElement) {
+  element.scrollIntoView({ behavior: 'smooth' });
+}

@@ -8,7 +8,7 @@ const MobileMenu = () => {
       <NavLink to="/" className={styles.mobileMenuLink}>
         Home
       </NavLink>
-      <NavLink to="/recipe/add" className={styles.mobileMenuLink}>
+      <NavLink to="/recipes/add" className={styles.mobileMenuLink}>
         Add recipe
       </NavLink>
     </div>

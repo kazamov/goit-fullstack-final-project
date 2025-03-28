@@ -18,10 +18,9 @@ import {
 import { buildQueryString } from '../../../helpers/buildQueryString';
 import { tryCatch } from '../../../helpers/catchError';
 import { del, get, post } from '../../../helpers/http';
-import { scrollToTop } from '../../../helpers/scrollToTop';
+import { scrollToElement, scrollToTop } from '../../../helpers/scrollToTop';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { SelectedCategory } from '../../../redux/categories/slice';
-import { resetCategory } from '../../../redux/categories/slice';
 import { setModalOpened } from '../../../redux/ui/slice';
 import { selectCurrentUser } from '../../../redux/users/selectors';
 import Container from '../../layout/Container/Container';
@@ -175,7 +174,7 @@ const Recipes = ({ category }: CategoriesProps) => {
   // handle open recipe
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
-      navigate(`/recipe/${recipeId}`);
+      navigate(`/recipes/${recipeId}`);
       scrollToTop();
     },
     [navigate],
@@ -192,10 +191,14 @@ const Recipes = ({ category }: CategoriesProps) => {
     <section id="recipes">
       <Container>
         <button
+          ref={(element) => {
+            if (element) {
+              scrollToElement(element);
+            }
+          }}
           className={clsx(styles.backButton)}
           onClick={() => {
-            dispatch(resetCategory());
-            scrollToTop();
+            navigate('/');
           }}
         >
           <svg className={clsx(styles.backButtonIcon)}>
