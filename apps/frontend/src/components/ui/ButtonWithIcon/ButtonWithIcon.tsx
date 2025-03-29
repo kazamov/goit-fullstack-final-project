@@ -11,7 +11,7 @@ type ButtonWithIconProps = {
   clickHandler?: () => void;
   disabled?: boolean;
   iconType: string;
-  busy: boolean;
+  busy?: boolean;
 };
 
 const ButtonWithIcon = ({
@@ -21,7 +21,7 @@ const ButtonWithIcon = ({
   clickHandler,
   disabled = false,
   iconType,
-  busy,
+  busy = false,
 }: ButtonWithIconProps) => {
   return (
     <button

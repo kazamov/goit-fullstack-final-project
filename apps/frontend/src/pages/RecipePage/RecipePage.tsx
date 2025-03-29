@@ -49,7 +49,7 @@ const RecipePage = () => {
     if (!isUserLoggedIn) return;
     const fetchFavorites = async () => {
       const [error, data] = await tryCatch(
-        get<GetPaginatedRecipeShort>('/api/users/favorites', {
+        get<GetPaginatedRecipeShort>('/api/users/favorites?perPage=1000', {
           schema: GetPaginatedRecipeShortSchema,
         }),
       );
