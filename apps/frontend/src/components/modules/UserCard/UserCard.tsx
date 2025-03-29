@@ -1,4 +1,5 @@
 import defaultAvatar from '../../../assets/default-avatar.png';
+import UploadButton from '../../ui/UploadButton/UploadButton';
 
 import styles from './UserCard.module.css';
 
@@ -10,6 +11,9 @@ interface UserCardProps {
   favoritesCount: number;
   followersCount: number;
   followingCount: number;
+  isCurrentUser: boolean;
+  updateAvatar: () => void;
+  isLoading: boolean;
 }
 
 export const UserCard = ({
@@ -20,6 +24,9 @@ export const UserCard = ({
   favoritesCount,
   followersCount,
   followingCount,
+  isCurrentUser,
+  updateAvatar,
+  isLoading,
 }: UserCardProps) => {
   return (
     <div className={styles.card}>
@@ -29,7 +36,11 @@ export const UserCard = ({
           alt={`${name}'s avatar`}
           className={styles.avatar}
         />
-        <button className={styles.avatarButton}>+</button>
+        {isCurrentUser && (
+          <div className={styles.avatarButton}>
+            <UploadButton isLoading={isLoading} onFileSelect={updateAvatar} />
+          </div>
+        )}
       </div>
 
       <h2 className={styles.name}>{name}</h2>
@@ -41,15 +52,19 @@ export const UserCard = ({
         <p className={styles.textRow}>
           Added recipes: <span className={styles.value}>{recipesCount}</span>
         </p>
-        <p className={styles.textRow}>
-          Favorites: <span className={styles.value}>{favoritesCount}</span>
-        </p>
+        {isCurrentUser && (
+          <p className={styles.textRow}>
+            Favorites: <span className={styles.value}>{favoritesCount}</span>
+          </p>
+        )}
         <p className={styles.textRow}>
           Followers: <span className={styles.value}>{followersCount}</span>
         </p>
-        <p className={styles.textRow}>
-          Following: <span className={styles.value}>{followingCount}</span>
-        </p>
+        {isCurrentUser && (
+          <p className={styles.textRow}>
+            Following: <span className={styles.value}>{followingCount}</span>
+          </p>
+        )}
       </div>
     </div>
   );

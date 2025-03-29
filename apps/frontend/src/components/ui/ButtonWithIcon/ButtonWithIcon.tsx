@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 
+import { SvgSpinners180RingWithBg } from '../Button/Button';
+
 import styles from './ButtonWithIcon.module.css';
 
 type ButtonWithIconProps = {
@@ -9,6 +11,7 @@ type ButtonWithIconProps = {
   clickHandler?: () => void;
   disabled?: boolean;
   iconType: string;
+  busy: boolean;
 };
 
 const ButtonWithIcon = ({
@@ -18,6 +21,7 @@ const ButtonWithIcon = ({
   clickHandler,
   disabled = false,
   iconType,
+  busy,
 }: ButtonWithIconProps) => {
   return (
     <button
@@ -26,9 +30,14 @@ const ButtonWithIcon = ({
       className={clsx([styles[kind], styles.button, styles[size]])}
       onClick={clickHandler}
     >
-      <svg className={styles.icon}>
-        <use href={`/images/icons.svg#${iconType}`} />
-      </svg>
+      {!busy && (
+        <svg className={styles.icon}>
+          <use href={`/images/icons.svg#${iconType}`} />
+        </svg>
+      )}
+      {busy && (
+        <SvgSpinners180RingWithBg width={20} height={20} color="#ffffff" />
+      )}
     </button>
   );
 };

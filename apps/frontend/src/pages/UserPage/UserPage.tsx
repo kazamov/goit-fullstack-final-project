@@ -10,6 +10,7 @@ import {
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
 import type {
+  CurrentUserDetails,
   GetRecipeShort,
   OtherUserDetails,
 } from '@goit-fullstack-final-project/schemas';
@@ -17,11 +18,12 @@ import { OtherUserDetailsSchema } from '@goit-fullstack-final-project/schemas';
 
 import Container from '../../components/layout/Container/Container';
 import RecipeTab from '../../components/modules/Profile/RecipeTab/RecipeTab';
+import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import { tryCatch } from '../../helpers/catchError';
-import { del, get, post } from '../../helpers/http';
+import { del, get, patchFormData, post } from '../../helpers/http';
 import { selectCurrentUser } from '../../redux/users/selectors';
-import { setCurrentUser } from '../../redux/users/slice';
+import { setCurrentUser, updateAvatar } from '../../redux/users/slice';
 
 import styles from './UserPage.module.css';
 
@@ -30,11 +32,14 @@ const UserPage = () => {
   const navigate = useNavigate();
 
   const { id: userId } = useParams<{ id: string }>();
-  const [, setUser] = useState<OtherUserDetails | null>(null);
+  const [user, setUser] = useState<
+    OtherUserDetails | CurrentUserDetails | null
+  >(null);
   const [userRecipesList, setUserRecipesList] = useState<GetRecipeShort[]>([]);
   const [favoriteRecipeList, setFavoriteRecipeList] = useState<
     GetRecipeShort[]
   >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -136,15 +141,14 @@ const UserPage = () => {
   }, [userId, recipePagination.limit, recipePagination.page]);
 
   useEffect(() => {
-    if (userId === currentUser?.id) {
-      return;
-    }
-
     const fetchUserDetails = async (userId: string) => {
       const [error, data] = await tryCatch(
-        get<OtherUserDetails>(`/api/users/${userId}/details`, {
-          schema: OtherUserDetailsSchema,
-        }),
+        get<OtherUserDetails | CurrentUserDetails>(
+          `/api/users/${userId}/details`,
+          {
+            schema: OtherUserDetailsSchema,
+          },
+        ),
       );
 
       if (error) {
@@ -208,6 +212,28 @@ const UserPage = () => {
     );
   };
 
+  const handleUpdateAvatar = async (file: File) => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const [error, avatar] = await tryCatch(
+      patchFormData<{ avatarURL: string }>('/api/users/avatars', formData),
+    );
+
+    setIsLoading(false);
+
+    if (currentUser && avatar?.avatarURL) {
+      setCurrentUser({ ...currentUser, avatarUrl: avatar.avatarURL });
+      dispatch(updateAvatar({ avatarUrl: avatar.avatarURL }));
+    }
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+  };
+
   return (
     <Container>
       <div className={styles.userProfile}>
@@ -224,9 +250,22 @@ const UserPage = () => {
         </div>
         <div className={styles.userProfileBlock}>
           <div className={styles.userCardBlock}>
-            <div className={styles.userCardRemoveAfterImplementingComponent}>
-              <p>Replace this div with component</p>
-            </div>
+            {user && (
+              <UserCard
+                avatar={user.avatarUrl}
+                name={user.name}
+                email={user.email}
+                recipesCount={user.recipesCount}
+                favoritesCount={user.favoriteRecipesCount}
+                followersCount={user.followersCount}
+                followingCount={
+                  'followingCount' in user ? user.followingCount : 0
+                }
+                updateAvatar={handleUpdateAvatar}
+                isCurrentUser={isCurrentUser}
+                isLoading={isLoading}
+              />
+            )}
             <Button
               type="button"
               kind="primary"

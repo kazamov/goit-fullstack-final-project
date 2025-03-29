@@ -82,6 +82,18 @@ export function postFormData<T>(
   });
 }
 
+export function patchFormData<T>(
+  url: string,
+  formData: FormData,
+  options: Omit<RequestOptions, 'method'> = {},
+): Promise<T> {
+  return request(url, {
+    ...options,
+    body: formData,
+    method: 'PATCH',
+  });
+}
+
 export function put<T>(
   url: string,
   body: BodyInit | null,
