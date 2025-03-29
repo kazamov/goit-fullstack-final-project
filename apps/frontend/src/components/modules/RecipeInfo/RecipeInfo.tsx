@@ -14,6 +14,7 @@ interface RecipeInfoProps {
   onOpenProfile: (userId: string) => void;
   onToggleFavorite: (recipeId: string, newState: boolean) => void;
   isFavorite: boolean;
+  isBusy: boolean;
 }
 
 export const RecipeInfo: FC<RecipeInfoProps> = ({
@@ -21,6 +22,7 @@ export const RecipeInfo: FC<RecipeInfoProps> = ({
   onOpenProfile,
   onToggleFavorite,
   isFavorite,
+  isBusy,
 }) => {
   const { thumb, title } = recipe;
   return (
@@ -33,6 +35,7 @@ export const RecipeInfo: FC<RecipeInfoProps> = ({
           instructions={recipe.instructions}
           recipeId={recipe.id}
           isFavorite={isFavorite}
+          isBusy={isBusy}
           onToggleFavorite={onToggleFavorite}
         />
       </div>
