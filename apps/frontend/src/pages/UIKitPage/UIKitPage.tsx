@@ -400,6 +400,9 @@ const UIKitPage = () => {
               ],
               following: false,
             }}
+            onUserChange={() => {
+              /* do nothing */
+            }}
           />
           <ConnectionsUserCard
             user={{
@@ -430,6 +433,9 @@ const UIKitPage = () => {
                 },
               ],
               following: true,
+            }}
+            onUserChange={() => {
+              /* do nothing */
             }}
           />
         </div>

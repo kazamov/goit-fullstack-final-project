@@ -1,10 +1,15 @@
 import type { FC } from 'react';
+import { useCallback } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import type {
   UserFollower,
   UserFollowing,
 } from '@goit-fullstack-final-project/schemas';
 
+import { tryCatch } from '../../../helpers/catchError';
+import { del, post } from '../../../helpers/http';
 import Button from '../Button/Button';
 import ButtonWithIcon from '../ButtonWithIcon/ButtonWithIcon';
 
@@ -12,10 +17,34 @@ import styles from './ConnectionsUserCard.module.css';
 
 interface ConnectionsUserCardProps {
   user: UserFollower | UserFollowing;
+  onUserChange: (newUser: UserFollower | UserFollowing) => void;
 }
 
-const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({ user }) => {
-  const { id, name, avatarUrl, recipesCount, recipes } = user;
+const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({
+  user,
+  onUserChange,
+}) => {
+  const { id, name, avatarUrl, recipesCount, recipes, following } = user;
+
+  const navigate = useNavigate();
+
+  const navigateToUser = useCallback(() => {
+    navigate(`/user/${id}`);
+  }, [id, navigate]);
+
+  const handleFollowing = useCallback(async () => {
+    const [error] = await tryCatch(
+      user.following
+        ? del(`/users/${user.id}/follow`)
+        : post(`/users/${user.id}/follow`, null),
+    );
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    onUserChange({ ...user, following: !following });
+  }, [user]);
 
   return (
     <div className={styles.connectionUserCardContainer}>
@@ -31,7 +60,7 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({ user }) => {
           <Button
             kind="secondary"
             type="button"
-            clickHandler={() => console.log(`Follow user ${id}`)}
+            clickHandler={handleFollowing}
             className={styles.button}
             size="xsmall"
           >
@@ -64,6 +93,7 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({ user }) => {
           size="medium"
           type="button"
           iconType="icon-arrow-up-right"
+          clickHandler={navigateToUser}
         />
       </div>
     </div>
