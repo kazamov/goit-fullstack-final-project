@@ -67,6 +67,13 @@
     }
   }
 
+  @media (max-width: 374px) {
+    .modal {
+      width: min(100%, 320px);
+      min-width: 304px;
+    }
+  }
+
   .modal.fullScreen {
     width: 100vw;
     height: 100dvh;
