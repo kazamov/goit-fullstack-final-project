@@ -35,8 +35,8 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({
   const handleFollowing = useCallback(async () => {
     const [error] = await tryCatch(
       user.following
-        ? del(`/users/${user.id}/follow`)
-        : post(`/users/${user.id}/follow`, null),
+        ? del(`/api/users/${user.id}/follow`)
+        : post(`/api/users/${user.id}/follow`, null),
     );
     if (error) {
       toast.error(error.message);

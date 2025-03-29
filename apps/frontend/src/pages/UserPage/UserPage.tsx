@@ -11,11 +11,11 @@ import type {
   OtherUserDetails,
   UserShortDetails,
 } from '@goit-fullstack-final-project/schemas';
-import { OtherUserDetailsSchema } from '@goit-fullstack-final-project/schemas';
 
 import Container from '../../components/layout/Container/Container';
 import RecipeTab from '../../components/modules/Profile/RecipeTab/RecipeTab';
 import { UserFollowersTab } from '../../components/modules/Profile/UserFollowersTab/UserFollowersTab';
+import { UserFollowingTab } from '../../components/modules/Profile/UserFollowingTab/UserFollowingTab';
 import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
@@ -149,9 +149,6 @@ const UserPage = () => {
       const [error, data] = await tryCatch(
         get<OtherUserDetails | CurrentUserDetails>(
           `/api/users/${userId}/details`,
-          {
-            schema: OtherUserDetailsSchema,
-          },
         ),
       );
 
@@ -413,7 +410,7 @@ const UserPage = () => {
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <div>Replace with "Followers" component</div>
+                      <UserFollowingTab userId={currentUser.id} />
                     </TabPanel>
                   </>
                 ) : (
@@ -434,7 +431,7 @@ const UserPage = () => {
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <div>Replace with "Followers" component</div>
+                      <UserFollowersTab userId={userId as string} />
                     </TabPanel>
                   </>
                 )}
