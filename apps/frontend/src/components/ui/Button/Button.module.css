@@ -33,6 +33,12 @@
   cursor: not-allowed;
 }
 
+.button.xsmall {
+  font-size: 12px;
+  line-height: 18px;
+  padding: 12px 28px;
+}
+
 .button.small {
   font-size: 12px;
   line-height: 18px;
@@ -55,6 +61,10 @@
 }
 
 @media (max-width: 767px) {
+  .button.xsmall {
+    padding: 8px 16px;
+  }
+
   .button.small {
     padding: 10px 16px;
   }

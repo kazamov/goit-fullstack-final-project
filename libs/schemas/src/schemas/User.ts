@@ -95,6 +95,7 @@ export const UserFollowerSchema = UserSchema.pick({
 }).extend({
   recipesCount: z.number().int().nonnegative(),
   recipes: z.array(ShortRecipeDetailsSchema),
+  following: z.boolean(),
 });
 
 export type UserFollower = z.infer<typeof UserFollowerSchema>;

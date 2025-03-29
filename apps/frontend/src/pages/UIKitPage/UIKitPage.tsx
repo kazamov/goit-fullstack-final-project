@@ -6,6 +6,7 @@ import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
 import ButtonWithNumber from '../../components/ui/ButtonWithNumber/ButtonWithNumber';
+import ConnectionsUserCard from '../../components/ui/ConnectionsUserCard/ConnectionsUserCard';
 import IngredientCard from '../../components/ui/IngredientCard/IngredientCard';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
@@ -352,6 +353,91 @@ const UIKitPage = () => {
         <h2 className={styles.kitTitle}>Paging</h2>
         <div className={styles.kitCard}>
           <Paging totalPages={20} />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Connection user card</h2>
+        <div className={clsx(styles.kitCard, styles.kitCardConnections)}>
+          <ConnectionsUserCard
+            user={{
+              id: '1',
+              name: 'John Doe',
+              email: 'jane@example.com',
+              avatarUrl:
+                'https://images.pexels.com/photos/4253298/pexels-photo-4253298.jpeg?auto=compress&cs=tinysrgb&w=300',
+              recipesCount: 5,
+              recipes: [
+                {
+                  id: '6462a8f74c3d0ddd288980b7',
+                  title: 'Fennel Dauphinoise',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Fennel%20Dauphinoise.jpg',
+                },
+                {
+                  id: '6462a8f74c3d0ddd288980a6',
+                  title: 'Ful Medames',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Ful%20Medames.jpg',
+                },
+                {
+                  id: '6462a8f74c3d0ddd28897ff5',
+                  title: 'Laksa King Prawn Noodles',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Laksa%20King%20Prawn%20Noodles.jpg',
+                },
+                {
+                  id: '6462a8f74c3d0ddd288980cf',
+                  title: 'Chick-Fil-A Sandwich',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Chick-Fil-A%20Sandwich.jpg',
+                },
+                {
+                  id: '6462a8f74c3d0ddd288980b3',
+                  title: 'Walnut Roll Gužvara',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Walnut%20Roll%20Gužvara.jpg',
+                },
+              ],
+              following: false,
+            }}
+            onUserChange={() => {
+              /* do nothing */
+            }}
+          />
+          <ConnectionsUserCard
+            user={{
+              id: '1',
+              name: 'Jane Doe',
+              email: 'jane@example.com',
+              avatarUrl:
+                'https://images.pexels.com/photos/3785708/pexels-photo-3785708.jpeg?auto=compress&cs=tinysrgb&w=600',
+              recipesCount: 10,
+              recipes: [
+                {
+                  id: '6462a8f74c3d0ddd288980a0',
+                  title: 'Madeira Cake',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Madeira%20Cake.jpg',
+                },
+                {
+                  id: '6462a8f74c3d0ddd288980b4',
+                  title: 'Nasi lemak',
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/Nasi%20lemak.jpg',
+                },
+                {
+                  id: '6462a8f74c3d0ddd28898043',
+                  title: "General Tso's Chicken",
+                  thumb:
+                    'https://ftp.goit.study/img/so-yummy/preview/General%20Tso_s%20Chicken.jpg',
+                },
+              ],
+              following: true,
+            }}
+            onUserChange={() => {
+              /* do nothing */
+            }}
+          />
         </div>
       </div>
 
