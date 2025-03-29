@@ -12,7 +12,7 @@ interface UserCardProps {
   followersCount: number;
   followingCount: number;
   isCurrentUser: boolean;
-  updateAvatar: () => Promise<void>;
+  updateAvatar: (file: File) => Promise<void>;
   isLoading: boolean;
 }
 
