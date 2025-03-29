@@ -1,0 +1,13 @@
+.usersList {
+  display: flex;
+  flex-direction: column;
+}
+
+.userListItem {
+  padding-block: 40px;
+  border-bottom: 1px solid var(--gray);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

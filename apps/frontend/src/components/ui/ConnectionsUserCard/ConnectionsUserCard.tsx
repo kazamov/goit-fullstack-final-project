@@ -44,7 +44,7 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({
     }
 
     onUserChange({ ...user, following: !following });
-  }, [user]);
+  }, [following, onUserChange, user]);
 
   return (
     <div className={styles.connectionUserCardContainer}>
