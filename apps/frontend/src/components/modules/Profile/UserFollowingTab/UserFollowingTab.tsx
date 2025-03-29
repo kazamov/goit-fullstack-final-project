@@ -57,9 +57,8 @@ export function UserFollowingTab({ userId }: UserFollowingTabProps) {
   if (userFollowing.length === 0) {
     return (
       <p>
-        There are currently no followers on your account. Please engage our
-        visitors with interesting content and draw their attention to your
-        profile.
+        Your account currently has no subscriptions to other users. Learn more
+        about our users and select those whose content interests you.
       </p>
     );
   }
