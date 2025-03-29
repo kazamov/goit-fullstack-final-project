@@ -25,7 +25,7 @@ const Hero = () => {
   const handleAddRecipeClick = () => {
     const redirectUrl = '/recipes/add';
     if (currentUser) {
-      navigate(redirectUrl);
+      navigate(redirectUrl, { viewTransition: true });
     } else {
       setSearchParams(
         {

@@ -124,7 +124,7 @@ const RecipePage = () => {
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
-      navigate(redirectUrl);
+      navigate(redirectUrl, { viewTransition: true });
       scrollToTop();
     },
     [isUserLoggedIn, navigate, setSearchParams, dispatch],
@@ -184,7 +184,7 @@ const RecipePage = () => {
   // handle open recipe
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
-      navigate(`/recipes/${recipeId}`);
+      navigate(`/recipes/${recipeId}`, { viewTransition: true });
       scrollToTop();
     },
     [navigate],

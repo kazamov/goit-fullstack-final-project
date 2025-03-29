@@ -129,7 +129,7 @@ const Recipes = ({ category }: CategoriesProps) => {
         dispatch(setModalOpened({ modal: 'login', opened: true }));
         return;
       }
-      navigate(redirectUrl);
+      navigate(redirectUrl, { viewTransition: true });
       scrollToTop();
     },
     [isUserLoggedIn, navigate, setSearchParams, dispatch],
@@ -178,7 +178,7 @@ const Recipes = ({ category }: CategoriesProps) => {
   // handle open recipe
   const handleOpenRecipe = useCallback(
     (recipeId: string) => {
-      navigate(`/recipes/${recipeId}`);
+      navigate(`/recipes/${recipeId}`, { viewTransition: true });
       scrollToTop();
     },
     [navigate],
@@ -195,7 +195,7 @@ const Recipes = ({ category }: CategoriesProps) => {
           }}
           className={clsx(styles.backButton)}
           onClick={() => {
-            navigate('/');
+            navigate('/', { viewTransition: true });
           }}
         >
           <svg className={clsx(styles.backButtonIcon)}>
