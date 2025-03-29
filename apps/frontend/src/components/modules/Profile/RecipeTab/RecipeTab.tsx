@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import clsx from 'clsx';
 
 import type { GetRecipeShort } from '@goit-fullstack-final-project/schemas';
 
@@ -41,8 +42,10 @@ const RecipeTab: FC<RecipeCardProps> = ({
               />
               <div className={styles.recipeWrapper}>
                 <div className={styles.recipeDetails}>
-                  <h3>{recipe.title}</h3>
-                  <p>{recipe.description}</p>
+                  <h3 className={clsx(styles.recipeTitle)}>{recipe.title}</h3>
+                  <p className={clsx(styles.recipeDescription)}>
+                    {recipe.description}
+                  </p>
                 </div>
                 <div className={styles.recipeActions}>
                   <ButtonWithIcon

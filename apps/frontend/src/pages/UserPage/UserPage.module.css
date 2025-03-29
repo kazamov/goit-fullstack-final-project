@@ -91,6 +91,13 @@
   gap: 40px;
 }
 
+/* mobile */
+@media (max-width: 767px) {
+  .tabs {
+    gap: 32px;
+  }
+}
+
 .tabList {
   display: flex;
   align-items: flex-start;
@@ -98,6 +105,13 @@
   flex-direction: row;
   gap: 40px;
   position: relative;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .tabList {
+    gap: 30px;
+  }
 }
 
 .tabList::before {
@@ -113,17 +127,22 @@
 .tabTitle {
   font-weight: 800;
   font-size: 20px;
+  line-height: 24px;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--gray);
   flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .tabTitle {
+    font-size: 18px;
+  }
 }
 
 .activeTabTitle {
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
   color: var(--black);
   position: relative;
   outline: none;
