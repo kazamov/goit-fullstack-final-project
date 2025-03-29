@@ -106,6 +106,16 @@ export const UserFollowersSchema = z.array(UserFollowerSchema);
 
 export type UserFollowers = z.infer<typeof UserFollowersSchema>;
 
+export const PaginatedUserFollowersSchema = z.object({
+  page: z.number().int().nonnegative(),
+  totalPages: z.number().int().nonnegative(),
+  items: z.array(UserFollowerSchema),
+});
+
+export type PaginatedUserFollowers = z.infer<
+  typeof PaginatedUserFollowersSchema
+>;
+
 // Following schemas
 export const UserFollowingSchema = UserFollowerSchema;
 
@@ -114,3 +124,13 @@ export type UserFollowing = z.infer<typeof UserFollowingSchema>;
 export const UserFollowingsSchema = z.array(UserFollowingSchema);
 
 export type UserFollowings = z.infer<typeof UserFollowingsSchema>;
+
+export const PaginatedUserFollowingsSchema = z.object({
+  page: z.number().int().nonnegative(),
+  totalPages: z.number().int().nonnegative(),
+  items: z.array(UserFollowingSchema),
+});
+
+export type PaginatedUserFollowings = z.infer<
+  typeof PaginatedUserFollowingsSchema
+>;
