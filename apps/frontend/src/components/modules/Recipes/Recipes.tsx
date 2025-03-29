@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -53,6 +53,14 @@ const Recipes = ({ category }: CategoriesProps) => {
   });
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const backButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (backButtonRef.current) {
+      scrollToElement(backButtonRef.current);
+    }
+  }, [recipes.items]);
+
   useEffect(() => {
     setSearchParams(
       (prevParams) => {
@@ -76,7 +84,7 @@ const Recipes = ({ category }: CategoriesProps) => {
 
     const fetchFavorites = async () => {
       const [error, data] = await tryCatch(
-        get<GetPaginatedRecipeShort>('/api/users/favorites', {
+        get<GetPaginatedRecipeShort>('/api/users/favorites?perPage=1000', {
           schema: GetPaginatedRecipeShortSchema,
         }),
       );
@@ -188,11 +196,7 @@ const Recipes = ({ category }: CategoriesProps) => {
     <section id="recipes">
       <Container>
         <button
-          ref={(element) => {
-            if (element) {
-              scrollToElement(element);
-            }
-          }}
+          ref={backButtonRef}
           className={clsx(styles.backButton)}
           onClick={() => {
             navigate('/', { viewTransition: true });
