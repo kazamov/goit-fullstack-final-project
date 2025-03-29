@@ -36,3 +36,11 @@
   border: none;
   outline: 2px dashed #a855f7;
 }
+
+.kitCardConnections {
+  max-width: 904px;
+  width: 100%;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}

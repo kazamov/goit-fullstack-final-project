@@ -1,9 +1,17 @@
-.card {
+.connectionUserCardContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 40px 0;
+}
+
+.userCard {
   display: flex;
   align-items: start;
   padding: 0;
   border: none;
   width: 245px;
+  height: auto;
 }
 
 .avatar {
@@ -42,4 +50,57 @@
 
 .button {
   align-self: flex-start;
+}
+
+.recipesBlock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: calc(4 * 100px + 3 * 12px);
+  height: 100px;
+  overflow: hidden;
+}
+
+.recipeThumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.recipePlaceholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  visibility: hidden;
+}
+
+.buttonBlock {
+}
+
+@media (max-width: 1439px) {
+  .recipesBlock {
+    grid-template-columns: repeat(3, 1fr);
+    width: calc(3 * 100px + 2 * 12px);
+  }
+}
+
+@media (max-width: 767px) {
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .name {
+    font-size: 16px;
+  }
+
+  .recipes {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .recipesBlock {
+    display: none;
+  }
 }
