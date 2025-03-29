@@ -46,6 +46,14 @@ const usersSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<UserShortDetails | null>) => {
       state.currentUser = action.payload;
     },
+    updateAvatar: (state, action: PayloadAction<{ avatarUrl: string }>) => {
+      if (state.currentUser) {
+        state.currentUser = {
+          ...state.currentUser,
+          avatarUrl: action.payload.avatarUrl,
+        };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,4 +72,4 @@ const usersSlice = createSlice({
 });
 
 export const usersReducer = usersSlice.reducer;
-export const { setCurrentUser } = usersSlice.actions;
+export const { setCurrentUser, updateAvatar } = usersSlice.actions;
