@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import {
+  NavLink,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
 import type {
@@ -31,6 +36,34 @@ const UserPage = () => {
     GetRecipeShort[]
   >([]);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [recipePagination, setRecipePagination] = useState(() => ({
+    page: 1,
+    limit: 9,
+    totalPages: 1,
+  }));
+
+  const [favoritePagination, setFavoritePagination] = useState({
+    page: 1,
+    limit: 9,
+    totalPages: 1,
+  });
+
+  useEffect(() => {
+    setSearchParams(
+      (prevParams) => {
+        const newParams = new URLSearchParams(prevParams);
+
+        if (!newParams.has('page')) {
+          newParams.set('page', '1');
+        }
+        return newParams;
+      },
+      { replace: true },
+    );
+  }, [setSearchParams]);
+
   const currentUser = useSelector(selectCurrentUser);
 
   const isCurrentUser = userId === currentUser?.id;
@@ -39,8 +72,15 @@ const UserPage = () => {
     const fetchFavoriteRecipes = async () => {
       const [error, result]: [
         Error | undefined,
-        { items: GetRecipeShort[] } | undefined,
-      ] = await tryCatch(get(`/api/users/favorites`));
+        (
+          | { items: GetRecipeShort[]; page: number; totalPages: number }
+          | undefined
+        ),
+      ] = await tryCatch(
+        get(
+          `/api/users/favorites?page=${favoritePagination.page}&limit=${favoritePagination.limit}`,
+        ),
+      );
 
       if (error) {
         toast.error(error.message);
@@ -49,23 +89,29 @@ const UserPage = () => {
 
       if (result) {
         setFavoriteRecipeList(result.items);
-      }
-
-      if (error) {
-        toast.error(error);
-        return;
+        setFavoritePagination((prev) => ({
+          ...prev,
+          totalPages: result.totalPages,
+        }));
       }
     };
 
     fetchFavoriteRecipes();
-  }, []);
+  }, [favoritePagination.page, favoritePagination.limit]);
 
   useEffect(() => {
     const fetchUserRecipes = async () => {
       const [error, result]: [
         Error | undefined,
-        { items: GetRecipeShort[] } | undefined,
-      ] = await tryCatch(get(`/api/users/${userId}/recipes`));
+        (
+          | { items: GetRecipeShort[]; page: number; totalPages: number }
+          | undefined
+        ),
+      ] = await tryCatch(
+        get(
+          `/api/users/${userId}/recipes?page=${recipePagination.page}&limit=${recipePagination.limit}`,
+        ),
+      );
 
       if (error) {
         toast.error(error.message);
@@ -74,6 +120,10 @@ const UserPage = () => {
 
       if (result) {
         setUserRecipesList(result.items);
+        setRecipePagination((prev) => ({
+          ...prev,
+          totalPages: result.totalPages,
+        }));
       }
 
       if (error) {
@@ -83,7 +133,7 @@ const UserPage = () => {
     };
 
     fetchUserRecipes();
-  }, [userId]);
+  }, [userId, recipePagination.limit, recipePagination.page]);
 
   useEffect(() => {
     if (userId === currentUser?.id) {
@@ -109,6 +159,20 @@ const UserPage = () => {
       fetchUserDetails(userId);
     }
   }, [userId, currentUser]);
+
+  useEffect(() => {
+    const pageFromParams = Number(searchParams.get('page') || '1');
+
+    setFavoritePagination((prev) => ({
+      ...prev,
+      page: pageFromParams,
+    }));
+
+    setRecipePagination((prev) => ({
+      ...prev,
+      page: pageFromParams,
+    }));
+  }, [searchParams]);
 
   const logoutHandler = async () => {
     dispatch(setCurrentUser(null));
@@ -172,6 +236,7 @@ const UserPage = () => {
               Log Out
             </Button>
           </div>
+
           <div className={styles.userTabsSection}>
             <Tabs className={styles.tabs}>
               <TabList className={styles.tabList}>
@@ -221,33 +286,61 @@ const UserPage = () => {
               </TabList>
               {isCurrentUser ? (
                 <>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <RecipeTab
                       recipeList={userRecipesList}
                       handleOpenRecipe={handleOpenRecipe}
                       handleRemoveRecipe={handleRemoveRecipe}
+                      isCurrentUser={isCurrentUser}
+                      pagination={recipePagination}
                     />
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <RecipeTab
                       recipeList={favoriteRecipeList}
                       handleOpenRecipe={handleOpenRecipe}
                       handleRemoveRecipe={handleRemoveRecipeFromFavorite}
+                      isCurrentUser={isCurrentUser}
+                      pagination={favoritePagination}
                     />
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <div>Replace with "Followers" component</div>
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <div>Replace with "Followers" component</div>
                   </TabPanel>
                 </>
               ) : (
                 <>
-                  <TabPanel>
-                    <div>Replace with "Recipes" component</div>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
+                    <RecipeTab
+                      recipeList={userRecipesList}
+                      handleOpenRecipe={handleOpenRecipe}
+                      handleRemoveRecipe={handleRemoveRecipe}
+                      isCurrentUser={isCurrentUser}
+                      pagination={recipePagination}
+                    />
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel
+                    className={styles.tabPanel}
+                    selectedClassName={styles.activeTabPanel}
+                  >
                     <div>Replace with "Followers" component</div>
                   </TabPanel>
                 </>
