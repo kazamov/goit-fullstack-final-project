@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import clsx from 'clsx';
 
 import type {
   GetPaginatedRecipeShort,
@@ -24,6 +25,8 @@ import { del, get, post } from '../../helpers/http';
 import { scrollToTop } from '../../helpers/scrollToTop';
 import { setModalOpened } from '../../redux/ui/slice';
 import { selectCurrentUser } from '../../redux/users/selectors';
+
+import styles from './RecipePage.module.css';
 
 const RecipePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -193,21 +196,23 @@ const RecipePage = () => {
   return (
     <>
       {recipeDetails && (
-        <Container>
-          <PathInfo
-            pages={[
-              { name: 'Home', path: '/' },
-              { name: recipeDetails.title, path: `/recipes/${id}` },
-            ]}
-          />
-          <RecipeInfo
-            recipe={recipeDetails}
-            onOpenProfile={handleOpenProfile}
-            onToggleFavorite={handleToggleFavorite}
-            isFavorite={isFavorite}
-            isBusy={isBusy}
-          />
-        </Container>
+        <section id="recipeDetails" className={clsx(styles.section)}>
+          <Container>
+            <PathInfo
+              pages={[
+                { name: 'Home', path: '/' },
+                { name: recipeDetails.title, path: `/recipes/${id}` },
+              ]}
+            />
+            <RecipeInfo
+              recipe={recipeDetails}
+              onOpenProfile={handleOpenProfile}
+              onToggleFavorite={handleToggleFavorite}
+              isFavorite={isFavorite}
+              isBusy={isBusy}
+            />
+          </Container>
+        </section>
       )}
       <PopularRecipes
         recipes={popularRecipes}

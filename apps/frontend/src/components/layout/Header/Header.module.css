@@ -10,6 +10,20 @@
   position: relative;
 }
 
+/* laptop */
+@media screen and (max-width: 1439px) {
+  .headerContainer {
+    padding: 36px 0;
+  }
+}
+
+/* mobile */
+@media screen and (max-width: 767px) {
+  .headerContainer {
+    padding: 24px 0;
+  }
+}
+
 .menuContainer {
   display: flex;
   gap: 12px;

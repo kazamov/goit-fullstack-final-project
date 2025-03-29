@@ -26,7 +26,7 @@ export const RecipeInfo: FC<RecipeInfoProps> = ({
 }) => {
   const { thumb, title } = recipe;
   return (
-    <section id="recipeInfo" className={clsx(styles.recipeInfo)}>
+    <div className={clsx(styles.recipeInfo)}>
       <img src={thumb} alt={title} className={clsx(styles.recipeImage)} />
       <div className={clsx(styles.recipeInfoDescription)}>
         <RecipeMainInfo recipe={recipe} onOpenProfile={onOpenProfile} />
@@ -39,7 +39,7 @@ export const RecipeInfo: FC<RecipeInfoProps> = ({
           onToggleFavorite={onToggleFavorite}
         />
       </div>
-    </section>
+    </div>
   );
 };
 
