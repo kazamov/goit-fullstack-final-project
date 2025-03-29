@@ -15,7 +15,7 @@ import {
   setSessionCookie,
 } from '../../helpers/sessionCookie.js';
 
-import type { OwnRecipeQuery } from './service.js';
+import type { PagingQuery } from './service.js';
 import * as service from './service.js';
 
 export async function createUser(req: Request, res: Response) {
@@ -59,7 +59,7 @@ export async function getUserDetails(req: Request, res: Response) {
 
 export async function getUserRecipes(req: Request, res: Response) {
   const { userId } = req.params;
-  const query = req.query as OwnRecipeQuery;
+  const query = req.query as PagingQuery;
 
   const recipes = await service.getUserRecipes(userId, query);
 
@@ -68,7 +68,7 @@ export async function getUserRecipes(req: Request, res: Response) {
 
 export async function getUserFavorites(req: Request, res: Response) {
   const { id: userId } = req.user as UserSchemaAttributes;
-  const query = req.query as OwnRecipeQuery;
+  const query = req.query as PagingQuery;
 
   const favorites = await service.getUserFavorites(userId, query);
 
@@ -78,8 +78,13 @@ export async function getUserFavorites(req: Request, res: Response) {
 export async function getUserFollowers(req: Request, res: Response) {
   const { userId } = req.params;
   const { id: currentUserId } = req.user as UserSchemaAttributes;
+  const query = req.query as PagingQuery;
 
-  const followers = await service.getUserFollowers(userId, currentUserId);
+  const followers = await service.getUserFollowers(
+    userId,
+    currentUserId,
+    query,
+  );
 
   if (!followers) {
     throw new HttpError(`User with id '${userId}' not found`, 404);
@@ -112,8 +117,13 @@ export async function updateAvatar(req: Request, res: Response) {
 export async function getUserFollowings(req: Request, res: Response) {
   const { userId } = req.params;
   const { id: currentUserId } = req.user as UserSchemaAttributes;
+  const query = req.query as PagingQuery;
 
-  const followings = await service.getUserFollowings(userId, currentUserId);
+  const followings = await service.getUserFollowings(
+    userId,
+    currentUserId,
+    query,
+  );
 
   if (!followings) {
     throw new HttpError(`User with id '${userId}' not found`, 404);

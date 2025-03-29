@@ -12,8 +12,8 @@ import type {
   LoginUserPayload,
   LoginUserResponse,
   OtherUserDetails,
-  UserFollowers,
-  UserFollowings,
+  PaginatedUserFollowers,
+  PaginatedUserFollowings,
   UserSchemaAttributes,
 } from '@goit-fullstack-final-project/schemas';
 import {
@@ -41,7 +41,7 @@ type UserQuery =
   | Pick<UserSchemaAttributes, 'id'>
   | Pick<UserSchemaAttributes, 'email' | 'id'>;
 
-export type OwnRecipeQuery = {
+export type PagingQuery = {
   page?: string | number;
   perPage?: string | number;
 };
@@ -163,7 +163,7 @@ export async function getUserDetails(
 
 export async function getUserRecipes(
   userId: string,
-  query: OwnRecipeQuery,
+  query: PagingQuery,
 ): Promise<GetPaginatedRecipeShort> {
   // Pagination
   const limit = query.perPage ? Number(query.perPage) : 10;
@@ -188,7 +188,7 @@ export async function getUserRecipes(
 
 export async function getUserFavorites(
   userId: string,
-  query: OwnRecipeQuery,
+  query: PagingQuery,
 ): Promise<GetPaginatedRecipeShort> {
   // Pagination
   const limit = query.perPage ? Number(query.perPage) : 10;
@@ -225,7 +225,12 @@ export async function getUserFavorites(
 export async function getUserFollowers(
   userId: string,
   currentUserId: string,
-): Promise<UserFollowers | null> {
+  query: PagingQuery,
+): Promise<PaginatedUserFollowers> {
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
   const userWithFollowers = await UserDTO.findByPk(userId, {
     attributes: ['id'],
     include: [
@@ -244,35 +249,29 @@ export async function getUserFollowers(
             order: [['createdAt', 'DESC']],
           },
         ],
-        subQuery: false,
       },
     ],
   });
 
-  if (!userWithFollowers) {
-    return null;
-  }
+  if (!userWithFollowers) return { page, totalPages: 1, items: [] };
 
-  const followerIds = userWithFollowers.followers.map(
-    (follower) => follower.id,
-  );
+  const fullFollowers = userWithFollowers.followers || [];
+  const paginatedFollowers = fullFollowers.slice(offset, offset + limit);
 
-  const followingIds = await UserFollowersDTO.findAll({
+  const followerIds = paginatedFollowers.map((f) => f.id);
+
+  const currentUserFollows = await UserFollowersDTO.findAll({
     attributes: ['followingId'],
     where: {
       followerId: currentUserId,
-      followingId: {
-        [Op.in]: followerIds,
-      },
+      followingId: { [Op.in]: followerIds },
     },
     raw: true,
   });
 
-  const followingSet = new Set(
-    followingIds.map((follow) => follow.followingId),
-  );
+  const followingSet = new Set(currentUserFollows.map((f) => f.followingId));
 
-  const recipesCounts = (await RecipeDTO.findAll({
+  const recipeCounts = (await RecipeDTO.findAll({
     attributes: [
       'userId',
       [Sequelize.fn('COUNT', Sequelize.col('id')), 'recipesCount'],
@@ -286,22 +285,21 @@ export async function getUserFollowers(
     raw: true,
   })) as unknown as { userId: string; recipesCount: string }[];
 
-  const countsMap = recipesCounts.reduce<Record<string, number>>(
-    (map, item) => {
-      map[item.userId] = parseInt(item.recipesCount, 10);
-      return map;
-    },
-    {},
-  );
+  const countMap = recipeCounts.reduce<Record<string, number>>((acc, curr) => {
+    acc[curr.userId] = parseInt(curr.recipesCount, 10);
+    return acc;
+  }, {});
 
-  userWithFollowers.followers.forEach((follower) => {
-    follower.setDataValue('recipesCount', countsMap[follower.id] || 0);
-    follower.setDataValue('following', followingSet.has(follower.id));
+  paginatedFollowers.forEach((f) => {
+    f.setDataValue('recipesCount', countMap[f.id] || 0);
+    f.setDataValue('following', followingSet.has(f.id));
   });
 
-  return UserFollowersSchema.parse(
-    userWithFollowers.followers.map((follower) => follower.toJSON()),
-  );
+  return {
+    page,
+    totalPages: Math.ceil(fullFollowers.length / limit),
+    items: UserFollowersSchema.parse(paginatedFollowers.map((f) => f.toJSON())),
+  };
 }
 
 export async function updateAvatar(userId: string, file: Express.Multer.File) {
@@ -321,7 +319,12 @@ export async function updateAvatar(userId: string, file: Express.Multer.File) {
 export async function getUserFollowings(
   userId: string,
   currentUserId: string,
-): Promise<UserFollowings | null> {
+  query: PagingQuery,
+): Promise<PaginatedUserFollowings> {
+  const limit = query.perPage ? Number(query.perPage) : 10;
+  const page = query.page ? Number(query.page) : 1;
+  const offset = (page - 1) * limit;
+
   const userWithFollowings = await UserDTO.findByPk(userId, {
     attributes: ['id'],
     include: [
@@ -340,35 +343,29 @@ export async function getUserFollowings(
             order: [['createdAt', 'DESC']],
           },
         ],
-        subQuery: false,
       },
     ],
   });
 
-  if (!userWithFollowings) {
-    return null;
-  }
+  if (!userWithFollowings) return { page, totalPages: 1, items: [] };
 
-  const followingIds = userWithFollowings.following.map(
-    (following) => following.id,
-  );
+  const fullFollowings = userWithFollowings.following || [];
+  const paginatedFollowings = fullFollowings.slice(offset, offset + limit);
 
-  const followingIdsSet = new Set(
-    (
-      await UserFollowersDTO.findAll({
-        attributes: ['followingId'],
-        where: {
-          followerId: currentUserId,
-          followingId: {
-            [Op.in]: followingIds,
-          },
-        },
-        raw: true,
-      })
-    ).map((follow) => follow.followingId),
-  );
+  const followingIds = paginatedFollowings.map((f) => f.id);
 
-  const recipesCounts = (await RecipeDTO.findAll({
+  const currentUserFollows = await UserFollowersDTO.findAll({
+    attributes: ['followingId'],
+    where: {
+      followerId: currentUserId,
+      followingId: { [Op.in]: followingIds },
+    },
+    raw: true,
+  });
+
+  const followingSet = new Set(currentUserFollows.map((f) => f.followingId));
+
+  const recipeCounts = (await RecipeDTO.findAll({
     attributes: [
       'userId',
       [Sequelize.fn('COUNT', Sequelize.col('id')), 'recipesCount'],
@@ -382,22 +379,23 @@ export async function getUserFollowings(
     raw: true,
   })) as unknown as { userId: string; recipesCount: string }[];
 
-  const countsMap = recipesCounts.reduce<Record<string, number>>(
-    (map, item) => {
-      map[item.userId] = parseInt(item.recipesCount, 10);
-      return map;
-    },
-    {},
-  );
+  const countMap = recipeCounts.reduce<Record<string, number>>((acc, curr) => {
+    acc[curr.userId] = parseInt(curr.recipesCount, 10);
+    return acc;
+  }, {});
 
-  userWithFollowings.following.forEach((following) => {
-    following.setDataValue('recipesCount', countsMap[following.id] || 0);
-    following.setDataValue('following', followingIdsSet.has(following.id));
+  paginatedFollowings.forEach((f) => {
+    f.setDataValue('recipesCount', countMap[f.id] || 0);
+    f.setDataValue('following', followingSet.has(f.id));
   });
 
-  return UserFollowingsSchema.parse(
-    userWithFollowings.following.map((following) => following.toJSON()),
-  );
+  return {
+    page,
+    totalPages: Math.ceil(fullFollowings.length / limit),
+    items: UserFollowingsSchema.parse(
+      paginatedFollowings.map((f) => f.toJSON()),
+    ),
+  };
 }
 
 export async function followUser(
