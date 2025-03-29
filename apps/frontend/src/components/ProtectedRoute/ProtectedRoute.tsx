@@ -21,7 +21,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
       const searchParams = new URLSearchParams();
       searchParams.set('redirect_url', location.pathname);
 
-      navigate(`/?${searchParams.toString()}`, { replace: true });
+      navigate(`/?${searchParams.toString()}`, {
+        replace: true,
+        viewTransition: true,
+      });
       dispatch(setModalOpened({ modal: 'login', opened: true }));
     }
   }, [currentUser, navigate, dispatch, location.pathname]);

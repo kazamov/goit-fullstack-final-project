@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,6 +22,7 @@ import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import { tryCatch } from '../../helpers/catchError';
 import { del, get, patchFormData, post } from '../../helpers/http';
+import { scrollToElement } from '../../helpers/scrollToTop';
 import { selectCurrentUser } from '../../redux/users/selectors';
 import { setCurrentUser, updateAvatar } from '../../redux/users/slice';
 
@@ -31,6 +32,7 @@ const UserPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const { id: userId } = useParams<{ id: string }>();
   const [user, setUser] = useState<
     OtherUserDetails | CurrentUserDetails | null
@@ -176,6 +178,10 @@ const UserPage = () => {
       ...prev,
       page: pageFromParams,
     }));
+
+    if (containerRef.current) {
+      scrollToElement(containerRef.current);
+    }
   }, [searchParams]);
 
   const logoutHandler = async () => {
@@ -183,11 +189,11 @@ const UserPage = () => {
 
     await tryCatch(post('/api/users/logout', null));
 
-    navigate('/');
+    navigate('/', { viewTransition: true });
   };
 
   const handleOpenRecipe = (recipeId: string) => {
-    navigate(`/recipes/${recipeId}`);
+    navigate(`/recipes/${recipeId}`, { viewTransition: true });
   };
 
   const handleRemoveRecipe = async (recipeId: string) => {
@@ -236,7 +242,7 @@ const UserPage = () => {
 
   return (
     <Container>
-      <div className={styles.userProfile}>
+      <div ref={containerRef} className={styles.userProfile}>
         <div className={styles.userProfileHeaderWrapper}>
           <div className={styles.navigate}>
             <NavLink to="/">Home /</NavLink>

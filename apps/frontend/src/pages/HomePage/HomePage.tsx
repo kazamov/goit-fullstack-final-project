@@ -23,7 +23,9 @@ const HomePage = () => {
       const searchParams = new URLSearchParams({
         categoryId: category.id,
       });
-      navigate(`/recipes/?${searchParams.toString()}`);
+      navigate(`/recipes/?${searchParams.toString()}`, {
+        viewTransition: true,
+      });
     },
     [navigate],
   );

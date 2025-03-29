@@ -65,7 +65,7 @@ const SignUpForm = () => {
 
       const redirectUrl = searchParams.get('redirect_url');
       if (redirectUrl) {
-        navigate(redirectUrl, { replace: true });
+        navigate(redirectUrl, { replace: true, viewTransition: true });
       }
     },
     [dispatch, navigate, reset, searchParams, setFocus],

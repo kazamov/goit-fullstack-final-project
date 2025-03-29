@@ -23,7 +23,6 @@ const UploadRecipePhoto = ({
 
     const selectedImage = e.target.files[0];
     setImage(selectedImage);
-    console.log(selectedImage instanceof File);
     onFileSelect(selectedImage);
 
     const objectUrl = URL.createObjectURL(selectedImage);
