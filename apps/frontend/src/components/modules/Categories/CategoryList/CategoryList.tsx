@@ -20,7 +20,6 @@ const CategoryList = ({ categories, onCategorySelect }: CategoryListProps) => {
       {categories.slice(0, limit).map((category, index) => (
         <li key={index} className={styles.categoryCard}>
           <img
-            loading="lazy"
             src={category.images?.small}
             srcSet={`${category.images?.small} 320w, ${category.images?.medium} 768w, ${category.images?.large} 1440w`} // Define the responsive sizes
             sizes="(max-width: 375px) 320px, 
