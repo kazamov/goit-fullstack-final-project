@@ -179,11 +179,11 @@ const UserPage = () => {
 
     await tryCatch(post('/api/users/logout', null));
 
-    navigate('/');
+    navigate('/', { viewTransition: true });
   };
 
   const handleOpenRecipe = (recipeId: string) => {
-    navigate(`/recipes/${recipeId}`);
+    navigate(`/recipes/${recipeId}`, { viewTransition: true });
   };
 
   const handleRemoveRecipe = async (recipeId: string) => {

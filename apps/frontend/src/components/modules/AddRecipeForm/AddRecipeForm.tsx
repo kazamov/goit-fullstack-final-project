@@ -158,7 +158,7 @@ const AddRecipeForm = () => {
       );
 
       if (recipe) {
-        navigate(`/recipes/${recipe.id}`);
+        navigate(`/recipes/${recipe.id}`, { viewTransition: true });
         return;
       }
 
