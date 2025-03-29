@@ -1,0 +1,17 @@
+.section {
+  padding-top: 40px;
+}
+
+/* laptop */
+@media screen and (max-width: 1439px) {
+  .section {
+    padding-top: 28px;
+  }
+}
+
+/* mobile */
+@media screen and (max-width: 767px) {
+  .section {
+    padding-top: 40px;
+  }
+}
