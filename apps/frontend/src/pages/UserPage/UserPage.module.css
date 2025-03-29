@@ -1,62 +1,59 @@
+.section {
+  padding: 40px 0 120px 0;
+}
+
+/* laptop */
+@media screen and (max-width: 1439px) {
+  .section {
+    padding: 28px 0 100px 0;
+  }
+}
+
+/* mobile */
+@media screen and (max-width: 767px) {
+  .section {
+    padding: 40px 0 64px 0;
+  }
+}
+
 .userProfile {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
   gap: 40px;
-  margin-bottom: 120px;
+}
+
+/* mobile */
+@media screen and (max-width: 767px) {
+  .userProfile {
+    gap: 32px;
+  }
+}
+
+.userProfileHeaderWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  max-width: 443px;
 }
 
 .userProfileBlock {
-  display: flex;
+  display: grid;
+  grid-template-columns: 394px auto;
   gap: 40px;
 }
 
 @media screen and (max-width: 1439px) {
   .userProfileBlock {
+    display: flex;
     flex-direction: column;
     gap: 80px;
     align-items: center;
     width: 100%;
   }
-  .userProfile {
-    margin-bottom: 100px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .userProfile {
-    gap: 64px;
-    margin-bottom: 64px;
-  }
-  .tabList {
-    gap: 30px;
-    flex-wrap: wrap;
-  }
-}
-
-.title {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--black);
-}
-
-.navigate {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: row;
-  gap: 8px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--gray);
-}
-
-.navigateStaticText {
-  color: var(--black);
 }
 
 .userCardBlock {
@@ -66,19 +63,11 @@
   width: 394px;
 }
 
-.userProfileHeaderWrapper {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: column;
-  gap: 40px;
-  max-width: 443px;
-}
-
-.userCard {
-  width: 394px;
-  height: 408px;
-  display: flex;
+/* mobile */
+@media (max-width: 767px) {
+  .userCardBlock {
+    width: 100%;
+  }
 }
 
 .userTabsSection {
@@ -110,6 +99,7 @@
 /* mobile */
 @media (max-width: 767px) {
   .tabList {
+    flex-wrap: wrap;
     gap: 30px;
   }
 }
@@ -156,14 +146,6 @@
   width: 100%;
   height: 3px;
   background-color: var(--black);
-}
-
-.userCardRemoveAfterImplementingComponent {
-  border: 1px solid #bfbebe;
-  border-radius: 30px;
-  padding: 40px 80px;
-  width: 394px;
-  height: 348px;
 }
 
 .tabPanel {

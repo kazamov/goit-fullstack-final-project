@@ -1,13 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  NavLink,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import clsx from 'clsx';
 
 import type {
   CurrentUserDetails,
@@ -22,6 +18,9 @@ import RecipeTab from '../../components/modules/Profile/RecipeTab/RecipeTab';
 import { UserFollowersTab } from '../../components/modules/Profile/UserFollowersTab/UserFollowersTab';
 import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
+import MainTitle from '../../components/ui/MainTitle/MainTitle';
+import PathInfo from '../../components/ui/PathInfo/PathInfo';
+import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import { tryCatch } from '../../helpers/catchError';
 import { del, get, patchFormData, post } from '../../helpers/http';
 import { scrollToElement } from '../../helpers/scrollToTop';
@@ -273,173 +272,178 @@ const UserPage = () => {
   };
 
   return (
-    <Container>
-      <div ref={containerRef} className={styles.userProfile}>
-        <div className={styles.userProfileHeaderWrapper}>
-          <div className={styles.navigate}>
-            <NavLink to="/">Home /</NavLink>
-            <p className={styles.navigateStaticText}> Profile</p>
+    <section id="userProfile" className={clsx(styles.section)}>
+      <Container>
+        <div ref={containerRef} className={styles.userProfile}>
+          <div className={styles.userProfileHeaderWrapper}>
+            <PathInfo
+              pages={[
+                { name: 'Home', path: '/' },
+                { name: 'Profile', path: `/user/${userId}` },
+              ]}
+            />
+            <div className={clsx(styles.wrapper)}>
+              <MainTitle title="Profile" />
+              <SubTitle title="Reveal your culinary art, share your favorite recipe and create gastronomic masterpieces with us." />
+            </div>
           </div>
-          <h1 className={styles.title}>Profile</h1>
-          <p>
-            Reveal your culinary art, share your favorite recipe and create
-            gastronomic masterpieces with us.
-          </p>
-        </div>
-        <div className={styles.userProfileBlock}>
-          <div className={styles.userCardBlock}>
-            {user && (
-              <UserCard
-                avatar={user.avatarUrl}
-                name={user.name}
-                email={user.email}
-                recipesCount={user.recipesCount}
-                favoritesCount={user.favoriteRecipesCount}
-                followersCount={user.followersCount}
-                followingCount={
-                  'followingCount' in user ? user.followingCount : 0
-                }
-                updateAvatar={handleUpdateAvatar}
-                isCurrentUser={isCurrentUser}
-                isLoading={isLoading}
-              />
-            )}
-            {isCurrentUser ? (
-              <Button
-                type="button"
-                kind="primary"
-                size="medium"
-                clickHandler={logoutHandler}
-              >
-                Log Out
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                kind="primary"
-                size="medium"
-                clickHandler={followHandler}
-                disabled={followingLoading}
-                busy={followingLoading}
-              >
-                {(user as OtherUserDetails)?.following ? 'Following' : 'Follow'}
-              </Button>
-            )}
-          </div>
+          <div className={styles.userProfileBlock}>
+            <div className={styles.userCardBlock}>
+              {user && (
+                <UserCard
+                  avatar={user.avatarUrl}
+                  name={user.name}
+                  email={user.email}
+                  recipesCount={user.recipesCount}
+                  favoritesCount={user.favoriteRecipesCount}
+                  followersCount={user.followersCount}
+                  followingCount={
+                    'followingCount' in user ? user.followingCount : 0
+                  }
+                  updateAvatar={handleUpdateAvatar}
+                  isCurrentUser={isCurrentUser}
+                  isLoading={isLoading}
+                />
+              )}
+              {isCurrentUser ? (
+                <Button
+                  type="button"
+                  kind="primary"
+                  size="medium"
+                  clickHandler={logoutHandler}
+                >
+                  Log Out
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  kind="primary"
+                  size="medium"
+                  clickHandler={followHandler}
+                  disabled={followingLoading}
+                  busy={followingLoading}
+                >
+                  {(user as OtherUserDetails)?.following
+                    ? 'Following'
+                    : 'Follow'}
+                </Button>
+              )}
+            </div>
 
-          <div className={styles.userTabsSection}>
-            <Tabs className={styles.tabs}>
-              <TabList className={styles.tabList}>
+            <div className={styles.userTabsSection}>
+              <Tabs className={styles.tabs}>
+                <TabList className={styles.tabList}>
+                  {isCurrentUser ? (
+                    <>
+                      <Tab
+                        className={styles.tabTitle}
+                        selectedClassName={styles.activeTabTitle}
+                      >
+                        My Recipes
+                      </Tab>
+                      <Tab
+                        className={styles.tabTitle}
+                        selectedClassName={styles.activeTabTitle}
+                      >
+                        My Favorites
+                      </Tab>
+                      <Tab
+                        className={styles.tabTitle}
+                        selectedClassName={styles.activeTabTitle}
+                      >
+                        Followers
+                      </Tab>
+                      <Tab
+                        className={styles.tabTitle}
+                        selectedClassName={styles.activeTabTitle}
+                      >
+                        Following
+                      </Tab>
+                    </>
+                  ) : (
+                    <>
+                      <Tab
+                        className={styles.tabTitle}
+                        selectedClassName={styles.activeTabTitle}
+                      >
+                        Recipes
+                      </Tab>
+                      <Tab
+                        className={styles.tabTitle}
+                        selectedClassName={styles.activeTabTitle}
+                      >
+                        Followers
+                      </Tab>
+                    </>
+                  )}
+                </TabList>
                 {isCurrentUser ? (
                   <>
-                    <Tab
-                      className={styles.tabTitle}
-                      selectedClassName={styles.activeTabTitle}
+                    <TabPanel
+                      className={styles.tabPanel}
+                      selectedClassName={styles.activeTabPanel}
                     >
-                      My Recipes
-                    </Tab>
-                    <Tab
-                      className={styles.tabTitle}
-                      selectedClassName={styles.activeTabTitle}
+                      <RecipeTab
+                        recipeList={userRecipesList}
+                        handleOpenRecipe={handleOpenRecipe}
+                        handleRemoveRecipe={handleRemoveRecipe}
+                        isCurrentUser={isCurrentUser}
+                        pagination={recipePagination}
+                      />
+                    </TabPanel>
+                    <TabPanel
+                      className={styles.tabPanel}
+                      selectedClassName={styles.activeTabPanel}
                     >
-                      My Favorites
-                    </Tab>
-                    <Tab
-                      className={styles.tabTitle}
-                      selectedClassName={styles.activeTabTitle}
+                      <RecipeTab
+                        recipeList={favoriteRecipeList}
+                        handleOpenRecipe={handleOpenRecipe}
+                        handleRemoveRecipe={handleRemoveRecipeFromFavorite}
+                        isCurrentUser={isCurrentUser}
+                        pagination={favoritePagination}
+                      />
+                    </TabPanel>
+                    <TabPanel
+                      className={styles.tabPanel}
+                      selectedClassName={styles.activeTabPanel}
                     >
-                      Followers
-                    </Tab>
-                    <Tab
-                      className={styles.tabTitle}
-                      selectedClassName={styles.activeTabTitle}
+                      <UserFollowersTab userId={currentUser.id} />
+                    </TabPanel>
+                    <TabPanel
+                      className={styles.tabPanel}
+                      selectedClassName={styles.activeTabPanel}
                     >
-                      Following
-                    </Tab>
+                      <div>Replace with "Followers" component</div>
+                    </TabPanel>
                   </>
                 ) : (
                   <>
-                    <Tab
-                      className={styles.tabTitle}
-                      selectedClassName={styles.activeTabTitle}
+                    <TabPanel
+                      className={styles.tabPanel}
+                      selectedClassName={styles.activeTabPanel}
                     >
-                      Recipes
-                    </Tab>
-                    <Tab
-                      className={styles.tabTitle}
-                      selectedClassName={styles.activeTabTitle}
+                      <RecipeTab
+                        recipeList={userRecipesList}
+                        handleOpenRecipe={handleOpenRecipe}
+                        handleRemoveRecipe={handleRemoveRecipe}
+                        isCurrentUser={isCurrentUser}
+                        pagination={recipePagination}
+                      />
+                    </TabPanel>
+                    <TabPanel
+                      className={styles.tabPanel}
+                      selectedClassName={styles.activeTabPanel}
                     >
-                      Followers
-                    </Tab>
+                      <div>Replace with "Followers" component</div>
+                    </TabPanel>
                   </>
                 )}
-              </TabList>
-              {isCurrentUser ? (
-                <>
-                  <TabPanel
-                    className={styles.tabPanel}
-                    selectedClassName={styles.activeTabPanel}
-                  >
-                    <RecipeTab
-                      recipeList={userRecipesList}
-                      handleOpenRecipe={handleOpenRecipe}
-                      handleRemoveRecipe={handleRemoveRecipe}
-                      isCurrentUser={isCurrentUser}
-                      pagination={recipePagination}
-                    />
-                  </TabPanel>
-                  <TabPanel
-                    className={styles.tabPanel}
-                    selectedClassName={styles.activeTabPanel}
-                  >
-                    <RecipeTab
-                      recipeList={favoriteRecipeList}
-                      handleOpenRecipe={handleOpenRecipe}
-                      handleRemoveRecipe={handleRemoveRecipeFromFavorite}
-                      isCurrentUser={isCurrentUser}
-                      pagination={favoritePagination}
-                    />
-                  </TabPanel>
-                  <TabPanel
-                    className={styles.tabPanel}
-                    selectedClassName={styles.activeTabPanel}
-                  >
-                    <UserFollowersTab userId={currentUser.id} />
-                  </TabPanel>
-                  <TabPanel
-                    className={styles.tabPanel}
-                    selectedClassName={styles.activeTabPanel}
-                  >
-                    <div>Replace with "Followers" component</div>
-                  </TabPanel>
-                </>
-              ) : (
-                <>
-                  <TabPanel
-                    className={styles.tabPanel}
-                    selectedClassName={styles.activeTabPanel}
-                  >
-                    <RecipeTab
-                      recipeList={userRecipesList}
-                      handleOpenRecipe={handleOpenRecipe}
-                      handleRemoveRecipe={handleRemoveRecipe}
-                      isCurrentUser={isCurrentUser}
-                      pagination={recipePagination}
-                    />
-                  </TabPanel>
-                  <TabPanel
-                    className={styles.tabPanel}
-                    selectedClassName={styles.activeTabPanel}
-                  >
-                    <div>Replace with "Followers" component</div>
-                  </TabPanel>
-                </>
-              )}
-            </Tabs>
+              </Tabs>
+            </div>
           </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </section>
   );
 };
 
