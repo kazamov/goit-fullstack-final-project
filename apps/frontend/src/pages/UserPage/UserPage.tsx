@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -9,11 +9,13 @@ import type {
   CurrentUserDetails,
   GetRecipeShort,
   OtherUserDetails,
+  UserShortDetails,
 } from '@goit-fullstack-final-project/schemas';
-import { OtherUserDetailsSchema } from '@goit-fullstack-final-project/schemas';
 
 import Container from '../../components/layout/Container/Container';
 import RecipeTab from '../../components/modules/Profile/RecipeTab/RecipeTab';
+import { UserFollowersTab } from '../../components/modules/Profile/UserFollowersTab/UserFollowersTab';
+import { UserFollowingTab } from '../../components/modules/Profile/UserFollowingTab/UserFollowingTab';
 import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
@@ -41,6 +43,7 @@ const UserPage = () => {
     GetRecipeShort[]
   >([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [followingLoading, setFollowingLoading] = useState<boolean>(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -70,9 +73,9 @@ const UserPage = () => {
     );
   }, [setSearchParams]);
 
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUser) as UserShortDetails;
 
-  const isCurrentUser = userId === currentUser?.id;
+  const isCurrentUser = userId === currentUser.id;
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
@@ -146,9 +149,6 @@ const UserPage = () => {
       const [error, data] = await tryCatch(
         get<OtherUserDetails | CurrentUserDetails>(
           `/api/users/${userId}/details`,
-          {
-            schema: OtherUserDetailsSchema,
-          },
         ),
       );
 
@@ -190,6 +190,35 @@ const UserPage = () => {
 
     navigate('/', { viewTransition: true });
   };
+
+  const followHandler = useCallback(async () => {
+    setFollowingLoading(true);
+
+    const [error] = await tryCatch(
+      (user as OtherUserDetails).following
+        ? del(`/api/users/${userId}/follow`)
+        : post(`/api/users/${userId}/follow`, null),
+    );
+
+    setFollowingLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    setUser((prevUser) => {
+      const user = prevUser as OtherUserDetails;
+      if (user) {
+        return {
+          ...user,
+          following: !user.following,
+          followersCount: user.followersCount + (user.following ? -1 : 1),
+        };
+      }
+      return user;
+    });
+  }, [user, userId]);
 
   const handleOpenRecipe = (recipeId: string) => {
     navigate(`/recipes/${recipeId}`, { viewTransition: true });
@@ -273,14 +302,29 @@ const UserPage = () => {
                   isLoading={isLoading}
                 />
               )}
-              <Button
-                type="button"
-                kind="primary"
-                size="medium"
-                clickHandler={logoutHandler}
-              >
-                Log Out
-              </Button>
+              {isCurrentUser ? (
+                <Button
+                  type="button"
+                  kind="primary"
+                  size="medium"
+                  clickHandler={logoutHandler}
+                >
+                  Log Out
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  kind="primary"
+                  size="medium"
+                  clickHandler={followHandler}
+                  disabled={followingLoading}
+                  busy={followingLoading}
+                >
+                  {(user as OtherUserDetails)?.following
+                    ? 'Following'
+                    : 'Follow'}
+                </Button>
+              )}
             </div>
 
             <div className={styles.userTabsSection}>
@@ -360,13 +404,13 @@ const UserPage = () => {
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <div>Replace with "Followers" component</div>
+                      <UserFollowersTab userId={currentUser.id} />
                     </TabPanel>
                     <TabPanel
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <div>Replace with "Followers" component</div>
+                      <UserFollowingTab userId={currentUser.id} />
                     </TabPanel>
                   </>
                 ) : (
@@ -387,7 +431,7 @@ const UserPage = () => {
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <div>Replace with "Followers" component</div>
+                      <UserFollowersTab userId={userId as string} />
                     </TabPanel>
                   </>
                 )}

@@ -77,15 +77,9 @@
 .tabs {
   display: flex;
   flex-direction: column;
-  gap: 40px;
 }
 
 /* mobile */
-@media (max-width: 767px) {
-  .tabs {
-    gap: 32px;
-  }
-}
 
 .tabList {
   display: flex;

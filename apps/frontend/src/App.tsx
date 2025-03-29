@@ -8,7 +8,8 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    HydrateFallback: () => <div></div>,
+    HydrateFallback: () => <div>Loading...</div>,
+    errorElement: <div>Something went wrong</div>,
     children: [
       { index: true, element: <HomePage /> },
       {

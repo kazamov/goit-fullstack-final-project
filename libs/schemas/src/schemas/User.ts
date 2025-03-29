@@ -81,6 +81,8 @@ export type CurrentUserDetails = z.infer<typeof CurrentUserDetailsSchema>;
 
 export const OtherUserDetailsSchema = CurrentUserDetailsSchema.omit({
   followingCount: true,
+}).extend({
+  following: z.boolean(),
 });
 
 export type OtherUserDetails = z.infer<typeof OtherUserDetailsSchema>;

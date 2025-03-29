@@ -123,6 +123,7 @@ export async function getUserDetails(
     favoriteRecipesCount,
     followersCount,
     followingCount,
+    following,
   ] = await Promise.all([
     UserDTO.findByPk(userId, {
       attributes: ['id', 'name', 'email', 'avatarUrl'],
@@ -131,17 +132,17 @@ export async function getUserDetails(
     UserFavoriteRecipesDTO.count({ where: { userId } }),
     UserFollowersDTO.count({ where: { followingId: userId } }),
     UserFollowersDTO.count({ where: { followerId: userId } }),
+    UserFollowersDTO.findOne({
+      where: {
+        followerId: currentUserId,
+        followingId: userId,
+      },
+    }),
   ]);
 
   if (!user) {
     return null;
   }
-
-  const result = user.toJSON();
-  result.recipes_count = recipesCount;
-  result.favorite_recipes_count = favoriteRecipesCount;
-  result.followers_count = followersCount;
-  result.following_count = followingCount;
 
   return userId === currentUserId
     ? CurrentUserDetailsSchema.parse({
@@ -156,6 +157,7 @@ export async function getUserDetails(
         recipesCount,
         favoriteRecipesCount,
         followersCount,
+        following: Boolean(following),
       });
 }
 
