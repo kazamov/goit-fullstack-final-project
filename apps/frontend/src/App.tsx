@@ -53,7 +53,7 @@ const router = createBrowserRouter([
         path: '/user/:id',
         lazy: async () => {
           const { default: UserPage } = await import(
-            './pages/UserPage2/UserPage'
+            './pages/UserPage/UserPage'
           );
           return {
             Component: () => (
