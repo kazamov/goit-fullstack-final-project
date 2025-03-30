@@ -10,14 +10,19 @@ import { PaginatedUserFollowersSchema } from '@goit-fullstack-final-project/sche
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
+import { usePagingParams } from '../usePagingParams';
 import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
+
+const DEFAULT_PAGE = '1';
+const DEFAULT_PER_PAGE = '9';
 
 function UserFollowersTab() {
   const { id: userId } = useParams<{ id: string }>();
-
+  const { page, perPage } = usePagingParams(DEFAULT_PAGE, DEFAULT_PER_PAGE);
   const [userFollowers, setUserFollowers] = useState<UserFollower[] | null>(
     null,
   );
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const handleUserChange = useCallback((updatedUser: UserFollower) => {
     setUserFollowers((prevUsers) => {
@@ -32,9 +37,12 @@ function UserFollowersTab() {
   useEffect(() => {
     const fetchUserFollowers = async () => {
       const [error, data] = await tryCatch(
-        get<PaginatedUserFollowers>(`/api/users/${userId}/followers`, {
-          schema: PaginatedUserFollowersSchema,
-        }),
+        get<PaginatedUserFollowers>(
+          `/api/users/${userId}/followers?page=${page}&perPage=${perPage}`,
+          {
+            schema: PaginatedUserFollowersSchema,
+          },
+        ),
       );
 
       if (error) {
@@ -44,10 +52,11 @@ function UserFollowersTab() {
       }
 
       setUserFollowers(data.items);
+      setTotalPages(data.totalPages);
     };
 
     fetchUserFollowers();
-  }, [userId]);
+  }, [page, perPage, userId]);
 
   const emptyContentTemplate = useMemo(() => {
     return (
@@ -63,10 +72,7 @@ function UserFollowersTab() {
     <UsersTabContent
       users={userFollowers}
       emptyContentTemplate={emptyContentTemplate}
-      pagination={{
-        page: 1,
-        totalPages: 1,
-      }}
+      totalPages={totalPages}
       onUserChange={handleUserChange}
     />
   );

@@ -15,12 +15,17 @@ import { useMediaQuery } from '../../../../hooks/useMediaQuery';
 import { selectCurrentUser } from '../../../../redux/users/selectors';
 import ButtonWithIcon from '../../../ui/ButtonWithIcon/ButtonWithIcon';
 import { RecipesTabContent } from '../RecipesTabContent/RecipesTabContent';
+import { usePagingParams } from '../usePagingParams';
+
+const DEFAULT_PAGE = '1';
+const DEFAULT_PER_PAGE = '9';
 
 function MyRecipesTab() {
   const isMobile = useMediaQuery('(max-width: 767px)');
   const { id } = useSelector(selectCurrentUser) as UserShortDetails;
-
+  const { page, perPage } = usePagingParams(DEFAULT_PAGE, DEFAULT_PER_PAGE);
   const [recipesList, setRecipesList] = useState<GetRecipeShort[] | null>(null);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const handleRemoveRecipe = useCallback(async (recipeId: string) => {
     const [error] = await tryCatch(del(`/api/recipes/${recipeId}`));
@@ -54,27 +59,29 @@ function MyRecipesTab() {
     const fetchUserRecipes = async () => {
       const [error, data] = await tryCatch(
         get<GetPaginatedRecipeShort>(
-          `/api/users/${id}/recipes?page=${1}&limit=${10}`,
+          `/api/users/${id}/recipes?page=${page}&perPage=${perPage}`,
           { schema: GetPaginatedRecipeShortSchema },
         ),
       );
 
       if (error) {
         toast.error(error.message);
+        setRecipesList([]);
         return;
       }
 
       setRecipesList(data.items);
+      setTotalPages(data.totalPages);
     };
 
     fetchUserRecipes();
-  }, [id]);
+  }, [id, page, perPage]);
 
   return (
     <RecipesTabContent
       recipes={recipesList}
       actionButtons={actionButtons}
-      pagination={{ page: 1, totalPages: 1 }}
+      totalPages={totalPages}
     />
   );
 }

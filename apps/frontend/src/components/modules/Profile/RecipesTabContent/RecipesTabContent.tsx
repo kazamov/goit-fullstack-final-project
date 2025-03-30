@@ -12,17 +12,14 @@ import styles from './RecipesTabContent.module.css';
 
 interface RecipesTabContentProps {
   recipes: GetRecipeShort[] | null;
-  pagination: {
-    page: number;
-    totalPages: number;
-  };
+  totalPages: number;
   actionButtons?: (recipeId: string) => ReactNode;
 }
 
 export function RecipesTabContent({
   recipes,
   actionButtons,
-  pagination,
+  totalPages,
 }: RecipesTabContentProps) {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -73,9 +70,9 @@ export function RecipesTabContent({
         ))}
       </div>
 
-      {pagination.totalPages > 1 && (
+      {totalPages > 1 && (
         <div className={styles.paginationBlock}>
-          <Paging totalPages={pagination.totalPages} />
+          <Paging totalPages={totalPages} />
         </div>
       )}
     </div>

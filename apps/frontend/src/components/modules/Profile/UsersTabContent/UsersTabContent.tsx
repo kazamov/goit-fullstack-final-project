@@ -11,18 +11,15 @@ import { UsersList } from '../../UsersList/UsersList';
 interface UsersTabContentProps {
   users: (UserFollower | UserFollowing)[] | null;
   emptyContentTemplate: ReactNode;
-  pagination: {
-    page: number;
-    totalPages: number;
-  };
+  totalPages: number;
   onUserChange: (newUser: UserFollower | UserFollowing) => void;
 }
 
 export function UsersTabContent({
   users,
   emptyContentTemplate,
+  totalPages,
   onUserChange,
-  pagination,
 }: UsersTabContentProps) {
   if (!users) {
     return <p>Loading...</p>;
@@ -35,7 +32,7 @@ export function UsersTabContent({
   return (
     <>
       <UsersList users={users} onUserChange={onUserChange} />
-      {pagination.totalPages > 1 && <Paging totalPages={10} />}
+      {totalPages > 1 && <Paging totalPages={totalPages} />}
     </>
   );
 }

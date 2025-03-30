@@ -12,14 +12,19 @@ import { PaginatedUserFollowingsSchema } from '@goit-fullstack-final-project/sch
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
 import { selectCurrentUser } from '../../../../redux/users/selectors';
+import { usePagingParams } from '../usePagingParams';
 import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
+
+const DEFAULT_PAGE = '1';
+const DEFAULT_PER_PAGE = '9';
 
 function MyFollowingTab() {
   const { id } = useSelector(selectCurrentUser) as UserShortDetails;
-
+  const { page, perPage } = usePagingParams(DEFAULT_PAGE, DEFAULT_PER_PAGE);
   const [userFollowing, setUserFollowing] = useState<UserFollowing[] | null>(
     null,
   );
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const handleUserChange = useCallback((updatedUser: UserFollowing) => {
     if (updatedUser.following) {
@@ -34,9 +39,12 @@ function MyFollowingTab() {
   useEffect(() => {
     const fetchUserFollowing = async () => {
       const [error, data] = await tryCatch(
-        get<PaginatedUserFollowings>(`/api/users/${id}/followings`, {
-          schema: PaginatedUserFollowingsSchema,
-        }),
+        get<PaginatedUserFollowings>(
+          `/api/users/${id}/followings?page=${page}&perPage=${perPage}`,
+          {
+            schema: PaginatedUserFollowingsSchema,
+          },
+        ),
       );
 
       if (error) {
@@ -46,10 +54,11 @@ function MyFollowingTab() {
       }
 
       setUserFollowing(data.items);
+      setTotalPages(data.totalPages);
     };
 
     fetchUserFollowing();
-  }, [id]);
+  }, [id, page, perPage]);
 
   const emptyContentTemplate = useMemo(() => {
     return (
@@ -64,10 +73,7 @@ function MyFollowingTab() {
     <UsersTabContent
       users={userFollowing}
       emptyContentTemplate={emptyContentTemplate}
-      pagination={{
-        page: 1,
-        totalPages: 1,
-      }}
+      totalPages={totalPages}
       onUserChange={handleUserChange}
     />
   );

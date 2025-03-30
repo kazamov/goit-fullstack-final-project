@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import type {
@@ -10,6 +11,7 @@ import type {
 
 import { tryCatch } from '../../../helpers/catchError';
 import { del, post } from '../../../helpers/http';
+import { selectCurrentUserId } from '../../../redux/users/selectors';
 import Button from '../Button/Button';
 import ButtonWithIcon from '../ButtonWithIcon/ButtonWithIcon';
 
@@ -25,6 +27,7 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({
   onUserChange,
 }) => {
   const { id, name, avatarUrl, recipesCount, recipes, following } = user;
+  const currentUserId = useSelector(selectCurrentUserId) as string;
 
   const navigate = useNavigate();
 
@@ -57,15 +60,18 @@ const ConnectionsUserCard: FC<ConnectionsUserCardProps> = ({
         <div className={styles.info}>
           <p className={styles.name}>{name}</p>
           <p className={styles.recipes}>Own recipes: {recipesCount}</p>
-          <Button
-            kind="secondary"
-            type="button"
-            clickHandler={handleFollowing}
-            className={styles.button}
-            size="xsmall"
-          >
-            {user.following ? 'Following' : 'Follow'}
-          </Button>
+
+          {currentUserId !== id && (
+            <Button
+              kind="secondary"
+              type="button"
+              clickHandler={handleFollowing}
+              className={styles.button}
+              size="xsmall"
+            >
+              {user.following ? 'Following' : 'Follow'}
+            </Button>
+          )}
         </div>
       </div>
 
