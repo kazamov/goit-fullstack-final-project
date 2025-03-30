@@ -95,7 +95,9 @@ const UserBar: FC<UserBarProps> = ({ currentUser }) => {
               className={styles.menuItem}
               onClick={() => setIsMenuOpen(false)}
             >
-              <Link to={`/user/${currentUser.id}`}>Profile</Link>
+              <Link to={`/profile`} viewTransition>
+                Profile
+              </Link>
             </li>
             <li
               className={styles.menuItem}

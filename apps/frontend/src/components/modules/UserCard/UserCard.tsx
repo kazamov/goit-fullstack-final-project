@@ -12,8 +12,8 @@ interface UserCardProps {
   followersCount: number;
   followingCount: number;
   isCurrentUser: boolean;
-  updateAvatar: (file: File) => Promise<void>;
-  isLoading: boolean;
+  onAvatarChange?: (file: File) => Promise<void>;
+  isLoading?: boolean;
 }
 
 export const UserCard = ({
@@ -25,7 +25,7 @@ export const UserCard = ({
   followersCount,
   followingCount,
   isCurrentUser,
-  updateAvatar,
+  onAvatarChange,
   isLoading,
 }: UserCardProps) => {
   return (
@@ -36,9 +36,12 @@ export const UserCard = ({
           alt={`${name}'s avatar`}
           className={styles.avatar}
         />
-        {isCurrentUser && (
+        {isCurrentUser && onAvatarChange && (
           <div className={styles.avatarButton}>
-            <UploadButton isLoading={isLoading} onFileSelect={updateAvatar} />
+            <UploadButton
+              isLoading={isLoading ?? false}
+              onFileSelect={onAvatarChange}
+            />
           </div>
         )}
       </div>

@@ -63,6 +63,91 @@ const router = createBrowserRouter([
             ),
           };
         },
+        children: [
+          {
+            path: 'recipes',
+            lazy: async () => {
+              const { default: Component } = await import(
+                './components/modules/Profile/UserRecipesTab/UserRecipesTab'
+              );
+              return {
+                Component,
+              };
+            },
+          },
+          {
+            path: 'followers',
+            lazy: async () => {
+              const { default: Component } = await import(
+                './components/modules/Profile/UserFollowersTab/UserFollowersTab'
+              );
+              return {
+                Component,
+              };
+            },
+          },
+        ],
+      },
+      {
+        path: '/profile',
+        lazy: async () => {
+          const { default: ProfilePage } = await import(
+            './pages/ProfilePage/ProfilePage'
+          );
+          return {
+            Component: () => (
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            ),
+          };
+        },
+        children: [
+          {
+            path: 'recipes',
+            lazy: async () => {
+              const { default: Component } = await import(
+                './components/modules/Profile/MyRecipesTab/MyRecipesTab'
+              );
+              return {
+                Component,
+              };
+            },
+          },
+          {
+            path: 'favorites',
+            lazy: async () => {
+              const { default: Component } = await import(
+                './components/modules/Profile/MyFavoritesTab/MyFavoritesTab'
+              );
+              return {
+                Component,
+              };
+            },
+          },
+          {
+            path: 'following',
+            lazy: async () => {
+              const { default: Component } = await import(
+                './components/modules/Profile/MyFollowingTab/MyFollowingTab'
+              );
+              return {
+                Component,
+              };
+            },
+          },
+          {
+            path: 'followers',
+            lazy: async () => {
+              const { default: Component } = await import(
+                './components/modules/Profile/MyFollowersTab/MyFollowersTab'
+              );
+              return {
+                Component,
+              };
+            },
+          },
+        ],
       },
     ],
   },

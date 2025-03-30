@@ -50,7 +50,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRATION
-        value: '1h'
+        value: '1d'
       - key: SKIP_INSTALL_DEPS
         value: 'true'
   - type: web

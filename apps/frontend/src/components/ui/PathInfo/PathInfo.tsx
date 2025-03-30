@@ -14,7 +14,11 @@ const PathInfo = ({ pages }: PathInfoProps) => {
           <li key={page.path}>
             {index !== 0 && <span className={styles.pathInfoSeparator}>/</span>}
             {index < pages.length - 1 ? (
-              <Link to={page.path} className={styles.pathInfoLink}>
+              <Link
+                to={page.path}
+                className={styles.pathInfoLink}
+                viewTransition
+              >
                 {page.name}
               </Link>
             ) : (

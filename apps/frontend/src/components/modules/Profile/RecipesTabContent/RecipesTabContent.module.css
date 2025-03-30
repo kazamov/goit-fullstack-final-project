@@ -4,6 +4,14 @@
   justify-content: flex-start;
   flex-direction: column;
   gap: 40px;
+  width: 100%;
+  padding-block: 40px;
+}
+
+@media (max-width: 767px) {
+  .recipeTab {
+    padding-block: 32px;
+  }
 }
 
 .recipeItem {
@@ -74,6 +82,7 @@
   /* makes the text overflow wrap with "…" at the end */
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -98,6 +107,7 @@
   /* makes the text overflow wrap with "…" at the end */
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -123,7 +133,8 @@
 }
 
 .noRecipes {
-  margin: 140px auto;
+  margin: 140px 118px;
+  text-align: center;
 }
 
 .tabWrapper {
@@ -131,5 +142,5 @@
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 60px;
+  gap: 20px;
 }

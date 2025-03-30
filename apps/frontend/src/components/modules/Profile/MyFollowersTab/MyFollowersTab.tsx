@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import type {
   PaginatedUserFollowers,
@@ -11,34 +11,43 @@ import { PaginatedUserFollowersSchema } from '@goit-fullstack-final-project/sche
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
 import { usePagingParams } from '../../../../hooks/usePagingParams';
+import type { AppDispatch } from '../../../../redux/store';
+import { selectCurrentUserId } from '../../../../redux/users/selectors';
+import { fetchProfileDetails } from '../../../../redux/users/slice';
 import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
 
 const DEFAULT_PAGE = '1';
 const DEFAULT_PER_PAGE = '9';
 
-function UserFollowersTab() {
-  const { id: userId } = useParams<{ id: string }>();
+function MyFollowersTab() {
+  const id = useSelector(selectCurrentUserId) as string;
+  const dispatch = useDispatch<AppDispatch>();
   const { page, perPage } = usePagingParams(DEFAULT_PAGE, DEFAULT_PER_PAGE);
   const [userFollowers, setUserFollowers] = useState<UserFollower[] | null>(
     null,
   );
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const handleUserChange = useCallback((updatedUser: UserFollower) => {
-    setUserFollowers((prevUsers) => {
-      return (
-        prevUsers?.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user,
-        ) ?? null
-      );
-    });
-  }, []);
+  const handleUserChange = useCallback(
+    (updatedUser: UserFollower) => {
+      setUserFollowers((prevUsers) => {
+        return (
+          prevUsers?.map((user) =>
+            user.id === updatedUser.id ? updatedUser : user,
+          ) ?? null
+        );
+      });
+
+      dispatch(fetchProfileDetails(id));
+    },
+    [dispatch, id],
+  );
 
   useEffect(() => {
     const fetchUserFollowers = async () => {
       const [error, data] = await tryCatch(
         get<PaginatedUserFollowers>(
-          `/api/users/${userId}/followers?page=${page}&perPage=${perPage}`,
+          `/api/users/${id}/followers?page=${page}&perPage=${perPage}`,
           {
             schema: PaginatedUserFollowersSchema,
           },
@@ -56,7 +65,7 @@ function UserFollowersTab() {
     };
 
     fetchUserFollowers();
-  }, [page, perPage, userId]);
+  }, [id, page, perPage]);
 
   const emptyContentTemplate = useCallback((className: string) => {
     return (
@@ -78,4 +87,4 @@ function UserFollowersTab() {
   );
 }
 
-export default UserFollowersTab;
+export default MyFollowersTab;
