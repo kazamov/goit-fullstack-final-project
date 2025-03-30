@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   }, [currentUser, navigate, dispatch, location.pathname]);
 
-  return currentUser ? <>{children}</> : null;
+  return currentUser ? children : null;
 };
 
 export default ProtectedRoute;

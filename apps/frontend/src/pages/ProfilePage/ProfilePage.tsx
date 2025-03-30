@@ -10,10 +10,7 @@ import {
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import clsx from 'clsx';
 
-import type {
-  CurrentUserDetails,
-  UserShortDetails,
-} from '@goit-fullstack-final-project/schemas';
+import type { CurrentUserDetails } from '@goit-fullstack-final-project/schemas';
 
 import Container from '../../components/layout/Container/Container';
 import { UserCard } from '../../components/modules/UserCard/UserCard';
@@ -27,7 +24,7 @@ import { scrollToElement } from '../../helpers/scrollToTop';
 import type { AppDispatch } from '../../redux/store';
 import { setModalOpened } from '../../redux/ui/slice';
 import {
-  selectCurrentUser,
+  selectCurrentUserId,
   selectProfileDetails,
 } from '../../redux/users/selectors';
 import { fetchProfileDetails, updateAvatar } from '../../redux/users/slice';
@@ -46,7 +43,7 @@ function getTabUrlMapping(): Record<number, string> {
 function ProfilePage() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const currentUser = useSelector(selectCurrentUser) as UserShortDetails;
+  const currentUserId = useSelector(selectCurrentUserId) as string;
   const profileDetails = useSelector(
     selectProfileDetails,
   ) as CurrentUserDetails | null;
@@ -118,8 +115,8 @@ function ProfilePage() {
   }, [location.pathname, navigate]);
 
   useEffect(() => {
-    dispatch(fetchProfileDetails(currentUser.id));
-  }, [currentUser.id, dispatch]);
+    dispatch(fetchProfileDetails(currentUserId));
+  }, [currentUserId, dispatch]);
 
   useEffect(() => {
     if (containerRef.current) {
