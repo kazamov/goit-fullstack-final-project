@@ -56,6 +56,7 @@ function ProfilePage() {
   const perPage = searchParams.get('perPage');
 
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const tabsContainerRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
 
   const tabUrlMapping = useMemo(() => {
@@ -123,6 +124,11 @@ function ProfilePage() {
   useEffect(() => {
     if (containerRef.current && isDesktop) {
       scrollToElement(containerRef.current);
+      return;
+    }
+    if (tabsContainerRef.current && !isDesktop) {
+      scrollToElement(tabsContainerRef.current);
+      return;
     }
   }, [isDesktop, page, perPage]);
 
@@ -171,7 +177,7 @@ function ProfilePage() {
               </Button>
             </div>
 
-            <div className={styles.userTabsSection}>
+            <div ref={tabsContainerRef} className={styles.userTabsSection}>
               <Tabs
                 selectedIndex={selectedTabIndex}
                 onSelect={handleTabSelect}

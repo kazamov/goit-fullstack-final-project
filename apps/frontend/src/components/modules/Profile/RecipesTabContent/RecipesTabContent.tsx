@@ -31,12 +31,6 @@ export function RecipesTabContent({
 
   if (recipes.length === 0) {
     return emptyContentTemplate(styles.noRecipes);
-    /* return (
-      <p className={styles.noRecipes}>
-        Nothing has been added to your recipes list yet. Please browse our
-        recipes and add your favorites for easy access in the future.
-      </p>
-    ); */
   }
 
   return (

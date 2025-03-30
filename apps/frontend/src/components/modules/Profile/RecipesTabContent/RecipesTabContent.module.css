@@ -5,6 +5,13 @@
   flex-direction: column;
   gap: 40px;
   width: 100%;
+  padding-block: 40px;
+}
+
+@media (max-width: 767px) {
+  .recipeTab {
+    padding-block: 32px;
+  }
 }
 
 .recipeItem {
@@ -135,5 +142,5 @@
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  gap: 60px;
+  gap: 20px;
 }
