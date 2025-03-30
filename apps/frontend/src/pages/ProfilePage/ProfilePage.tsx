@@ -17,17 +17,14 @@ import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import { tryCatch } from '../../helpers/catchError';
-import { patchFormData, post } from '../../helpers/http';
+import { patchFormData } from '../../helpers/http';
 import type { AppDispatch } from '../../redux/store';
+import { setModalOpened } from '../../redux/ui/slice';
 import {
   selectCurrentUser,
   selectProfileDetails,
 } from '../../redux/users/selectors';
-import {
-  fetchProfileDetails,
-  setCurrentUser,
-  updateAvatar,
-} from '../../redux/users/slice';
+import { fetchProfileDetails, updateAvatar } from '../../redux/users/slice';
 
 import styles from './ProfilePage.module.css';
 
@@ -57,11 +54,8 @@ function ProfilePage() {
   }, []);
 
   const handleLogout = useCallback(async () => {
-    navigate('/', { flushSync: true });
-    dispatch(setCurrentUser(null));
-
-    await tryCatch(post('/api/users/logout', null));
-  }, [dispatch, navigate]);
+    dispatch(setModalOpened({ modal: 'logout', opened: true }));
+  }, [dispatch]);
 
   const handleUpdateAvatar = useCallback(
     async (file: File) => {
@@ -75,17 +69,14 @@ function ProfilePage() {
 
       setIsAvatarUploading(false);
 
-      if (currentUser && avatar?.avatarURL) {
-        setCurrentUser({ ...currentUser, avatarUrl: avatar.avatarURL });
-        dispatch(updateAvatar({ avatarUrl: avatar.avatarURL }));
-      }
-
       if (error) {
         toast.error(error.message);
         return;
       }
+
+      dispatch(updateAvatar({ avatarUrl: avatar.avatarURL }));
     },
-    [currentUser, dispatch],
+    [dispatch],
   );
 
   const handleTabSelect = useCallback(

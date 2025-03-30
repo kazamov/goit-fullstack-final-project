@@ -74,6 +74,12 @@ const usersSlice = createSlice({
           avatarUrl: action.payload.avatarUrl,
         };
       }
+      if (state.profileDetails) {
+        state.profileDetails = {
+          ...state.profileDetails,
+          avatarUrl: action.payload.avatarUrl,
+        };
+      }
     },
   },
   extraReducers: (builder) => {
