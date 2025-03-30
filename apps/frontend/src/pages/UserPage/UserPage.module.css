@@ -42,8 +42,9 @@
 
 .userProfileBlock {
   display: grid;
-  grid-template-columns: 394px auto;
+  grid-template-columns: 394px 1fr;
   gap: 40px;
+  align-self: stretch;
 }
 
 @media screen and (max-width: 1439px) {
@@ -77,6 +78,7 @@
 .tabs {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 /* mobile */

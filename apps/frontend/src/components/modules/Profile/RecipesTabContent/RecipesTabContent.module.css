@@ -4,6 +4,7 @@
   justify-content: flex-start;
   flex-direction: column;
   gap: 40px;
+  width: 100%;
 }
 
 .recipeItem {
