@@ -21,6 +21,7 @@ import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import { tryCatch } from '../../helpers/catchError';
 import { patchFormData } from '../../helpers/http';
 import { scrollToElement } from '../../helpers/scrollToTop';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import type { AppDispatch } from '../../redux/store';
 import { setModalOpened } from '../../redux/ui/slice';
 import {
@@ -41,6 +42,7 @@ function getTabUrlMapping(): Record<number, string> {
 }
 
 function ProfilePage() {
+  const isDesktop = useMediaQuery('(min-width: 1440px)');
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const currentUserId = useSelector(selectCurrentUserId) as string;
@@ -119,10 +121,10 @@ function ProfilePage() {
   }, [currentUserId, dispatch]);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && isDesktop) {
       scrollToElement(containerRef.current);
     }
-  }, [page, perPage]);
+  }, [isDesktop, page, perPage]);
 
   if (!profileDetails) {
     // TODO: show loading skeleton

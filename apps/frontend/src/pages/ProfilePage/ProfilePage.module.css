@@ -47,13 +47,19 @@
   align-self: stretch;
 }
 
+.userTabsSection {
+  display: block;
+}
+
 @media screen and (max-width: 1439px) {
   .userProfileBlock {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 80px;
-    align-items: center;
-    width: 100%;
+    justify-items: center;
+  }
+
+  .userTabsSection {
+    justify-self: stretch;
   }
 }
 
@@ -69,10 +75,6 @@
   .userCardBlock {
     width: 100%;
   }
-}
-
-.userTabsSection {
-  display: flex;
 }
 
 .tabs {

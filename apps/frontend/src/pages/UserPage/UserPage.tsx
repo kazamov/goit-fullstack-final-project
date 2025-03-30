@@ -22,6 +22,7 @@ import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import { tryCatch } from '../../helpers/catchError';
 import { del, post } from '../../helpers/http';
 import { scrollToElement } from '../../helpers/scrollToTop';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import type { AppDispatch } from '../../redux/store';
 import { selectProfileDetails } from '../../redux/users/selectors';
 import { fetchProfileDetails } from '../../redux/users/slice';
@@ -36,6 +37,7 @@ function getTabUrlMapping(userId: string): Record<number, string> {
 }
 
 const UserPage = () => {
+  const isDesktop = useMediaQuery('(min-width: 1440px)');
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -112,10 +114,10 @@ const UserPage = () => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && isDesktop) {
       scrollToElement(containerRef.current);
     }
-  }, [page, perPage]);
+  }, [isDesktop, page, perPage]);
 
   if (!profileDetails) {
     return null;
