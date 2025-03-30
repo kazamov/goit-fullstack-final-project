@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -57,9 +57,9 @@ function MyFollowingTab() {
     fetchUserFollowing();
   }, [fetchUserFollowing]);
 
-  const emptyContentTemplate = useMemo(() => {
+  const emptyContentTemplate = useCallback((className: string) => {
     return (
-      <p>
+      <p className={className}>
         Your account currently has no subscriptions to other users. Learn more
         about our users and select those whose content interests you.
       </p>

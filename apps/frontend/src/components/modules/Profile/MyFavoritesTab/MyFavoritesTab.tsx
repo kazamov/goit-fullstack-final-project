@@ -78,6 +78,15 @@ function MyFavoritesTab() {
     [handleRemoveRecipeFromFavorite, isMobile],
   );
 
+  const emptyContentTemplate = useCallback((className: string) => {
+    return (
+      <p className={className}>
+        Nothing has been added to your favorite recipes list yet. Please browse
+        our recipes and add your favorites for easy access in the future.
+      </p>
+    );
+  }, []);
+
   useEffect(() => {
     fetchFavoriteRecipes();
   }, [fetchFavoriteRecipes]);
@@ -85,6 +94,7 @@ function MyFavoritesTab() {
   return (
     <RecipesTabContent
       actionButtons={actionButtons}
+      emptyContentTemplate={emptyContentTemplate}
       recipes={recipesList}
       totalPages={totalPages}
     />

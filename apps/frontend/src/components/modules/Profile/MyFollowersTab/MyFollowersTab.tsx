@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -67,9 +67,9 @@ function MyFollowersTab() {
     fetchUserFollowers();
   }, [id, page, perPage]);
 
-  const emptyContentTemplate = useMemo(() => {
+  const emptyContentTemplate = useCallback((className: string) => {
     return (
-      <p>
+      <p className={className}>
         There are currently no followers on your account. Please engage our
         visitors with interesting content and draw their attention to your
         profile.

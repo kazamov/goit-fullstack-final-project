@@ -8,9 +8,11 @@ import type {
 import Paging from '../../../ui/Paging/Paging';
 import { UsersList } from '../../UsersList/UsersList';
 
+import styles from './UsersTabContent.module.css';
+
 interface UsersTabContentProps {
   users: (UserFollower | UserFollowing)[] | null;
-  emptyContentTemplate: ReactNode;
+  emptyContentTemplate: (className: string) => ReactNode;
   totalPages: number;
   onUserChange: (newUser: UserFollower | UserFollowing) => void;
 }
@@ -26,7 +28,7 @@ export function UsersTabContent({
   }
 
   if (users.length === 0) {
-    return emptyContentTemplate;
+    return emptyContentTemplate(styles.noUsers);
   }
 
   return (

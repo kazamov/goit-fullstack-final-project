@@ -79,6 +79,15 @@ function MyRecipesTab() {
     [handleRemoveRecipe, isMobile],
   );
 
+  const emptyContentTemplate = useCallback((className: string) => {
+    return (
+      <p className={className}>
+        Nothing has been added to your recipes list yet. Please browse our
+        recipes and add your favorites for easy access in the future.
+      </p>
+    );
+  }, []);
+
   useEffect(() => {
     fetchUserRecipes();
   }, [fetchUserRecipes]);
@@ -86,6 +95,7 @@ function MyRecipesTab() {
   return (
     <RecipesTabContent
       recipes={recipesList}
+      emptyContentTemplate={emptyContentTemplate}
       actionButtons={actionButtons}
       totalPages={totalPages}
     />

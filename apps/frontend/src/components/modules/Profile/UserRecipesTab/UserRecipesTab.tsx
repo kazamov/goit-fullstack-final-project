@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
@@ -22,6 +22,15 @@ function UserRecipesTab() {
   const [recipesList, setRecipesList] = useState<GetRecipeShort[] | null>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
 
+  const emptyContentTemplate = useCallback((className: string) => {
+    return (
+      <p className={className}>
+        Nothing has been added to your recipes list yet. Please browse our
+        recipes and add your favorites for easy access in the future.
+      </p>
+    );
+  }, []);
+
   useEffect(() => {
     const fetchUserRecipes = async () => {
       const [error, data] = await tryCatch(
@@ -44,7 +53,13 @@ function UserRecipesTab() {
     fetchUserRecipes();
   }, [page, perPage, userId]);
 
-  return <RecipesTabContent recipes={recipesList} totalPages={totalPages} />;
+  return (
+    <RecipesTabContent
+      recipes={recipesList}
+      totalPages={totalPages}
+      emptyContentTemplate={emptyContentTemplate}
+    />
+  );
 }
 
 export default UserRecipesTab;

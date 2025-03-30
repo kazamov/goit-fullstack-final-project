@@ -13,12 +13,14 @@ import styles from './RecipesTabContent.module.css';
 interface RecipesTabContentProps {
   recipes: GetRecipeShort[] | null;
   totalPages: number;
+  emptyContentTemplate: (className: string) => ReactNode;
   actionButtons?: (recipeId: string) => ReactNode;
 }
 
 export function RecipesTabContent({
   recipes,
   actionButtons,
+  emptyContentTemplate,
   totalPages,
 }: RecipesTabContentProps) {
   const isMobile = useMediaQuery('(max-width: 767px)');
@@ -28,12 +30,13 @@ export function RecipesTabContent({
   }
 
   if (recipes.length === 0) {
-    return (
+    return emptyContentTemplate(styles.noRecipes);
+    /* return (
       <p className={styles.noRecipes}>
         Nothing has been added to your recipes list yet. Please browse our
         recipes and add your favorites for easy access in the future.
       </p>
-    );
+    ); */
   }
 
   return (
