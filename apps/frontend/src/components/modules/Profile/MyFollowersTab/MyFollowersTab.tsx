@@ -1,19 +1,21 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import type {
   PaginatedUserFollowers,
   UserFollower,
+  UserShortDetails,
 } from '@goit-fullstack-final-project/schemas';
 import { PaginatedUserFollowersSchema } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
+import { selectCurrentUser } from '../../../../redux/users/selectors';
 import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
 
-function UserFollowersTab() {
-  const { id: userId } = useParams<{ id: string }>();
+function MyFollowersTab() {
+  const { id } = useSelector(selectCurrentUser) as UserShortDetails;
 
   const [userFollowers, setUserFollowers] = useState<UserFollower[] | null>(
     null,
@@ -32,7 +34,7 @@ function UserFollowersTab() {
   useEffect(() => {
     const fetchUserFollowers = async () => {
       const [error, data] = await tryCatch(
-        get<PaginatedUserFollowers>(`/api/users/${userId}/followers`, {
+        get<PaginatedUserFollowers>(`/api/users/${id}/followers`, {
           schema: PaginatedUserFollowersSchema,
         }),
       );
@@ -47,7 +49,7 @@ function UserFollowersTab() {
     };
 
     fetchUserFollowers();
-  }, [userId]);
+  }, [id]);
 
   const emptyContentTemplate = useMemo(() => {
     return (
@@ -72,4 +74,4 @@ function UserFollowersTab() {
   );
 }
 
-export default UserFollowersTab;
+export default MyFollowersTab;

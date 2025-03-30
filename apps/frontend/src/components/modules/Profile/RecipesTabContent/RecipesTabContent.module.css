@@ -1,0 +1,135 @@
+.recipeTab {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.recipeItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .recipeItem {
+    gap: 10px;
+  }
+}
+
+.recipeWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 32px;
+  width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .recipeWrapper {
+    gap: 16px;
+  }
+}
+
+.recipeImage {
+  border-radius: 15px;
+  width: 100px;
+  height: 100px;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeImage {
+    width: 75px;
+    height: 75px;
+  }
+}
+
+.recipeDetails {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .recipeDetails {
+    gap: 8px;
+  }
+}
+
+.recipeTitle {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+  /* makes the text overflow wrap with "…" at the end */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: normal;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeTitle {
+    font-size: 16px;
+  }
+}
+
+.recipeDescription {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--dark-gray);
+  min-height: 48px;
+  /* makes the text overflow wrap with "…" at the end */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  .recipeDescription {
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 40px;
+  }
+}
+
+.recipeActions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.noRecipes {
+  margin: 140px auto;
+}
+
+.tabWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 60px;
+}

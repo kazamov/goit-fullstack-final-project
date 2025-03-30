@@ -13,9 +13,8 @@ import type {
 } from '@goit-fullstack-final-project/schemas';
 
 import Container from '../../components/layout/Container/Container';
+import { MyFollowersTab } from '../../components/modules/Profile/MyFollowersTab/MyFollowersTab';
 import RecipeTab from '../../components/modules/Profile/RecipeTab/RecipeTab';
-import { UserFollowersTab } from '../../components/modules/Profile/UserFollowersTab/UserFollowersTab';
-import { UserFollowingTab } from '../../components/modules/Profile/UserFollowingTab/UserFollowingTab';
 import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
@@ -297,7 +296,7 @@ const UserPage = () => {
                   followingCount={
                     'followingCount' in user ? user.followingCount : 0
                   }
-                  updateAvatar={handleUpdateAvatar}
+                  onAvatarChange={handleUpdateAvatar}
                   isCurrentUser={isCurrentUser}
                   isLoading={isLoading}
                 />
@@ -404,7 +403,7 @@ const UserPage = () => {
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <UserFollowersTab userId={currentUser.id} />
+                      <MyFollowersTab userId={currentUser.id} />
                     </TabPanel>
                     <TabPanel
                       className={styles.tabPanel}
@@ -431,7 +430,7 @@ const UserPage = () => {
                       className={styles.tabPanel}
                       selectedClassName={styles.activeTabPanel}
                     >
-                      <UserFollowersTab userId={userId as string} />
+                      <MyFollowersTab userId={userId as string} />
                     </TabPanel>
                   </>
                 )}

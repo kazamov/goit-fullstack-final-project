@@ -1,21 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 import type {
-  UserFollower,
+  PaginatedUserFollowings,
   UserFollowing,
+  UserShortDetails,
 } from '@goit-fullstack-final-project/schemas';
-import { UserFollowingsSchema } from '@goit-fullstack-final-project/schemas';
+import { PaginatedUserFollowingsSchema } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
-import { UsersList } from '../../UsersList/UsersList';
+import { selectCurrentUser } from '../../../../redux/users/selectors';
+import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
 
-interface UserFollowingTabProps {
-  userId: string;
-}
+function MyFollowingTab() {
+  const { id } = useSelector(selectCurrentUser) as UserShortDetails;
 
-export function UserFollowingTab({ userId }: UserFollowingTabProps) {
   const [userFollowing, setUserFollowing] = useState<UserFollowing[] | null>(
     null,
   );
@@ -33,8 +34,8 @@ export function UserFollowingTab({ userId }: UserFollowingTabProps) {
   useEffect(() => {
     const fetchUserFollowing = async () => {
       const [error, data] = await tryCatch(
-        get<UserFollower[]>(`/api/users/${userId}/followings`, {
-          schema: UserFollowingsSchema,
+        get<PaginatedUserFollowings>(`/api/users/${id}/followings`, {
+          schema: PaginatedUserFollowingsSchema,
         }),
       );
 
@@ -44,24 +45,32 @@ export function UserFollowingTab({ userId }: UserFollowingTabProps) {
         return;
       }
 
-      setUserFollowing(data);
+      setUserFollowing(data.items);
     };
 
     fetchUserFollowing();
-  }, [userId]);
+  }, [id]);
 
-  if (!userFollowing) {
-    return <p>Loading...</p>;
-  }
-
-  if (userFollowing.length === 0) {
+  const emptyContentTemplate = useMemo(() => {
     return (
       <p>
         Your account currently has no subscriptions to other users. Learn more
         about our users and select those whose content interests you.
       </p>
     );
-  }
+  }, []);
 
-  return <UsersList users={userFollowing} onUserChange={handleUserChange} />;
+  return (
+    <UsersTabContent
+      users={userFollowing}
+      emptyContentTemplate={emptyContentTemplate}
+      pagination={{
+        page: 1,
+        totalPages: 1,
+      }}
+      onUserChange={handleUserChange}
+    />
+  );
 }
+
+export default MyFollowingTab;

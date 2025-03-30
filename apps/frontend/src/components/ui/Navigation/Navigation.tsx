@@ -30,6 +30,7 @@ const Navigation: FC<NavProps> = ({ isInversed }) => {
           <NavLink
             to="/"
             className={(navData) => buildLinkClass({ ...navData, isInversed })}
+            viewTransition
           >
             Home
           </NavLink>
@@ -38,6 +39,7 @@ const Navigation: FC<NavProps> = ({ isInversed }) => {
           <NavLink
             to="/recipes/add"
             className={(navData) => buildLinkClass({ ...navData, isInversed })}
+            viewTransition
           >
             Add recipe
           </NavLink>

@@ -1,0 +1,233 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import clsx from 'clsx';
+
+import type {
+  CurrentUserDetails,
+  UserShortDetails,
+} from '@goit-fullstack-final-project/schemas';
+
+import Container from '../../components/layout/Container/Container';
+import { UserCard } from '../../components/modules/UserCard/UserCard';
+import Button from '../../components/ui/Button/Button';
+import MainTitle from '../../components/ui/MainTitle/MainTitle';
+import PathInfo from '../../components/ui/PathInfo/PathInfo';
+import SubTitle from '../../components/ui/SubTitle/SubTitle';
+import { tryCatch } from '../../helpers/catchError';
+import { patchFormData, post } from '../../helpers/http';
+import type { AppDispatch } from '../../redux/store';
+import {
+  selectCurrentUser,
+  selectProfileDetails,
+} from '../../redux/users/selectors';
+import {
+  fetchProfileDetails,
+  setCurrentUser,
+  updateAvatar,
+} from '../../redux/users/slice';
+
+import styles from './ProfilePage.module.css';
+
+function getTabUrlMapping(): Record<number, string> {
+  return {
+    0: `/profile/recipes`,
+    1: `/profile/favorites`,
+    2: `/profile/followers`,
+    3: `/profile/following`,
+  };
+}
+
+function ProfilePage() {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const currentUser = useSelector(selectCurrentUser) as UserShortDetails;
+  const profileDetails = useSelector(
+    selectProfileDetails,
+  ) as CurrentUserDetails | null;
+  const [isAvatarUploading, setIsAvatarUploading] = useState<boolean>(false);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const location = useLocation();
+
+  const tabUrlMapping = useMemo(() => {
+    return getTabUrlMapping();
+  }, []);
+
+  const handleLogout = useCallback(async () => {
+    navigate('/', { flushSync: true });
+    dispatch(setCurrentUser(null));
+
+    await tryCatch(post('/api/users/logout', null));
+  }, [dispatch, navigate]);
+
+  const handleUpdateAvatar = useCallback(
+    async (file: File) => {
+      setIsAvatarUploading(true);
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const [error, avatar] = await tryCatch(
+        patchFormData<{ avatarURL: string }>('/api/users/avatars', formData),
+      );
+
+      setIsAvatarUploading(false);
+
+      if (currentUser && avatar?.avatarURL) {
+        setCurrentUser({ ...currentUser, avatarUrl: avatar.avatarURL });
+        dispatch(updateAvatar({ avatarUrl: avatar.avatarURL }));
+      }
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+    },
+    [currentUser, dispatch],
+  );
+
+  const handleTabSelect = useCallback(
+    (index: number) => {
+      const currentTabUrl = tabUrlMapping[index];
+
+      navigate(currentTabUrl, {
+        viewTransition: true,
+      });
+    },
+    [navigate, tabUrlMapping],
+  );
+
+  const selectedTabIndex = useMemo(() => {
+    const pathname = location.pathname;
+
+    const [index] = Array.from(Object.entries(tabUrlMapping)).find(
+      ([_, url]) => {
+        return url === pathname;
+      },
+    ) ?? [0, ''];
+    return Number(index);
+  }, [location.pathname, tabUrlMapping]);
+
+  useEffect(() => {
+    if (location.pathname === '/profile') {
+      navigate(`/profile/recipes`, { replace: true });
+    }
+  }, [location.pathname, navigate]);
+
+  useEffect(() => {
+    dispatch(fetchProfileDetails(currentUser.id));
+  }, [currentUser.id, dispatch]);
+
+  if (!profileDetails) {
+    // TODO: show loading skeleton
+    return null;
+  }
+
+  return (
+    <section id="currentUserProfile" className={clsx(styles.section)}>
+      <Container>
+        <div ref={containerRef} className={styles.userProfile}>
+          <div className={styles.userProfileHeaderWrapper}>
+            <PathInfo
+              pages={[
+                { name: 'Home', path: '/' },
+                { name: 'Profile', path: `/profile` },
+              ]}
+            />
+            <div className={clsx(styles.wrapper)}>
+              <MainTitle title="Profile" />
+              <SubTitle title="Reveal your culinary art, share your favorite recipe and create gastronomic masterpieces with us." />
+            </div>
+          </div>
+          <div className={styles.userProfileBlock}>
+            <div className={styles.userCardBlock}>
+              <UserCard
+                avatar={profileDetails.avatarUrl}
+                name={profileDetails.name}
+                email={profileDetails.email}
+                recipesCount={profileDetails.recipesCount}
+                favoritesCount={profileDetails.favoriteRecipesCount}
+                followersCount={profileDetails.followersCount}
+                followingCount={profileDetails.followingCount}
+                onAvatarChange={handleUpdateAvatar}
+                isCurrentUser
+                isLoading={isAvatarUploading}
+              />
+              <Button
+                type="button"
+                kind="primary"
+                size="medium"
+                clickHandler={handleLogout}
+              >
+                Log Out
+              </Button>
+            </div>
+
+            <div className={styles.userTabsSection}>
+              <Tabs
+                selectedIndex={selectedTabIndex}
+                onSelect={handleTabSelect}
+                className={styles.tabs}
+              >
+                <TabList className={styles.tabList}>
+                  <Tab
+                    className={styles.tabTitle}
+                    selectedClassName={styles.activeTabTitle}
+                  >
+                    My Recipes
+                  </Tab>
+                  <Tab
+                    className={styles.tabTitle}
+                    selectedClassName={styles.activeTabTitle}
+                  >
+                    My Favorites
+                  </Tab>
+                  <Tab
+                    className={styles.tabTitle}
+                    selectedClassName={styles.activeTabTitle}
+                  >
+                    Followers
+                  </Tab>
+                  <Tab
+                    className={styles.tabTitle}
+                    selectedClassName={styles.activeTabTitle}
+                  >
+                    Following
+                  </Tab>
+                </TabList>
+                <TabPanel
+                  className={styles.tabPanel}
+                  selectedClassName={styles.activeTabPanel}
+                >
+                  <Outlet />
+                </TabPanel>
+                <TabPanel
+                  className={styles.tabPanel}
+                  selectedClassName={styles.activeTabPanel}
+                >
+                  <Outlet />
+                </TabPanel>
+                <TabPanel
+                  className={styles.tabPanel}
+                  selectedClassName={styles.activeTabPanel}
+                >
+                  <Outlet />
+                </TabPanel>
+                <TabPanel
+                  className={styles.tabPanel}
+                  selectedClassName={styles.activeTabPanel}
+                >
+                  <Outlet />
+                </TabPanel>
+              </Tabs>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+export default ProfilePage;
