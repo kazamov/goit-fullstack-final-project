@@ -58,14 +58,14 @@ export const RecipeFilters: FC = () => {
 
         const value = option?.value ?? '';
         if (value === '') {
-          prevParams.delete('ingredientId');
+          newParams.delete('ingredientId');
         } else {
-          prevParams.set('ingredientId', value);
+          newParams.set('ingredientId', value);
         }
 
-        prevParams.set('page', '1');
+        newParams.set('page', '1');
 
-        return prevParams;
+        return newParams;
       });
     },
     [setSearchParams],

@@ -24,7 +24,10 @@ import { del, post } from '../../helpers/http';
 import { scrollToElement } from '../../helpers/scrollToTop';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import type { AppDispatch } from '../../redux/store';
-import { selectProfileDetails } from '../../redux/users/selectors';
+import {
+  selectCurrentUserId,
+  selectProfileDetails,
+} from '../../redux/users/selectors';
 import { fetchProfileDetails } from '../../redux/users/slice';
 
 import styles from './UserPage.module.css';
@@ -43,6 +46,7 @@ const UserPage = () => {
   const location = useLocation();
   const { id: userId } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
+  const currentUserId = useSelector(selectCurrentUserId) as string;
 
   const page = searchParams.get('page');
   const perPage = searchParams.get('perPage');
@@ -124,6 +128,12 @@ const UserPage = () => {
       return;
     }
   }, [isDesktop, page, perPage]);
+
+  useEffect(() => {
+    if (currentUserId === userId) {
+      navigate(`/profile/recipes`, { replace: true });
+    }
+  }, [currentUserId, navigate, userId]);
 
   if (!profileDetails) {
     return null;
