@@ -12,6 +12,7 @@ import { GetPaginatedRecipeShortSchema } from '@goit-fullstack-final-project/sch
 import { tryCatch } from '../../../../helpers/catchError';
 import { del, get } from '../../../../helpers/http';
 import { useMediaQuery } from '../../../../hooks/useMediaQuery';
+import { usePagingParams } from '../../../../hooks/usePagingParams';
 import type { AppDispatch } from '../../../../redux/store';
 import {
   selectCurrentUser,
@@ -20,7 +21,6 @@ import {
 import { fetchProfileDetails } from '../../../../redux/users/slice';
 import ButtonWithIcon from '../../../ui/ButtonWithIcon/ButtonWithIcon';
 import { RecipesTabContent } from '../RecipesTabContent/RecipesTabContent';
-import { usePagingParams } from '../usePagingParams';
 
 const DEFAULT_PAGE = '1';
 const DEFAULT_PER_PAGE = '9';

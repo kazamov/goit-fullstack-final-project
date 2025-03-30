@@ -10,7 +10,7 @@ import { PaginatedUserFollowersSchema } from '@goit-fullstack-final-project/sche
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
-import { usePagingParams } from '../usePagingParams';
+import { usePagingParams } from '../../../../hooks/usePagingParams';
 import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
 
 const DEFAULT_PAGE = '1';

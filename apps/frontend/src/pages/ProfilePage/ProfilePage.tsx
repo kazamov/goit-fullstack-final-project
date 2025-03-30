@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import clsx from 'clsx';
 
@@ -18,6 +23,7 @@ import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import { tryCatch } from '../../helpers/catchError';
 import { patchFormData } from '../../helpers/http';
+import { scrollToElement } from '../../helpers/scrollToTop';
 import type { AppDispatch } from '../../redux/store';
 import { setModalOpened } from '../../redux/ui/slice';
 import {
@@ -45,6 +51,10 @@ function ProfilePage() {
     selectProfileDetails,
   ) as CurrentUserDetails | null;
   const [isAvatarUploading, setIsAvatarUploading] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
+
+  const page = searchParams.get('page');
+  const perPage = searchParams.get('perPage');
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
@@ -110,6 +120,12 @@ function ProfilePage() {
   useEffect(() => {
     dispatch(fetchProfileDetails(currentUser.id));
   }, [currentUser.id, dispatch]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      scrollToElement(containerRef.current);
+    }
+  }, [page, perPage]);
 
   if (!profileDetails) {
     // TODO: show loading skeleton

@@ -1,7 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import clsx from 'clsx';
 
@@ -15,6 +21,7 @@ import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
 import { tryCatch } from '../../helpers/catchError';
 import { del, post } from '../../helpers/http';
+import { scrollToElement } from '../../helpers/scrollToTop';
 import type { AppDispatch } from '../../redux/store';
 import { selectProfileDetails } from '../../redux/users/selectors';
 import { fetchProfileDetails } from '../../redux/users/slice';
@@ -33,7 +40,12 @@ const UserPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: userId } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
 
+  const page = searchParams.get('page');
+  const perPage = searchParams.get('perPage');
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const profileDetails = useSelector(
     selectProfileDetails,
   ) as OtherUserDetails | null;
@@ -63,7 +75,9 @@ const UserPage = () => {
       toast.error(error.message);
       return;
     }
-  }, [profileDetails, userId]);
+
+    dispatch(fetchProfileDetails(userId as string));
+  }, [dispatch, profileDetails, userId]);
 
   const handleTabSelect = useCallback(
     (index: number) => {
@@ -97,6 +111,12 @@ const UserPage = () => {
     dispatch(fetchProfileDetails(userId as string));
   }, [dispatch, userId]);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      scrollToElement(containerRef.current);
+    }
+  }, [page, perPage]);
+
   if (!profileDetails) {
     return null;
   }
@@ -104,7 +124,7 @@ const UserPage = () => {
   return (
     <section id="userProfile" className={clsx(styles.section)}>
       <Container>
-        <div className={styles.userProfile}>
+        <div ref={containerRef} className={styles.userProfile}>
           <div className={styles.userProfileHeaderWrapper}>
             <PathInfo
               pages={[

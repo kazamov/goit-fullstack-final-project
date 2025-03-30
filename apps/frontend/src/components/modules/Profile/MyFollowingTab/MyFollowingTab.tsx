@@ -10,10 +10,10 @@ import { PaginatedUserFollowingsSchema } from '@goit-fullstack-final-project/sch
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
+import { usePagingParams } from '../../../../hooks/usePagingParams';
 import type { AppDispatch } from '../../../../redux/store';
 import { selectCurrentUserId } from '../../../../redux/users/selectors';
 import { fetchProfileDetails } from '../../../../redux/users/slice';
-import { usePagingParams } from '../usePagingParams';
 import { UsersTabContent } from '../UsersTabContent/UsersTabContent';
 
 const DEFAULT_PAGE = '1';

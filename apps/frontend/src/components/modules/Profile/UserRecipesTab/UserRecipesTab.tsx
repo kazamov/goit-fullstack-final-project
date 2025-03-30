@@ -10,8 +10,8 @@ import { GetPaginatedRecipeShortSchema } from '@goit-fullstack-final-project/sch
 
 import { tryCatch } from '../../../../helpers/catchError';
 import { get } from '../../../../helpers/http';
+import { usePagingParams } from '../../../../hooks/usePagingParams';
 import { RecipesTabContent } from '../RecipesTabContent/RecipesTabContent';
-import { usePagingParams } from '../usePagingParams';
 
 const DEFAULT_PAGE = '1';
 const DEFAULT_PER_PAGE = '9';
