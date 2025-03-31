@@ -11,10 +11,17 @@ interface LogoProps {
 
 const Logo: FC<LogoProps> = ({ isInversed, className }) => {
   return (
-    <NavLink className={className} to="/" viewTransition>
-      <span className={clsx(styles.logo, isInversed && styles.inversedLogo)}>
-        foodies
-      </span>
+    <NavLink
+      className={clsx(
+        className,
+        styles.logo,
+        isInversed && styles.inversedLogo,
+      )}
+      to="/"
+      viewTransition
+      aria-label="Foodies Home"
+    >
+      foodies
     </NavLink>
   );
 };
