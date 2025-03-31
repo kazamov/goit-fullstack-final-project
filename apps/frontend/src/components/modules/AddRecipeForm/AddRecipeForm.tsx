@@ -107,7 +107,9 @@ const AddRecipeForm = () => {
     IngredientCardObject[]
   >([]);
   const [selectedIngredient, setSelectedIngredient] = useState('');
+  const [ingredientError, setIngredientError] = useState(false);
   const [measure, setMeasure] = useState('');
+  const [measureError, setMeasureError] = useState(false);
   const [resetImage, setResetImage] = useState(false);
 
   const selectFile = (file: File) => {
@@ -190,7 +192,22 @@ const AddRecipeForm = () => {
   const decreaseTime = () => setValue('time', Math.max(1, timeValue - 1));
 
   const handleAddIngredient = () => {
-    if (!measure) return;
+    if (!selectedIngredient) {
+      setIngredientError(true);
+    } else {
+      setIngredientError(false);
+    }
+
+    if (!measure) {
+      setMeasureError(true);
+    } else {
+      setMeasureError(false);
+    }
+
+    if (!selectedIngredient || !measure) {
+      return;
+    }
+
     const ingredient = ingredients.find((ing) => ing.id === selectedIngredient);
     if (ingredient) {
       append({ id: ingredient.id, measure });
@@ -460,6 +477,11 @@ const AddRecipeForm = () => {
                       {errors.ingredients.message}
                     </span>
                   )}
+                  {ingredientError && (
+                    <span className="selectError">
+                      Choose an ingredient, it is required
+                    </span>
+                  )}
                 </div>
                 <div
                   className={buildInputClass({
@@ -477,6 +499,13 @@ const AddRecipeForm = () => {
                     value={measure}
                     placeholder="Enter quantity"
                   />
+                  {measureError && (
+                    <span
+                      className={clsx('textAreaError', styles.measureError)}
+                    >
+                      Measure is required
+                    </span>
+                  )}
                 </div>
               </div>
 
