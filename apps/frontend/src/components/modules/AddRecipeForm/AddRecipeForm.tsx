@@ -79,6 +79,9 @@ const buildInputClass = ({
   );
 };
 
+const COOKING_TIME_STEP = 5;
+const COOKING_INITIAL_TIME = 1;
+
 const AddRecipeForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -107,7 +110,9 @@ const AddRecipeForm = () => {
     IngredientCardObject[]
   >([]);
   const [selectedIngredient, setSelectedIngredient] = useState('');
+  const [ingredientError, setIngredientError] = useState(false);
   const [measure, setMeasure] = useState('');
+  const [measureError, setMeasureError] = useState(false);
   const [resetImage, setResetImage] = useState(false);
 
   const selectFile = (file: File) => {
@@ -132,7 +137,7 @@ const AddRecipeForm = () => {
       ingredients: [],
       categoryId: '',
       areaId: '',
-      time: 1,
+      time: COOKING_INITIAL_TIME,
       thumb: undefined,
     },
     mode: 'onSubmit',
@@ -186,11 +191,32 @@ const AddRecipeForm = () => {
   const categoriesValue = watch('categoryId');
   const timeValue = watch('time');
 
-  const increaseTime = () => setValue('time', timeValue + 1);
-  const decreaseTime = () => setValue('time', Math.max(1, timeValue - 1));
+  const increaseTime = () =>
+    setValue(
+      'time',
+      Math.round(timeValue / COOKING_TIME_STEP) * COOKING_TIME_STEP +
+        COOKING_TIME_STEP,
+    );
+  const decreaseTime = () =>
+    setValue('time', Math.max(1, timeValue - COOKING_TIME_STEP));
 
   const handleAddIngredient = () => {
-    if (!measure) return;
+    if (!selectedIngredient) {
+      setIngredientError(true);
+    } else {
+      setIngredientError(false);
+    }
+
+    if (!measure) {
+      setMeasureError(true);
+    } else {
+      setMeasureError(false);
+    }
+
+    if (!selectedIngredient || !measure) {
+      return;
+    }
+
     const ingredient = ingredients.find((ing) => ing.id === selectedIngredient);
     if (ingredient) {
       append({ id: ingredient.id, measure });
@@ -350,6 +376,7 @@ const AddRecipeForm = () => {
                     render={({ field }) => (
                       <Select
                         placeholder="Select a category"
+                        noOptionsMessage={() => 'Categories are loading...'}
                         {...field}
                         onChange={(selected: SingleValue<OptionType>) =>
                           field.onChange(selected?.value)
@@ -423,6 +450,7 @@ const AddRecipeForm = () => {
                 <div className={clsx('selectWrapper', styles.selectWrapper)}>
                   <Select
                     placeholder="Select an ingredient"
+                    noOptionsMessage={() => 'Ingredients are loading...'}
                     onChange={(selected: SingleValue<OptionType>) =>
                       setSelectedIngredient(selected?.value ?? '')
                     }
@@ -460,6 +488,11 @@ const AddRecipeForm = () => {
                       {errors.ingredients.message}
                     </span>
                   )}
+                  {ingredientError && (
+                    <span className="selectError">
+                      Choose an ingredient, it is required
+                    </span>
+                  )}
                 </div>
                 <div
                   className={buildInputClass({
@@ -477,6 +510,13 @@ const AddRecipeForm = () => {
                     value={measure}
                     placeholder="Enter quantity"
                   />
+                  {measureError && (
+                    <span
+                      className={clsx('textAreaError', styles.measureError)}
+                    >
+                      Measure is required
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -511,6 +551,7 @@ const AddRecipeForm = () => {
                   render={({ field }) => (
                     <Select
                       placeholder="Select an area"
+                      noOptionsMessage={() => 'Areas are loading...'}
                       {...field}
                       onChange={(selected: SingleValue<OptionType>) =>
                         field.onChange(selected?.value)

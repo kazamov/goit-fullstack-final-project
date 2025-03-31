@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <Container>
       <div className={styles.headerContainer}>
-        <div
+        <header
           className={clsx(styles.header, isInversed && styles.inversedHeader)}
         >
           <Logo isInversed={isInversed} />
@@ -43,9 +43,9 @@ const Header = () => {
               </div>
             </>
           ) : (
-            <div className={styles.skeleton}></div>
+            <div className={clsx('skeleton', styles.userBarSkeleton)}></div>
           )}
-        </div>
+        </header>
       </div>
     </Container>
   );
