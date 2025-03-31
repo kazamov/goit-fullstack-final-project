@@ -102,3 +102,7 @@
     flex-direction: column;
   }
 }
+
+:global(.textAreaError).measureError {
+  bottom: -20px;
+}
