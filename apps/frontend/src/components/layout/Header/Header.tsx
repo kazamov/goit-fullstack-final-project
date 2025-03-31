@@ -43,7 +43,7 @@ const Header = () => {
               </div>
             </>
           ) : (
-            <div className={styles.skeleton}></div>
+            <div className={clsx('skeleton', styles.userBarSkeleton)}></div>
           )}
         </header>
       </div>

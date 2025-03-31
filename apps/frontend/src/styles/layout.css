@@ -74,3 +74,9 @@
 .gap32 {
   gap: 32px;
 }
+
+.skeleton {
+  background-color: hsl(200, 20%, 80%);
+  border-radius: var(--border-radius);
+  animation: pulse 1.5s infinite ease-in-out;
+}
