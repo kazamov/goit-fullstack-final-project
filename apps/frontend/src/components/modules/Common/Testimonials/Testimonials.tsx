@@ -18,6 +18,10 @@ interface TestimonialsProps {
   testimonials: GetTestimonialResponse;
 }
 
+const FAKE_TESTIMONIALS = Array.from({ length: 3 }, (_, index) => ({
+  id: `testimonial-${index}`,
+}));
+
 const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
   return (
     <section id="testimonials" className={clsx(styles.section)}>
@@ -47,6 +51,21 @@ const Testimonials: FC<TestimonialsProps> = ({ testimonials }) => {
             modules={[Autoplay, Pagination, Mousewheel]}
             className={clsx(styles.swiper)}
           >
+            {testimonials.length === 0 &&
+              FAKE_TESTIMONIALS.map((_, index) => (
+                <SwiperSlide key={index} className={styles.testimonialsItem}>
+                  <p
+                    className={clsx(styles.testimonialTextSkeleton, 'skeleton')}
+                  ></p>
+                  <p
+                    className={clsx(
+                      styles.testimonialAuthorSkeleton,
+                      'skeleton',
+                    )}
+                  ></p>
+                </SwiperSlide>
+              ))}
+
             {testimonials.map((testimonial, index) => (
               <SwiperSlide
                 key={index}
