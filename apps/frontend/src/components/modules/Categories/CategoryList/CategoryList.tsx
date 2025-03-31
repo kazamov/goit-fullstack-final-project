@@ -12,11 +12,23 @@ interface CategoryListProps {
   onCategorySelect: (category: SelectedCategory) => void;
 }
 
+const FAKE_CATEGORIES = Array.from({ length: 11 }, (_, index) => ({
+  id: `skeleton-${index}`,
+}));
+
 const CategoryList = ({ categories, onCategorySelect }: CategoryListProps) => {
   const limit = 11;
 
   return (
     <ul className={styles.categoryCardContainer}>
+      {categories.length === 0 &&
+        FAKE_CATEGORIES.map((_, index) => (
+          <li
+            key={index}
+            className={clsx(styles.categoryCard, 'skeleton')}
+          ></li>
+        ))}
+
       {categories.slice(0, limit).map((category, index) => (
         <li key={index} className={styles.categoryCard}>
           <img
