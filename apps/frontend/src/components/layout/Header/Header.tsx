@@ -23,7 +23,7 @@ const Header = () => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (
-    <Container>
+    <Container className={styles.container}>
       <div className={styles.headerContainer}>
         <header
           className={clsx(styles.header, isInversed && styles.inversedHeader)}

@@ -8,6 +8,8 @@ import Header from '../components/layout/Header/Header';
 import type { AppDispatch } from '../redux/store';
 import { fetchCurrentUser } from '../redux/users/slice';
 
+import styles from './Layout.module.css';
+
 export function Layout() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -19,7 +21,7 @@ export function Layout() {
     <>
       <Toaster />
       <Header />
-      <main>
+      <main className={styles.main}>
         <Outlet />
       </main>
       <Footer />

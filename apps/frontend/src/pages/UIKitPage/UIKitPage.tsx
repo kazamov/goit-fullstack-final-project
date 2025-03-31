@@ -8,6 +8,7 @@ import ButtonWithIcon from '../../components/ui/ButtonWithIcon/ButtonWithIcon';
 import ButtonWithNumber from '../../components/ui/ButtonWithNumber/ButtonWithNumber';
 import ConnectionsUserCard from '../../components/ui/ConnectionsUserCard/ConnectionsUserCard';
 import IngredientCard from '../../components/ui/IngredientCard/IngredientCard';
+import Loader from '../../components/ui/Loader/Loader';
 import Logo from '../../components/ui/Logo/Logo';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import Navigation from '../../components/ui/Navigation/Navigation';
@@ -438,6 +439,12 @@ const UIKitPage = () => {
               /* do nothing */
             }}
           />
+        </div>
+      </div>
+      <div>
+        <h2 className={styles.kitTitle}>Loading</h2>
+        <div className={styles.kitCard}>
+          <Loader />
         </div>
       </div>
 

@@ -6,10 +6,11 @@ import styles from './Container.module.css';
 
 interface ContainerProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-const Container: FC<ContainerProps> = ({ children }) => {
-  return <div className={clsx(styles.container)}>{children}</div>;
+const Container: FC<ContainerProps> = ({ children, className }) => {
+  return <div className={clsx(styles.container, className)}>{children}</div>;
 };
 
 export default Container;

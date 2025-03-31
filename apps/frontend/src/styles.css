@@ -20,6 +20,10 @@
 #root {
   font-family: var(--base-font);
   font-size: var(--base-font-size);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
 }
 
 /* Box sizing rules */

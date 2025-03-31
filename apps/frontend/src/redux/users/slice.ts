@@ -10,6 +10,7 @@ import type {
 import { GetCurrentUserResponseSchema } from '@goit-fullstack-final-project/schemas';
 
 import { tryCatch } from '../../helpers/catchError';
+import { delay } from '../../helpers/delay';
 import { get } from '../../helpers/http';
 
 export interface UsersState {
@@ -29,6 +30,7 @@ const initialState: UsersState = {
 export const fetchCurrentUser = createAsyncThunk(
   'users/fetchCurrentUser',
   async () => {
+    await delay(2000);
     const [error, currentUser] = await tryCatch(
       get<GetCurrentUserResponse | null>('/api/users/current', {
         schema: GetCurrentUserResponseSchema,
