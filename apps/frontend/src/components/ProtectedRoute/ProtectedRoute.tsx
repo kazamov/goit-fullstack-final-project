@@ -7,8 +7,6 @@ import { setModalOpened } from '../../redux/ui/slice';
 import { selectCurrentUser } from '../../redux/users/selectors';
 import Loader from '../ui/Loader/Loader';
 
-import styles from './ProtectedRoute.module.css';
-
 interface ProtectedRouteProps {
   children: ReactNode;
 }
@@ -32,7 +30,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   }, [currentUser, navigate, dispatch, location.pathname]);
 
-  return currentUser ? children : <Loader className={styles.loader} />;
+  return currentUser ? children : <Loader className="positionAbsoluteCenter" />;
 };
 
 export default ProtectedRoute;

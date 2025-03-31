@@ -15,6 +15,7 @@ import type { CurrentUserDetails } from '@goit-fullstack-final-project/schemas';
 import Container from '../../components/layout/Container/Container';
 import { UserCard } from '../../components/modules/UserCard/UserCard';
 import Button from '../../components/ui/Button/Button';
+import Loader from '../../components/ui/Loader/Loader';
 import MainTitle from '../../components/ui/MainTitle/MainTitle';
 import PathInfo from '../../components/ui/PathInfo/PathInfo';
 import SubTitle from '../../components/ui/SubTitle/SubTitle';
@@ -133,8 +134,7 @@ function ProfilePage() {
   }, [isDesktop, page, perPage]);
 
   if (!profileDetails) {
-    // TODO: show loading skeleton
-    return null;
+    return <Loader className="positionAbsoluteCenter" />;
   }
 
   return (

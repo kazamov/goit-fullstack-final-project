@@ -80,3 +80,10 @@
   border-radius: var(--border-radius);
   animation: pulse 1.5s infinite ease-in-out;
 }
+
+.positionAbsoluteCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
